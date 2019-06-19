@@ -21,14 +21,14 @@ class App extends Component {
 
   config = {
     pages: [
-      'pages/index/index'
+      'pages/index/index',
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
-    }
+      navigationBarTextStyle: 'black',
+    },
   }
 
   componentWillMount () {
@@ -43,7 +43,7 @@ class App extends Component {
             // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
             updateManager.applyUpdate()
           }
-        }
+        },
       })
     })
 
@@ -57,10 +57,10 @@ class App extends Component {
           Taro.showToast({
             title: '当前无网络',
             icon: 'loading',
-            duration: 2000
+            duration: 2000,
           })
         }
-      }
+      },
     })
 
     // 监听网络状态
@@ -75,13 +75,13 @@ class App extends Component {
           complete: () => {
             // 网络断开处理逻辑
             // this.goStartIndexPage()
-          }
+          },
         })
       } else {
         this.updateNetworkStatus(true)
         Taro.hideToast()
       }
-    });
+    })
   }
 
   componentDidMount () {}
@@ -97,8 +97,8 @@ class App extends Component {
     await store.dispatch({
       type: UPDATE_GLOBAL_DATA,
       data: {
-        isConnected
-      }
+        isConnected,
+      },
     })
   }
 

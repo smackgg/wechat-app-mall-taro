@@ -10,7 +10,7 @@ const composeEnhancers =
     }) : compose
 
 const middlewares = [
-  thunkMiddleware
+  thunkMiddleware,
 ]
 
 

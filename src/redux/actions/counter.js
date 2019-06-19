@@ -4,13 +4,13 @@ export const MINUS = 'counter/MINUS'
 
 export const add = () => {
   return {
-    type: ADD
-  };
+    type: ADD,
+  }
 }
 
 export const minus = () => {
   return {
-    type: MINUS
+    type: MINUS,
   }
 }
 

@@ -8,7 +8,7 @@ import './index.less'
 
 
 @connect(({ counter }) => ({
-  counter
+  counter,
 }), (dispatch) => ({
   add () {
     dispatch(add())
@@ -18,12 +18,12 @@ import './index.less'
   },
   asyncAdd () {
     dispatch(asyncAdd())
-  }
+  },
 }))
 class Index extends Component {
 
     config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '首页',
   }
 
   componentWillReceiveProps (nextProps) {

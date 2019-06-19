@@ -4,5 +4,5 @@ import global from './global'
 
 export default combineReducers({
   counter,
-  global
+  global,
 })
