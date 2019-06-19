@@ -1,7 +1,7 @@
-import { ADD, MINUS } from '../constants/counter'
+import { ADD, MINUS } from '../actions/counter'
 
 const INITIAL_STATE = {
-  num: 0
+  num: 0,
 }
 
 export default function counter (state = INITIAL_STATE, action) {
@@ -9,12 +9,12 @@ export default function counter (state = INITIAL_STATE, action) {
     case ADD:
       return {
         ...state,
-        num: state.num + 1
+        num: state.num + 1,
       }
      case MINUS:
        return {
          ...state,
-         num: state.num - 1
+         num: state.num - 1,
        }
      default:
        return state
