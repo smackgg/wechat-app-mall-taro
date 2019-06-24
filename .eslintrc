@@ -5,7 +5,11 @@
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
     "semi": ["error", "never"],
     "comma-dangle": ["error", "always-multiline"],
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "jsx-quotes": [
+      "error",
+      "prefer-double"
+    ]
   },
   "parser": "babel-eslint"
 }
