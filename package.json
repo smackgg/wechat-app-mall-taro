@@ -37,12 +37,13 @@
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "vant-weapp": "^0.5.15"
+    "taro-ui": "^2.2.1"
   },
   "devDependencies": {
     "@tarojs/plugin-babel": "1.3.0-beta.5",
     "@tarojs/plugin-csso": "1.3.0-beta.5",
     "@tarojs/plugin-less": "1.3.0-beta.5",
+    "@tarojs/plugin-sass": "^1.3.3",
     "@tarojs/plugin-uglifyjs": "1.3.0-beta.5",
     "@tarojs/webpack-runner": "1.3.0-beta.5",
     "@types/react": "^16.4.8",
