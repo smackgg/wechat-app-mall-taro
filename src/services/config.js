@@ -6,3 +6,8 @@ import request from '@/utils/request'
 export const vipLevel = () => request({
   url: '/config/vipLevel',
 })
+
+// 获取系统参数等（商城名称、最小充值金额
+export const systemConfig = () => request({
+  url: '/config/values',
+})

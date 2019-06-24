@@ -1,7 +1,7 @@
 import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
-import { getVipLevel } from '@/redux/actions/config'
+import { getVipLevel, getSystemConfig } from '@/redux/actions/config'
 
 import Index from './pages/index'
 
@@ -86,6 +86,10 @@ class App extends Component {
 
     // 获取 vipLevel
     store.dispatch(getVipLevel())
+
+    // 获取系统参数（店铺信息等
+    store.dispatch(getSystemConfig())
+
   }
 
   componentDidMount () {}
