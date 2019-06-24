@@ -4,6 +4,7 @@ import { connect } from '@tarojs/redux'
 
 import { add, minus, asyncAdd } from '@/redux/actions/counter'
 import { checkToken, login, register } from '@/services/user'
+import { AtButton } from 'taro-ui'
 
 import './index.less'
 
@@ -119,12 +120,10 @@ class Auth extends Component {
 
   render () {
     return (
-      <View class="container">
-        <Form bindsubmit="bindSave">
-          <View class="title">微信授权页面</View>
-          <View class="profile">授权并同意使用微信账号登录当前小程序</View>
-          <Button type="primary" open-type="getUserInfo" onGetUserInfo={this.bindGetUserInfo} class="weui-btn mini-btn">授权登录</Button>
-        </Form>
+      <View className="container">
+        <View className="title">微信授权页面</View>
+        <View className="profile">授权并同意使用微信账号登录当前小程序</View>
+        <AtButton type="primary" openType="getUserInfo" onGetUserInfo={this.bindGetUserInfo}>授权登录</AtButton>
       </View>
     )
   }
