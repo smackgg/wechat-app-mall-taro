@@ -1,13 +1,14 @@
 import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
+import { getVipLevel } from '@/redux/actions/config'
 
 import Index from './pages/index'
 
 import configStore from './redux/store'
+import { UPDATE_GLOBAL_DATA } from './redux/actions/global'
 
 import './app.less'
-import { UPDATE_GLOBAL_DATA } from './redux/actions/global'
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -82,6 +83,9 @@ class App extends Component {
         Taro.hideToast()
       }
     })
+
+    // 获取 vipLevel
+    store.dispatch(getVipLevel())
   }
 
   componentDidMount () {}
