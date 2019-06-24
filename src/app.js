@@ -2,7 +2,7 @@ import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
 import { getVipLevel, getSystemConfig } from '@/redux/actions/config'
-
+import { checkToken } from '@/services/user'
 import Index from './pages/index'
 
 import configStore from './redux/store'
@@ -23,6 +23,7 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
+      'pages/authorize/index',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -33,6 +34,9 @@ class App extends Component {
   }
 
   componentWillMount () {
+    // 获取 token
+    this.token = Taro.getStorageSync('token')
+
     // 检测版本更新
     const updateManager = Taro.getUpdateManager()
     updateManager.onUpdateReady(() => {
@@ -90,11 +94,41 @@ class App extends Component {
     // 获取系统参数（店铺信息等
     store.dispatch(getSystemConfig())
 
+    // 积分赠送规则
+
   }
 
-  componentDidMount () {}
+  componentDidMount () {
+  }
 
-  componentDidShow () {}
+  componentDidShow () {
+    // 跳转啊授权登录页面
+    if (!this.token) {
+      this.goToLoginPage()
+      return
+    }
+
+    // 校验 token 是否有效
+    checkToken(this.token).then((res) => {
+      if (res.code != 0) {
+        Taro.removeStorageSync('token')
+        Taro.showToast({
+          title: '登录失效，请重新授权~',
+          icon: 'loading',
+          duration: 1000,
+          complete: () => {
+            this.goToLoginPage()
+          },
+        })
+      }
+    })
+
+    Taro.checkSession({
+      fail() {
+        this.goToLoginPage()
+      },
+    })
+  }
 
   componentDidHide () {}
 
@@ -107,6 +141,13 @@ class App extends Component {
       data: {
         isConnected,
       },
+    })
+  }
+
+  goToLoginPage = () => {
+    Taro.removeStorageSync('token')
+    Taro.navigateTo({
+      url: "/pages/authorize/index",
     })
   }
 

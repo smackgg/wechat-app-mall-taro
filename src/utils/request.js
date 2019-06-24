@@ -16,7 +16,7 @@ export default option => new Promise((resolve, reject) => {
     ...option,
     url: reqUrl,
     header: {
-      'content-type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded'
     },
     success(res) {
       if (res && res.statusCode === 200) {
