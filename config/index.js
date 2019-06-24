@@ -1,39 +1,34 @@
-const config = {
+'use strict'
+
+var config = {
   alias: {
     '@': 'src/',
+    '@root': './',
   },
   projectName: 'wechat-app-mall-taro',
   date: '2019-6-18',
   designWidth: 750,
   deviceRatio: {
-    '640': 2.34 / 2,
+    '640': 1.17,
     '750': 1,
-    '828': 1.81 / 2,
+    '828': 0.905,
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
   plugins: {
     babel: {
       sourceMap: true,
-      presets: [
-        ['env', {
-          modules: false,
-        }],
-      ],
-      plugins: [
-        'transform-decorators-legacy',
-        'transform-class-properties',
-        'transform-object-rest-spread',
-      ],
+      presets: [['env', {
+        modules: false,
+      }]],
+      plugins: ['transform-decorators-legacy', 'transform-class-properties', 'transform-object-rest-spread']
     },
   },
-  defineConstants: {
-  },
+  defineConstants: {},
   copy: {
     patterns: [
+      { from: './shopConfig.js', to: 'dist/shopConfig.js' },
     ],
-    options: {
-    },
   },
   weapp: {
     module: {
@@ -41,18 +36,12 @@ const config = {
         autoprefixer: {
           enable: true,
           config: {
-            browsers: [
-              'last 3 versions',
-              'Android >= 4.1',
-              'ios >= 8',
-            ],
+            browsers: ['last 3 versions', 'Android >= 4.1', 'ios >= 8']
           },
         },
         pxtransform: {
           enable: true,
-          config: {
-
-          },
+          config: {},
         },
         url: {
           enable: true,
@@ -78,11 +67,7 @@ const config = {
         autoprefixer: {
           enable: true,
           config: {
-            browsers: [
-              'last 3 versions',
-              'Android >= 4.1',
-              'ios >= 8',
-            ],
+            browsers: ['last 3 versions', 'Android >= 4.1', 'ios >= 8'],
           },
         },
         cssModules: {
@@ -98,8 +83,8 @@ const config = {
 }
 
 module.exports = function (merge) {
-  if (process.env.NODE_ENV === 'development') {
-    return merge({}, config, require('./dev'))
+  {
+    return merge({}, config, require("./dev.js"))
   }
-  return merge({}, config, require('./prod'))
+  return merge({}, config, require("./prod.js"))
 }
