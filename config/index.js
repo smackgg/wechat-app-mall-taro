@@ -1,4 +1,5 @@
 'use strict'
+const path = require('path')
 
 var config = {
   alias: {
@@ -21,7 +22,11 @@ var config = {
       presets: [['env', {
         modules: false,
       }]],
-      plugins: ['transform-decorators-legacy', 'transform-class-properties', 'transform-object-rest-spread']
+      plugins: ['transform-decorators-legacy', 'transform-class-properties', 'transform-object-rest-spread'],
+    },
+    sass: {
+      resource: path.resolve(__dirname, '..', 'src/variables.scss'),
+      projectDirectory: path.resolve(__dirname, '..'),
     },
   },
   defineConstants: {},

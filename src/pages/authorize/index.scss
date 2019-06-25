@@ -1,0 +1,26 @@
+.container {
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // flex-direction: column;
+    // padding: 300rpx 40rpx 0;
+
+  .top {
+    height: 45vh;
+    width: 100%;
+    background: $color-brand;
+  }
+
+  .title {
+    text-align: center;
+    margin-top: 70rpx;
+  }
+
+  .profile {
+    text-align: center;
+    margin-top: 30rpx;
+    font-size: 24rpx;
+    color: #888;
+    margin-bottom: 80rpx;
+  }
+}

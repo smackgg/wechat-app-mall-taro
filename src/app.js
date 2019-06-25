@@ -9,8 +9,7 @@ import Index from './pages/index'
 import configStore from './redux/store'
 import { UPDATE_GLOBAL_DATA } from './redux/actions/global'
 
-import './app.less'
-import './taro.scss'
+import './app.scss'
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：

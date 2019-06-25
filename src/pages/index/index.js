@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 
 import { add, minus, asyncAdd } from '@/redux/actions/counter'
 
-import './index.less'
+import './index.scss'
 
 
 @connect(({ counter }) => ({
@@ -21,7 +21,6 @@ import './index.less'
   },
 }))
 class Index extends Component {
-
     config = {
     navigationBarTitleText: '首页',
   }
