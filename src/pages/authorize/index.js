@@ -190,7 +190,6 @@ class Auth extends Component {
       <View className="container">
         <View className="top">
           <Image className="safe-icon" src={wechatSafeIcon} mode="widthFix" />
-          import successIcon from ''
           <View>应用需要授权获得以下权限</View>
         </View>
         <Checkbox checked disabled className="checkbox"><Text className="checkbox-info">获得你的公开信息（昵称、头像等）</Text></Checkbox>
