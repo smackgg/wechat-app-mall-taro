@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const { theme } = require('../shopConfig')
 
 var config = {
   alias: {
@@ -25,8 +26,9 @@ var config = {
       plugins: ['transform-decorators-legacy', 'transform-class-properties', 'transform-object-rest-spread'],
     },
     sass: {
-      resource: path.resolve(__dirname, '..', 'src/variables.scss'),
+      // resource: path.resolve(__dirname, '..', 'src/variables.scss'),
       projectDirectory: path.resolve(__dirname, '..'),
+      data: Object.keys(theme).reduce((str, key) => str += `${key}: ${theme[key]} !default;`, ''),
     },
   },
   defineConstants: {},
