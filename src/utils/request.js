@@ -16,11 +16,11 @@ export default option => new Promise((resolve, reject) => {
     ...option,
     url: reqUrl,
     header: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     success(res) {
       if (res && res.statusCode === 200) {
-        resolve(res)
+        resolve(res.data)
         return
       }
       reject(res && res.data)
