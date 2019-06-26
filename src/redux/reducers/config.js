@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   allowSelfCollection: '', // 是否允许到店自提
 }
 
-export default function counter(state = INITIAL_STATE, action) {
+export default function config(state = INITIAL_STATE, action) {
   switch (action.type) {
     case GET_VIP_LEVEL_SUCCESS:
       return {

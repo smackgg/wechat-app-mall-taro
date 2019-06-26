@@ -7,7 +7,7 @@ export const getVipLevel = () => async dispatch => {
   const res = await vipLevel()
   dispatch({
     type: GET_VIP_LEVEL_SUCCESS,
-    data: res.data.data,
+    data: res.data,
   })
 }
 
@@ -15,6 +15,6 @@ export const getSystemConfig = () => async dispatch => {
   const res = await systemConfig()
   dispatch({
     type: GET_SYSTEM_CONFIG_SUCCESS,
-    data: res.data.data,
+    data: res.data,
   })
 }
