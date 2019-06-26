@@ -3,8 +3,8 @@
 import request from '@/utils/request'
 
 // 检测登录token是否有效
-export const checkToken = token => request({
-  url: `/user/check-token?token=${token}`,
+export const checkToken = () => request({
+  url: '/user/check-token',
 })
 
 // 登录
