@@ -1,11 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Image, Checkbox, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { checkToken, login, register } from '@/services/user'
+import { theme } from '@/utils'
+import wechatSafe from '@/assets/icon/wechat-safe.png'
 import { AtButton } from 'taro-ui'
 import './index.scss'
-
 
 @connect(({ global }) => ({ global }))
 
@@ -13,14 +14,26 @@ class Auth extends Component {
 
   config = {
     navigationBarTitleText: '授权',
+    backgroundTextStyle: 'light',
+    navigationBarBackgroundColor: 'white',
+    navigationBarTextStyle: 'white',
   }
 
+  componentWillMount() {
+    Taro.setNavigationBarColor({
+      backgroundColor: theme['$color-brand'],
+      frontColor: '#ffffff',
+    })
+  }
+
+  // 用户点击授权
   bindGetUserInfo = e => {
     if (!e.detail.userInfo) {
       return
     }
 
     const { isConnected } = this.props.global
+
     if (isConnected) {
       Taro.setStorageSync('userInfo', e.detail.userInfo)
       this.login()
@@ -32,11 +45,12 @@ class Auth extends Component {
     }
   }
 
+  // 登录处理
   login = async () => {
-    const token = Taro.getStorageSync('token')
-    if (token) {
+    const tokenStorage = Taro.getStorageSync('token')
+    if (tokenStorage) {
       // 校验 token 是否有效
-      const res = await checkToken(this.token)
+      const res = await checkToken(tokenStorage)
       if (res.code != 0) {
         Taro.removeStorageSync('token')
         this.login()
@@ -51,7 +65,6 @@ class Auth extends Component {
       success: async res => {
         // 登录接口
         const result = await login({ code: res.code })
-
         // 去注册
         if (result.code == 10000) {
           this.registerUser()
@@ -68,21 +81,21 @@ class Auth extends Component {
           })
           return
         }
-
-        Taro.setStorageSync('token', res.data.token)
-        Taro.setStorageSync('uid', res.data.uid)
+        const { token, uid } = result.data
+        Taro.setStorageSync('token', token)
+        Taro.setStorageSync('uid', uid)
         // 跳转回原来的页面
         Taro.navigateBack()
       },
     })
   }
 
+  // 用户注册
   registerUser = () => {
     Taro.login({
       success: res => {
         // 微信登录接口返回的 code 参数，下面注册接口需要用到
         const { code } = res
-
         Taro.getUserInfo({
           success: async result => {
             const { iv, encryptedData } = result
@@ -108,11 +121,11 @@ class Auth extends Component {
     return (
       <View className="container">
         <View className="top">
-          应用需要授权获得以下权限
+          <Image className="safe-icon" src={wechatSafe} mode="widthFix" />
+          <View>应用需要授权获得以下权限</View>
         </View>
-        <View className="title">微信授权页面</View>
-        <View className="profile">授权并同意使用微信账号登录当前小程序</View>
-        <AtButton type="primary" openType="getUserInfo" onGetUserInfo={this.bindGetUserInfo}>授权登录</AtButton>
+        <Checkbox checked disabled className="checkbox"><Text className="checkbox-info">获得你的公开信息（昵称、头像等）</Text></Checkbox>
+        <AtButton className="button" type="primary" openType="getUserInfo" onGetUserInfo={this.bindGetUserInfo}>允许授权</AtButton>
       </View>
     )
   }

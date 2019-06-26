@@ -8,19 +8,28 @@
   .top {
     height: 45vh;
     width: 100%;
+    // background: #1da836;
     background: $color-brand;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 30rpx;
+    color: #fff;
+
+    .safe-icon {
+      width: 250rpx;
+      margin: 60rpx 0 40rpx;
+    }
   }
 
-  .title {
-    text-align: center;
-    margin-top: 70rpx;
+  .checkbox {
+    color: #a7a7a7;
+    font-size: 32rpx;
+    margin: 60rpx 0 90rpx 60rpx;
   }
-
-  .profile {
-    text-align: center;
-    margin-top: 30rpx;
-    font-size: 24rpx;
-    color: #888;
-    margin-bottom: 80rpx;
+  .button {
+    margin: 0 60rpx;
+    // background: #1da836;
+    // border-color: #1da836;
   }
 }
