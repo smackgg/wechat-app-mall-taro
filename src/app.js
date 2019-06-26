@@ -3,7 +3,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
 import { getVipLevel, getSystemConfig } from '@/redux/actions/config'
 import { checkToken } from '@/services/user'
-// import 'taro-ui/dist/style/index.scss'
+import { getUserDetail } from '@/redux/actions/user'
 
 import Index from './pages/index'
 import configStore from './redux/store'
@@ -97,6 +97,8 @@ class App extends Component {
 
     // 积分赠送规则
 
+    // 获取用户详情
+    store.dispatch(getUserDetail())
   }
 
   componentDidMount () {
@@ -110,7 +112,7 @@ class App extends Component {
     }
 
     // 校验 token 是否有效
-    checkToken(this.token).then((res) => {
+    checkToken().then((res) => {
       if (res.code != 0) {
         Taro.removeStorageSync('token')
         Taro.showToast({
