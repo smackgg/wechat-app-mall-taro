@@ -24,3 +24,7 @@ export const register = data => request({
   data,
 })
 
+// 获取用户详情信息
+export const userDetail = () => request({
+  url: '/user/detail',
+})
