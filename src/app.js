@@ -4,6 +4,7 @@ import { Provider } from '@tarojs/redux'
 import { getVipLevel, getSystemConfig } from '@/redux/actions/config'
 import { checkToken } from '@/services/user'
 import { getUserDetail } from '@/redux/actions/user'
+import { requireBindMobile, showToast } from './utils'
 
 import Index from './pages/index'
 import configStore from './redux/store'
@@ -34,7 +35,7 @@ class App extends Component {
     },
   }
 
-  componentWillMount () {
+  async componentWillMount () {
     // 获取 token
     this.token = Taro.getStorageSync('token')
 
@@ -60,7 +61,7 @@ class App extends Component {
         if (networkType === 'none') {
           // 更新断网状态
           this.updateNetworkStatus(false)
-          Taro.showToast({
+          showToast({
             title: '当前无网络',
             icon: 'loading',
             duration: 2000,
@@ -74,7 +75,7 @@ class App extends Component {
       if (!res.isConnected) {
         // 更新断网状态
         this.updateNetworkStatus(false)
-        Taro.showToast({
+        showToast({
           title: '网络已断开',
           icon: 'loading',
           duration: 2000,
@@ -98,7 +99,19 @@ class App extends Component {
     // 积分赠送规则
 
     // 获取用户详情
-    store.dispatch(getUserDetail())
+    const userDetail = await store.dispatch(getUserDetail())
+
+    // 强制用户绑定手机号
+    if (requireBindMobile && !userDetail.mobile) {
+      showToast({
+        title: '需要授权并绑定手机号~',
+        icon: 'none',
+        duration: 2000,
+        complete: () => {
+          this.goToLoginPage()
+        },
+      })
+    }
   }
 
   componentDidMount () {
@@ -115,7 +128,7 @@ class App extends Component {
     checkToken().then((res) => {
       if (res.code != 0) {
         Taro.removeStorageSync('token')
-        Taro.showToast({
+        showToast({
           title: '登录失效，请重新授权~',
           icon: 'loading',
           duration: 1000,
@@ -148,7 +161,7 @@ class App extends Component {
   }
 
   goToLoginPage = () => {
-    Taro.removeStorageSync('token')
+    // Taro.removeStorageSync('token')
     setTimeout(() => {
       Taro.navigateTo({
         url: "/pages/authorize/index",
