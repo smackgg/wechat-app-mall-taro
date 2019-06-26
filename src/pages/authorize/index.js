@@ -22,7 +22,7 @@ import './index.scss'
 class Auth extends Component {
 
   state = {
-    showTelAuthModal: true,
+    showTelAuthModal: false,
   }
 
   config = {
