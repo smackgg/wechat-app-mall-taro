@@ -28,3 +28,10 @@ export const register = data => request({
 export const userDetail = () => request({
   url: '/user/detail',
 })
+
+// 绑定手机号
+export const bindMobile = data => request({
+  url: '/user/wxapp/bindMobile',
+  method: 'post',
+  data,
+})

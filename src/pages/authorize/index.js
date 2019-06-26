@@ -1,16 +1,29 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Checkbox, Text } from '@tarojs/components'
+import { View, Image, Checkbox, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import { checkToken, login, register } from '@/services/user'
-import { theme } from '@/utils'
-import wechatSafe from '@/assets/icon/wechat-safe.png'
-import { AtButton } from 'taro-ui'
+import { checkToken, login, register, bindMobile } from '@/services/user'
+import { theme, requireBindMobile } from '@/utils'
+import { getUserDetail } from '@/redux/actions/user'
+
+import wechatSafeIcon from '@/assets/icon/wechat-safe.png'
+import successIcon from '@/assets/icon/success.png'
+
+import { AtButton, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import './index.scss'
 
-@connect(({ global }) => ({ global }))
+@connect(({ global, user }) => ({
+  global,
+  mobile: user.userDetail.mobile,
+}), dispatch => ({
+  getUserDetail: () => dispatch(getUserDetail()),
+}))
 
 class Auth extends Component {
+
+  state = {
+    showTelAuthModal: true,
+  }
 
   config = {
     navigationBarTitleText: '授权',
@@ -27,7 +40,7 @@ class Auth extends Component {
   }
 
   // 用户点击授权
-  bindGetUserInfo = e => {
+  getUserInfo = e => {
     if (!e.detail.userInfo) {
       return
     }
@@ -45,19 +58,52 @@ class Auth extends Component {
     }
   }
 
+  // 授权手机号
+  getPhoneNumber = async e => {
+    // 用户手动拒绝
+    if (e.detail.errMsg === 'getPhoneNumber:fail user deny') {
+      this.closeModal()
+      return
+    }
+
+    const res = await bindMobile({
+      encryptedData: e.detail.encryptedData,
+      iv: e.detail.iv,
+    })
+
+    if (res.code == 0) {
+      this.setState({
+        showTelAuthModal: false,
+      })
+      Taro.showToast({
+        title: '绑定成功',
+        icon: 'success',
+      })
+    } else {
+      Taro.showModal({
+        title: '提示',
+        content: '绑定失败',
+        showCancel: false,
+      })
+    }
+
+    this.handleLoginSuccess()
+  }
+
+
   // 登录处理
   login = async () => {
     const tokenStorage = Taro.getStorageSync('token')
     if (tokenStorage) {
       // 校验 token 是否有效
-      const res = await checkToken(tokenStorage)
+      const res = await checkToken()
       if (res.code != 0) {
         Taro.removeStorageSync('token')
         this.login()
         return
       }
-      // 跳转回原来的页面
-      Taro.navigateBack()
+
+      this.handleLoginSuccess()
       return
     }
 
@@ -84,8 +130,8 @@ class Auth extends Component {
         const { token, uid } = result.data
         Taro.setStorageSync('token', token)
         Taro.setStorageSync('uid', uid)
-        // 跳转回原来的页面
-        Taro.navigateBack()
+
+        this.handleLoginSuccess()
       },
     })
   }
@@ -117,15 +163,49 @@ class Auth extends Component {
     })
   }
 
+  // 处理授权登录成功后逻辑
+  handleLoginSuccess = async () => {
+    await this.props.getUserDetail()
+    // 是否需要强制手机号
+    if (requireBindMobile && !this.props.mobile) {
+      this.setState({
+        showTelAuthModal: true,
+      })
+    } else {
+      // 跳转回原来的页面
+      Taro.navigateBack()
+    }
+  }
+
+  // 关闭弹窗
+  closeModal = () => {
+    this.setState({
+      showTelAuthModal: false,
+    })
+  }
+
   render () {
+    const { showTelAuthModal } = this.state
     return (
       <View className="container">
         <View className="top">
-          <Image className="safe-icon" src={wechatSafe} mode="widthFix" />
+          <Image className="safe-icon" src={wechatSafeIcon} mode="widthFix" />
+          import successIcon from ''
           <View>应用需要授权获得以下权限</View>
         </View>
         <Checkbox checked disabled className="checkbox"><Text className="checkbox-info">获得你的公开信息（昵称、头像等）</Text></Checkbox>
-        <AtButton className="button" type="primary" openType="getUserInfo" onGetUserInfo={this.bindGetUserInfo}>允许授权</AtButton>
+        <AtButton className="button" type="primary" openType="getUserInfo" onGetUserInfo={this.getUserInfo}>允许授权</AtButton>
+        <AtModal isOpened={showTelAuthModal}>
+          <AtModalHeader>微信授权</AtModalHeader>
+          <AtModalContent>
+            <View className="modal-content">
+              <Image className="success-icon" src={successIcon} mode="widthFix" />
+              <View >微信授权成功</View>
+              <View className="mondal-info">授权绑定你的手机号码</View>
+            </View>
+          </AtModalContent>
+          <AtModalAction> <Button onClick={this.closeModal}>取消</Button> <Button openType="getPhoneNumber" onGetPhoneNumber={this.getPhoneNumber}>允许</Button> </AtModalAction>
+        </AtModal>
       </View>
     )
   }

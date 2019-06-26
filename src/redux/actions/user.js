@@ -8,4 +8,5 @@ export const getUserDetail = () => async dispatch => {
     type: GET_USER_DETAIL_SUCCESS,
     data: res.data.base,
   })
+  return res.data.base
 }
