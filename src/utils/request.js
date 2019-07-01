@@ -19,15 +19,13 @@ export default option => new Promise((resolve, reject) => {
     header: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    success(res) {
-      if (res && res.statusCode === 200) {
+    success: res => {
+      if (res && res.statusCode === 200 && res.data.code === 0) {
         resolve(res.data)
         return
       }
       reject(res && res.data)
     },
-    fail(error) {
-      reject(error)
-    },
+    fail: error => reject(error),
   })
 })
