@@ -127,6 +127,7 @@ class App extends Component {
     // 校验 token 是否有效
     checkToken().then((res) => {
       if (res.code != 0) {
+        // token 失效，清除本地 token 重新授权
         Taro.removeStorageSync('token')
         showToast({
           title: '登录失效，请重新授权~',
@@ -140,7 +141,9 @@ class App extends Component {
     })
 
     Taro.checkSession({
-      fail() {
+      fail: () => {
+        // 微信 session 失效，清除本地 token 重新授权
+        Taro.removeStorageSync('token')
         this.goToLoginPage()
       },
     })
