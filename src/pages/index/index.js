@@ -2,26 +2,19 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import { add, minus, asyncAdd } from '@/redux/actions/counter'
+import { getBanners } from '@/redux/actions/config'
 
 import './index.scss'
 
-
+// 首页多加滤镜
 @connect(({ counter }) => ({
   counter,
-}), (dispatch) => ({
-  add () {
-    dispatch(add())
-  },
-  dec () {
-    dispatch(minus())
-  },
-  asyncAdd () {
-    dispatch(asyncAdd())
-  },
+}), dispatch => ({
+  getBanners: type => dispatch(getBanners(type)),
 }))
+
 class Index extends Component {
-    config = {
+  config = {
     navigationBarTitleText: '首页',
   }
 
@@ -31,7 +24,27 @@ class Index extends Component {
 
   componentWillUnmount () { }
 
-  componentDidShow () { }
+  componentDidShow () {
+    // 展示启动页
+    this.props.getBanners('index')
+
+    // .then(function (res) {
+    //   if (res.code == 700) {
+    //     wx.switchTab({
+    //       url: '/pages/index/index',
+    //     });
+    //   } else {
+    //     _this.setData({
+    //       banners: res.data,
+    //       swiperMaxNumber: res.data.length
+    //     });
+    //   }
+    // }).catch(function (e) {
+    //   wx.switchTab({
+    //     url: '/pages/index/index',
+    //   });
+    // })
+  }
 
   componentDidHide () { }
 

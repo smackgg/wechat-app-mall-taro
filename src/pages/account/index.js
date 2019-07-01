@@ -3,7 +3,6 @@ import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { add, minus, asyncAdd } from '@/redux/actions/counter'
-import { checkToken, login, register } from '@/services/user'
 import { AtButton } from 'taro-ui'
 
 import './index.scss'
@@ -41,4 +40,4 @@ class Account extends Component {
   }
 }
 
-export default Auth
+export default Account

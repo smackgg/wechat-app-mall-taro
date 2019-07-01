@@ -11,3 +11,8 @@ export const vipLevel = () => request({
 export const systemConfig = () => request({
   url: '/config/values',
 })
+
+// 获取banner
+export const banners = type => request({
+  url: `/banner/list?type=${type}`,
+})
