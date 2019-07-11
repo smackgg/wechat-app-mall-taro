@@ -97,6 +97,7 @@ class Auth extends Component {
     if (tokenStorage) {
       // 校验 token 是否有效
       const res = await checkToken()
+      console.warn(res, 'resres')
       if (res.code != 0) {
         Taro.removeStorageSync('token')
         this.login()
@@ -111,6 +112,7 @@ class Auth extends Component {
       success: async res => {
         // 登录接口
         const result = await login({ code: res.code })
+        console.warn(result, 'result')
         // 去注册
         if (result.code == 10000) {
           this.registerUser()
@@ -172,8 +174,13 @@ class Auth extends Component {
         showTelAuthModal: true,
       })
     } else {
+
       // 跳转回原来的页面
-      Taro.navigateBack()
+      Taro.navigateBack({
+        fail: () => Taro.switchTab({
+          url: '/pages/index/index',
+        }),
+      })
     }
   }
 
