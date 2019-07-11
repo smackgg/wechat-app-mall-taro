@@ -4,7 +4,7 @@ import { Provider } from '@tarojs/redux'
 import { getVipLevel, getSystemConfig } from '@/redux/actions/config'
 import { checkToken } from '@/services/user'
 import { getUserDetail } from '@/redux/actions/user'
-import { requireBindMobile, showToast } from './utils'
+import { theme, requireBindMobile, showToast } from './utils'
 
 import Index from './pages/index'
 import configStore from './redux/store'
@@ -33,12 +33,41 @@ class App extends Component {
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black',
     },
+    tabBar: {
+      color: '#6e6d6b',
+      selectedColor: '#e64340',
+      borderStyle: 'white',
+      backgroundColor: '#fff',
+      list: [
+        {
+          pagePath: 'pages/index/index',
+          iconPath: 'assets/icon/home.png',
+          selectedIconPath: 'assets/icon/home-selected.png',
+          text: '首页',
+        },
+        {
+          pagePath: 'pages/index/index',
+          iconPath: 'assets/icon/category.png',
+          selectedIconPath: 'assets/icon/category-selected.png',
+          text: '分类',
+        },
+        {
+          pagePath: 'pages/index/index',
+          iconPath: 'assets/icon/shopcart.png',
+          selectedIconPath: 'assets/icon/shopcart-selected.png',
+          text: '购物车',
+        },
+        {
+          pagePath: 'pages/index/index',
+          iconPath: 'assets/icon/account.png',
+          selectedIconPath: 'assets/icon/account-selected.png',
+          text: '我的',
+        },
+      ],
+    },
   }
 
   async componentWillMount () {
-    // 获取 token
-    this.token = Taro.getStorageSync('token')
-
     // 检测版本更新
     const updateManager = Taro.getUpdateManager()
     updateManager.onUpdateReady(() => {
@@ -114,12 +143,22 @@ class App extends Component {
     }
   }
 
-  componentDidMount () {
-  }
+  // componentDidMount () {
+  //   Taro.setNavigationBarColor({
+  //     backgroundColor: theme['$color-brand'],
+  //     frontColor: '#ffffff',
+  //   })
+  // }
 
   componentDidShow () {
+    Taro.setNavigationBarColor({
+      backgroundColor: theme['$color-brand'],
+      frontColor: '#ffffff',
+    })
+    // 获取 token
+    const token = Taro.getStorageSync('token')
     // 跳转啊授权登录页面
-    if (!this.token) {
+    if (!token) {
       this.goToLoginPage()
       return
     }
