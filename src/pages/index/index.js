@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
+import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { getBanners } from '@/redux/actions/config'
@@ -7,8 +7,8 @@ import { getBanners } from '@/redux/actions/config'
 import './index.scss'
 
 // 首页多加滤镜
-@connect(({ counter }) => ({
-  counter,
+@connect(({ config }) => ({
+  banners: config.banners['index'],
 }), dispatch => ({
   getBanners: type => dispatch(getBanners(type)),
 }))
@@ -49,12 +49,22 @@ class Index extends Component {
   componentDidHide () { }
 
   render () {
+    const { banners } = this.props
+
     return (
       <View className="index">
-        <Button className="add_btn" onClick={this.props.add}>+</Button>
-        <Button className="dec_btn" onClick={this.props.dec}>-</Button>
-        <Button className="dec_btn" onClick={this.props.asyncAdd}>async</Button>
-        <View><Text>{this.props.counter.num}</Text></View>
+        <Swiper
+          className="swiper"
+          // indicatorColor="#999"
+          // indicatorActiveColor="#333"
+          circular
+          indicatorDots
+          autoplay
+        >
+          {banners.map((item, index) => <SwiperItem className="swiper-item" key={index}>
+            <Image className="swiper-item_image" src={item.picUrl} />
+          </SwiperItem>) }
+        </Swiper>
         <View><Text>Hello, World</Text></View>
       </View>
     )
