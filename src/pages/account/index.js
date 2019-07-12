@@ -3,13 +3,14 @@ import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { add, minus, asyncAdd } from '@/redux/actions/counter'
-import { AtButton } from 'taro-ui'
+import { AtButton, AtAvatar } from 'taro-ui'
+import { theme } from '@/utils'
 
 import './index.scss'
 
 
 @connect(
-  ({ global }) => ({ global }),
+  ({ global, user }) => ({ global, userDetail: user.userDetail }),
   dispatch => ({
     add () {
       dispatch(add())
@@ -29,12 +30,25 @@ class Account extends Component {
     navigationBarTitleText: '个人中心',
   }
 
+  componentWillMount() {
+    Taro.setNavigationBarColor({
+      backgroundColor: theme['$color-brand'],
+      frontColor: '#ffffff',
+    })
+  }
+
   render () {
+    console.log(this.props.userDetail, 'userDetail')
+    const { userDetail: { avatarUrl, nick, mobile } } = this.props
     return (
       <View className="container">
-        <View className="title">微信授权页面</View>
-        <View className="profile">授权并同意使用微信账号登录当前小程序</View>
-        <AtButton type="primary" openType="getUserInfo" onGetUserInfo={this.bindGetUserInfo}>授权登录</AtButton>
+        <View className="userinfo" style={{ background: theme['$color-brand'] }}>
+          <View className="avatar">
+            <AtAvatar circle size="small" image={avatarUrl}></AtAvatar>
+            <View className="nickname">{nick}</View>
+          </View>
+          <View>{mobile}</View>
+        </View>
       </View>
     )
   }

@@ -1,21 +1,18 @@
 .container {
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
-    // flex-direction: column;
-    padding: 300rpx 40rpx 0;
-
-    .title {
-        text-align: center;
-        margin-top: 70rpx;
-    }
-
-    .profile {
-        text-align: center;
-        margin-top: 30rpx;
-        font-size: 24rpx;
-        color: #888;
-        margin-bottom: 80rpx;
-
-    }
+  .userinfo {
+    height: 300rpx;
+    width: 100%;
+    padding: 20rpx 50rpx;
+    // border-bottom: 10rpx;
+    border-radius: 0 0 20rpx 20rpx;
+    color: #fff;
+    font-size: 28rpx;
+  }
+  .avatar {
+    display: flex;
+    align-items: center;
+  }
+  .nickname {
+    margin-left: 40rpx;
+  }
 }

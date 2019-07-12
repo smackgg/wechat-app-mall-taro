@@ -26,6 +26,7 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/authorize/index',
+      'pages/account/index',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -58,7 +59,7 @@ class App extends Component {
           text: '购物车',
         },
         {
-          pagePath: 'pages/index/index',
+          pagePath: 'pages/account/index',
           iconPath: 'assets/icon/account.png',
           selectedIconPath: 'assets/icon/account-selected.png',
           text: '我的',
