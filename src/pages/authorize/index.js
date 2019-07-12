@@ -3,7 +3,7 @@ import { View, Image, Checkbox, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { checkToken, login, register, bindMobile } from '@/services/user'
-import { theme, requireBindMobile } from '@/utils'
+import { theme, requireBindMobile, cError } from '@/utils'
 import { getUserDetail } from '@/redux/actions/user'
 
 import wechatSafeIcon from '@/assets/icon/wechat-safe.png'
@@ -111,16 +111,15 @@ class Auth extends Component {
     Taro.login({
       success: async res => {
         // 登录接口
-        const result = await login({ code: res.code })
-        console.warn(result, 'result')
+        const [error, result] = await cError(login({ code: res.code }))
         // 去注册
-        if (result.code == 10000) {
+        if (error && error.code == 10000) {
           this.registerUser()
           return
         }
 
         // 登录错误
-        if (result.code != 0) {
+        if (error || result.code != 0) {
           Taro.hideLoading()
           Taro.showModal({
             title: '提示',
@@ -207,7 +206,7 @@ class Auth extends Component {
             <View className="modal-content">
               <Image className="success-icon" src={successIcon} mode="widthFix" />
               <View >微信授权成功</View>
-              <View className="mondal-info">授权绑定你的手机号码</View>
+              <View className="modal-info">授权绑定你的手机号码</View>
             </View>
           </AtModalContent>
           <AtModalAction> <Button onClick={this.closeModal}>取消</Button> <Button openType="getPhoneNumber" onGetPhoneNumber={this.getPhoneNumber}>允许</Button> </AtModalAction>
