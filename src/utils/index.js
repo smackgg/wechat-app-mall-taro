@@ -11,3 +11,13 @@ export const showToast = options => {
   Taro.showToast(options)
   setTimeout(complete, duration)
 }
+
+// catch promise error
+export const cError = async fn => {
+  try {
+    const result = await fn
+    return [null, result]
+  } catch (error) {
+    return [error, error]
+  }
+}
