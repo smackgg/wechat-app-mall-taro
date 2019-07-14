@@ -135,6 +135,11 @@ class ProductDetail extends Component {
           <View className="title">商品详情</View>
           <template is="wxParse" data="{{wxParseData:article.nodes}}" />
         </View>
+
+        {/* 底部 bottom bar */}
+        <View className="bottom-bar">
+
+        </View>
       </View>
     )
   }

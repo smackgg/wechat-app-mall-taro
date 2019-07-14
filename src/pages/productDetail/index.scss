@@ -1,13 +1,13 @@
 .container {
   min-height: 100vh;
-  background: #F6F6F6;
+  background: $color-gray;
   .userinfo {
     height: 300rpx;
     width: 100%;
     padding: 20rpx 50rpx;
     // border-bottom: 10rpx;
     // border-radius: 0 0 20rpx 20rpx;
-    color: #fff;
+    color: $color-white;
     font-size: 28rpx;
   }
   .avatar {
@@ -29,7 +29,7 @@
 
   .product-info {
     width: 100%;
-    background: #fff;
+    background: $color-white;
     padding: 20rpx 30rpx;
     .base {
       display: block;
@@ -45,7 +45,7 @@
       }
 
       .characteristic {
-        color: #a7a7a7;
+        color: $text-color-gray;
         font-size: 24rpx;
       }
 
@@ -64,7 +64,7 @@
           display: block;
           width: 0;
           height: 60%;
-          border-left: 1px dotted #ccc;
+          border-left: 2rpx dotted $border-color;
         }
       }
     }
@@ -78,7 +78,7 @@
       color: rgba(0, 0, 0, .7);
       font-weight: 200;
       .min-price {
-        color: #F04146;
+        color: $text-color-red;
         font-size: 40rpx;
         margin-right: 30rpx;
         font-weight: bolder;
@@ -93,7 +93,7 @@
   .service {
     margin-top: 20rpx;
     padding: 20rpx 30rpx;
-    background: #fff;
+    background: $color-white;
     display: flex;
     font-size: 26rpx;
     .title {
@@ -112,9 +112,9 @@
 
   .product-content {
     margin-top: 20rpx;
-    background: #fff;
+    background: $color-white;
     font-size: 28rpx;
-    color:#666666;
+    color: $text-color-gray-light;
     line-height: 56rpx;
     .title {
       text-align: center;
@@ -135,5 +135,16 @@
       width: 100% !important;
       display: block;
     }
+  }
+
+  .bottom-bar {
+    width: 100%;
+    height: 100rpx;
+    border-top: 1rpx solid $border-color;
+    background-color: $color-white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
   }
 }
