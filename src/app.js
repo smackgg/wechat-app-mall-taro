@@ -27,6 +27,7 @@ class App extends Component {
       'pages/index/index',
       'pages/authorize/index',
       'pages/account/index',
+      'pages/productDetail/index',
     ],
     window: {
       backgroundTextStyle: 'light',
