@@ -35,3 +35,9 @@ export const bindMobile = data => request({
   method: 'post',
   data,
 })
+
+// 获取所有的会员等级列表
+export const levelList = () => request({
+  url: '/user/level/list',
+  method: 'post',
+})
