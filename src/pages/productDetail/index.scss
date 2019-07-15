@@ -1,23 +1,8 @@
 .container {
   min-height: 100vh;
   background: $color-gray;
-  .userinfo {
-    height: 300rpx;
-    width: 100%;
-    padding: 20rpx 50rpx;
-    // border-bottom: 10rpx;
-    // border-radius: 0 0 20rpx 20rpx;
-    color: $color-white;
-    font-size: 28rpx;
-  }
-  .avatar {
-    display: flex;
-    align-items: center;
-  }
-  .nickname {
-    margin-left: 40rpx;
-  }
 
+  // 轮播图
   .swiper {
     width: 100vw;
     height: 100vw;
@@ -27,6 +12,7 @@
     }
   }
 
+  // 商品信息
   .product-info {
     width: 100%;
     background: $color-white;
@@ -77,17 +63,16 @@
       margin-top: 20rpx;
       color: rgba(0, 0, 0, .7);
       font-weight: 200;
-      .min-price {
-        color: $text-color-red;
-        font-size: 40rpx;
-        margin-right: 30rpx;
-        font-weight: bolder;
-      }
-      .original-price {
-        text-decoration: line-through;
-      }
     }
-
+  }
+  .price {
+    color: $text-color-red;
+    font-size: 40rpx;
+    margin-right: 30rpx;
+    font-weight: bolder;
+  }
+  .original-price {
+    text-decoration: line-through;
   }
 
   .service {
@@ -110,6 +95,7 @@
     }
   }
 
+  // 商品详情
   .product-content {
     margin-top: 20rpx;
     background: $color-white;
@@ -131,12 +117,13 @@
       }
     }
 
-    image{
+    image {
       width: 100% !important;
       display: block;
     }
   }
 
+  // 底部购买bar
   .bottom-bar {
     width: 100%;
     height: 100rpx;
@@ -146,5 +133,59 @@
     bottom: 0;
     left: 0;
     display: flex;
+    justify-content: space-between;
+    .button-wrapper {
+      display: flex;
+
+      .button1 {
+        background-color: #918882;
+        border: none;
+      }
+    }
+  }
+
+  // 选配弹窗
+  .sku-select {
+    box-sizing: border-box;
+    color: $text-color-gray;
+    .select_product-info {
+      display: flex;
+      padding: 0 20rpx;
+      .product-image {
+        width: 200rpx;
+        margin-right: 40rpx;
+      }
+    }
+
+    .properties {
+      padding: 20rpx 0 40rpx;
+      margin: 0 20rpx;
+      border-bottom: 1rpx solid $border-color;
+      color: $color-black;
+      .propertie-name {
+        padding: 10rpx 0;
+      }
+      .attributes {
+        display: flex;
+        .attribute {
+          margin-right: 40rpx;
+        }
+      }
+    }
+
+  }
+
+  // 数量
+  .amount {
+    display: flex;
+    justify-content: space-between;
+    padding: 40rpx 20rpx;
+    color: $color-black;
+    font-size: 30rpx;
+
+    // .at-input-number,
+    // .at-input-number__input {
+    //   border-color: $color-brand-light !important;
+    // }
   }
 }
