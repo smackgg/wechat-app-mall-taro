@@ -3,3 +3,9 @@
 view {
   box-sizing: border-box;
 }
+
+// 主题相关
+.at-input-number,
+.at-input-number__input {
+  border-color: $color-brand-light !important;
+}

@@ -148,9 +148,14 @@
   .sku-select {
     box-sizing: border-box;
     color: $text-color-gray;
+
+    .layout-body {
+      padding: 0 !important;
+    }
+
     .select_product-info {
       display: flex;
-      padding: 0 20rpx;
+      padding: 40rpx;
       .product-image {
         width: 200rpx;
         margin-right: 40rpx;
@@ -159,7 +164,7 @@
 
     .properties {
       padding: 20rpx 0 40rpx;
-      margin: 0 20rpx;
+      margin: 0 40rpx;
       border-bottom: 1rpx solid $border-color;
       color: $color-black;
       .propertie-name {
@@ -173,19 +178,20 @@
       }
     }
 
+    // 数量
+    .amount {
+      display: flex;
+      justify-content: space-between;
+      padding: 40rpx;
+      color: $color-black;
+      font-size: 30rpx;
+      margin-bottom: 92rpx;
+    }
+
+    .submit-button {
+      position: fixed;
+      bottom: 0;
+    }
   }
 
-  // 数量
-  .amount {
-    display: flex;
-    justify-content: space-between;
-    padding: 40rpx 20rpx;
-    color: $color-black;
-    font-size: 30rpx;
-
-    // .at-input-number,
-    // .at-input-number__input {
-    //   border-color: $color-brand-light !important;
-    // }
-  }
 }

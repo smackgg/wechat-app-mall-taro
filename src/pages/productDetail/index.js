@@ -5,7 +5,7 @@ import { AtIcon, AtButton, AtFloatLayout, AtInputNumber } from 'taro-ui'
 import { getProductDetail } from '@/redux/actions/goods'
 // import { AtButton, AtAvatar } from 'taro-ui'
 import { theme } from '@/utils'
-import WxParse from '@/thirdUtils/wxParse/wxParse'
+import WxParse from '@/third-utils/wxParse/wxParse'
 import { productPrice } from '@/services/goods'
 
 
@@ -71,6 +71,8 @@ class ProductDetail extends Component {
         stores,
         minPrice,
         id,
+        minScore,
+        originalPrice,
       },
       properties,
     } = productInfo
@@ -82,6 +84,7 @@ class ProductDetail extends Component {
           stores,
           price: minPrice,
           originalPrice,
+          score: minScore,
         },
         productInfo,
       })
@@ -167,6 +170,7 @@ class ProductDetail extends Component {
         ...productInfo,
         properties,
       },
+      amount: 1,
     })
   }
 
@@ -177,13 +181,180 @@ class ProductDetail extends Component {
     })
   }
 
+  // 处理用户点击提交按钮逻辑
+  handleSubmit = () => {
+    const { buttonType } = this.state
+    console.log(buttonType)
+    buttonType === 1
+      ? this.buyNow()
+      : this.addToCart()
+  }
+
+  // 立即购买
+  buyNow = () => {
+    const { amount } = this.state
+    if (amount< 1) {
+      Taro.showModal({
+        title: '提示',
+        content: '购买数量不能为0~',
+        showCancel: false,
+      })
+      return
+    }
+
+    //组建立即购买信息
+    const buyNowInfo = this.buliduBuyNowInfo()
+
+    // 写入本地存储
+    Taro.setStorage({
+      key: 'buyNowInfo',
+      data: buyNowInfo,
+    })
+
+    // 关闭弹窗
+    this.handleClose()
+    // 跳转到结算页
+    Taro.navigateTo({
+      url: '/pages/checkout/index?orderType=buyNow',
+    })
+  }
+
+  // 加购物车（本地缓存）
+  addToCart = () => {
+    //组建购物车
+    var shopCarInfo = this.bulidShopCarInfo()
+
+    // this.setData({
+    //   shopCarInfo: shopCarInfo,
+    //   shopNum: shopCarInfo.shopNum
+    // });
+
+    // 写入本地存储
+    wx.setStorage({
+      key: 'shopCarInfo',
+      data: shopCarInfo
+    })
+    this.closePopupTap();
+    wx.showToast({
+      title: '加入购物车成功',
+      icon: 'success',
+      duration: 2000
+    })
+    //console.log(shopCarInfo);
+
+    //shopCarInfo = {shopNum:12,shopList:[]}
+  }
+
+  // 组建购物车信息
+  bulidShopCartInfo = () => {
+    const {
+      productInfo,
+      basicInfo,
+      selectSku: { propertyChildIds },
+      amount,
+    } = this.state
+
+    // 加入购物车
+    const shopCarMap = {
+      ...basicInfo,
+      propertyChildIds,
+      active: true,
+      amount,
+    }
+    shopCarMap.goodsId = this.data.goodsDetail.basicInfo.id;
+    shopCarMap.pic = this.data.goodsDetail.basicInfo.pic;
+    shopCarMap.name = this.data.goodsDetail.basicInfo.name;
+    // shopCarMap.label=this.data.goodsDetail.basicInfo.id; 规格尺寸
+    shopCarMap.propertyChildIds = this.data.propertyChildIds;
+    shopCarMap.label = this.data.propertyChildNames;
+    shopCarMap.price = this.data.selectSizePrice;
+    shopCarMap.score = this.data.totalScoreToPay;
+    shopCarMap.left = "";
+    shopCarMap.active = true;
+    shopCarMap.number = this.data.buyNumber;
+    shopCarMap.logisticsType = this.data.goodsDetail.basicInfo.logisticsId;
+    shopCarMap.logistics = this.data.goodsDetail.logistics;
+    shopCarMap.weight = this.data.goodsDetail.basicInfo.weight;
+
+    var shopCarInfo = this.data.shopCarInfo;
+    if (!shopCarInfo.shopNum) {
+      shopCarInfo.shopNum = 0;
+    }
+    if (!shopCarInfo.shopList) {
+      shopCarInfo.shopList = [];
+    }
+    var hasSameGoodsIndex = -1;
+    for (var i = 0; i < shopCarInfo.shopList.length; i++) {
+      var tmpShopCarMap = shopCarInfo.shopList[i];
+      if (tmpShopCarMap.goodsId == shopCarMap.goodsId && tmpShopCarMap.propertyChildIds == shopCarMap.propertyChildIds) {
+        hasSameGoodsIndex = i;
+        shopCarMap.number = shopCarMap.number + tmpShopCarMap.number;
+        break;
+      }
+    }
+
+    shopCarInfo.shopNum = shopCarInfo.shopNum + this.data.buyNumber;
+    if (hasSameGoodsIndex > -1) {
+      shopCarInfo.shopList.splice(hasSameGoodsIndex, 1, shopCarMap);
+    } else {
+      shopCarInfo.shopList.push(shopCarMap);
+    }
+    shopCarInfo.kjId = this.data.kjId;
+    return shopCarInfo;
+  }
+
+  // 组建立即购买信息
+  buliduBuyNowInfo = () => {
+    const {
+      selectSku: {
+        propertyChildIds,
+        propertyChildNames,
+        price,
+        score,
+      },
+      amount,
+    } = this.state
+    const {
+      basicInfo: {
+        id,
+        pic,
+        name,
+        logisticsId,
+        weight,
+      },
+      logistics,
+    } = this.state.productInfo
+
+    // 商品信息
+    const productInfo = {
+      goodsId: id,
+      pic,
+      name,
+      propertyChildIds,
+      price,
+      label: propertyChildNames,
+      price,
+      score,
+      left: '',
+      active: true,
+      number: amount,
+      logisticsType: logisticsId,
+      logistics,
+      weight,
+    }
+
+    return {
+      shopNum: 0,
+      shopList: [productInfo],
+    }
+  }
+
   render () {
     const {
       productInfo,
       isSkuFloatLayoutOpened,
       selectSku: {
         stores,
-        price,
       },
       selectSku,
       buttonType,
@@ -191,7 +362,7 @@ class ProductDetail extends Component {
     } = this.state
 
     // 商品详情页数据未拉取
-    if (!productInfo && Object.keys(selectSku).length === 0) {
+    if (!productInfo || Object.keys(selectSku).length === 0) {
       return null
     }
 
@@ -245,7 +416,7 @@ class ProductDetail extends Component {
           <View className="other">
             <View className="price-wrapper">
               <Text className="price">￥{minPrice}</Text>
-              <Text className="original-price">￥{originalPrice}</Text>
+              {originalPrice !== minPrice && <Text className="original-price">￥{originalPrice}</Text>}
             </View>
             <Text className="name">邮费：{(!logistics || logistics.isFress) ? '包邮' : '￥' + logistics.details[0].firstAmount}</Text>
             <Text>已售：{numberOrders}</Text>
@@ -263,7 +434,7 @@ class ProductDetail extends Component {
         }
 
         {/* 商品详情 */}
-        <import src="../../thirdUtils/wxParse/wxParse.wxml" />
+        <import src="../../third-utils/wxParse/wxParse.wxml" />
         <View className="product-content">
           <View className="title">商品详情</View>
           <template is="wxParse" data="{{wxParseData:article.nodes}}" />
@@ -303,8 +474,8 @@ class ProductDetail extends Component {
           <View className="select_product-info">
             <Image mode="widthFix" src={pic} class="product-image" />
             <View>
-              <View className="price">￥{price}</View>
-              {selectSku.originalPrice !== price && <View className="original-price">￥{selectSku.originalPrice}</View> }
+              <View className="price">￥{selectSku.price}</View>
+              {selectSku.originalPrice !== selectSku.price && <View className="original-price">￥{selectSku.originalPrice}</View> }
               <View>库存：{stores}</View>
             </View>
           </View>
@@ -330,21 +501,23 @@ class ProductDetail extends Component {
               </View>)
             }
           </View>}
+
           {/* 数量 */}
           <View className="amount">
             <View>数量</View>
             <AtInputNumber
               min={1}
-              max={10}
+              max={stores}
               step={1}
               value={amount}
               onChange={this.onNumberChange}
             />
           </View>
           <AtButton
-            className="button"
+            className="submit-button"
             full type="primary"
-            onClick={this.showSelectSku.bind(this, 1)}
+            disabled={stores === 0}
+            onClick={this.handleSubmit}
           >{buttonType === 1 ? '立即购买' : '加入购物车'}</AtButton>
         </AtFloatLayout>
       </View>

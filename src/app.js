@@ -28,6 +28,8 @@ class App extends Component {
       'pages/authorize/index',
       'pages/account/index',
       'pages/productDetail/index',
+      'pages/checkout/index',
+      'pages/address-add/index',
     ],
     window: {
       backgroundTextStyle: 'light',
