@@ -16,3 +16,18 @@ export const systemConfig = () => request({
 export const banners = type => request({
   url: `/banner/list?type=${type}`,
 })
+
+// 其它接口
+// 获取省份列表
+export const province = () => request({
+  url: '/common/region/province',
+  needSubDomain: false,
+})
+
+// 获取下级省市区数据
+export const nextRegion = data => request({
+  url: '/common/region/child',
+  needSubDomain: false,
+  data,
+})
+
