@@ -20,7 +20,7 @@ import './index.scss'
     getNextRegion: data => dispatch(getNextRegion(data)),
 }))
 
-class AddAddress extends Component {
+export default class EditAddress extends Component {
   config = {
     navigationBarTitleText: '新增收货地址',
   }
@@ -407,5 +407,3 @@ class AddAddress extends Component {
     )
   }
 }
-
-export default AddAddress
