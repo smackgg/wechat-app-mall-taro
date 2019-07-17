@@ -12,7 +12,11 @@ const INITIAL_STATE = {
   allowSelfCollection: '', // 是否允许到店自提
   banners: {}, // banner
   provinces: [],
+  citys: [],
+  districts: [],
 }
+
+const REMOVE_PROVINCE = ['澳门特别行政区', '台湾省', '香港特别行政区']
 
 export default function config(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -37,9 +41,11 @@ export default function config(state = INITIAL_STATE, action) {
       const { key, data } = action
       return {
         ...state,
-        [key]: (data || []).map(item=> item.name),
         // 处理字母索引选择器数据
-        [`${key}Indexs`]: Object.values(data.reduce((pre, item) => {
+        [key]: Object.values(data.reduce((pre, item) => {
+          if (REMOVE_PROVINCE.includes(item.name)) {
+            return pre
+          }
           const firstLetter = item.firstLetter.toLocaleUpperCase()
           const nItem = {
             ...item,
@@ -55,7 +61,7 @@ export default function config(state = INITIAL_STATE, action) {
             pre[firstLetter].items.push(nItem)
           }
           return pre
-        }, {})),
+        }, {})).sort((a, b) => a.title > b.title ? 1 : -1),
       }
     }
     default:
