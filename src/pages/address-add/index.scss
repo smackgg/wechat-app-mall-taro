@@ -48,11 +48,10 @@
       left: -50%;
       right: -50%;
       bottom: -50%;
-      border: 0 solid #d6e4ef;
+      border-bottom: 2rpx solid #d6e4ef;
       -webkit-transform: scale(0.5);
       -ms-transform: scale(0.5);
       transform: scale(0.5);
-      border-bottom-width: 1rpx;
     }
   }
   .region-indexes {

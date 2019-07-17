@@ -47,7 +47,6 @@ export const getProvince = () => async dispatch => {
 
 // nextRegion
 export const getNextRegion = ({ key, pid }) => async dispatch => {
-  console.log(key, pid)
   const res = await nextRegion({ pid })
 
   dispatch({

@@ -7,6 +7,8 @@ import { getProvince, getNextRegion } from '@/redux/actions/config'
 import { cError } from '@/utils'
 import { addWxFormId } from '@/services/wechat'
 import { addAddress, updateAddress } from '@/services/user'
+import commonCityData from '@/third-utils/city'
+
 import './index.scss'
 
 @connect(({ config: { provinces, citys, districts } }) => ({
@@ -41,9 +43,9 @@ class AddAddress extends Component {
     hideDistrict: false, // 是否隐藏街道选项
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(this.props, nextProps)
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   console.log(this.props, nextProps)
+  // }
 
   componentWillUnmount() { }
 
@@ -64,44 +66,83 @@ class AddAddress extends Component {
     })
   }
 
+  // 从微信导入数据
   readFromWx = () => {
-    // Taro.chooseAddress({
-    //   success: res => {
-    //     const { provinceName, cityName, countyName } = res
-    //     console.log(provinceName, cityName, countyName)
-    //     // return;
-    //     // for (let i = 0; i < commonCityData.cityData.length; i++) {
-    //     //   if (provinceName == commonCityData.cityData[i].name) {
-    //     //     let eventJ = { detail: { value: i } };
-    //     //     that.bindPickerProvinceChange(eventJ);
-    //     //     that.data.selProvinceIndex = i;
-    //     //     for (var j = 0; j < commonCityData.cityData[i].cityList.length; j++) {
-    //     //       if (cityName == commonCityData.cityData[i].cityList[j].name) {
-    //     //         //that.data.selCityIndex = j;
-    //     //         eventJ = { detail: { value: j } };
-    //     //         that.bindPickerCityChange(eventJ);
-    //     //         for (var k = 0; k < commonCityData.cityData[i].cityList[j].districtList.length; k++) {
-    //     //           if (diatrictName == commonCityData.cityData[i].cityList[j].districtList[k].name) {
-    //     //             //that.data.selDistrictIndex = k;
-    //     //             eventJ = { detail: { value: k } };
-    //     //             that.bindPickerChange(eventJ);
-    //     //           }
-    //     //         }
-    //     //       }
-    //     //     }
-    //     //   }
-    //     }
+    Taro.chooseAddress({
+      success: async res => {
+        const { provinceName, cityName, countyName, userName, telNumber, postalCode, detailInfo } = res
+        // const provinceName = '北京市'
+        // const cityName = '北京市'
+        // const countyName = '海淀区'
 
-    //     // that.setData({
-    //     //   wxaddress: res,
-    //     // });
-    //   }
-    // })
+        const nextState = {
+          addressData: {
+            linkMan: userName,
+            mobile: telNumber,
+            address: detailInfo,
+            code: postalCode,
+          },
+        }
+
+        let noCity = true
+        let provinceIndex
+        for (let i = 0; i < commonCityData.cityData.length; i++) {
+          // 省
+          if (provinceName === commonCityData.cityData[i].name) {
+            const { name, id } = commonCityData.cityData[i]
+            nextState.province = { name, id }
+            provinceIndex = i
+            // 市
+            for (let j = 0; j < commonCityData.cityData[i].cityList.length; j++) {
+              if (cityName === commonCityData.cityData[i].cityList[j].name) {
+                noCity = false
+                const { name: cName, id: cId } = commonCityData.cityData[i].cityList[j]
+                nextState.city = { name: cName, id: cId }
+                // 区、县
+                for (let k = 0; k < commonCityData.cityData[i].cityList[j].districtList.length; k++) {
+                  if (countyName == commonCityData.cityData[i].cityList[j].districtList[k].name) {
+                    const { name: dName, id: dId } = commonCityData.cityData[i].cityList[j].districtList[k]
+                    nextState.district = { name: dName, id: dId }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // 没有二级地址，那三级地址就是二级地址
+        if (noCity) {
+          for (let j = 0; j < commonCityData.cityData[provinceIndex].cityList.length; j++) {
+            if (countyName === commonCityData.cityData[provinceIndex].cityList[j].name) {
+              const { name: cName, id: cId } = commonCityData.cityData[provinceIndex].cityList[j]
+              nextState.city = { name: cName, id: cId }
+            }
+          }
+        }
+
+        // 拉取服务器地址数据校准
+        // 也处理用户此时继续点击下拉菜单没有数据的bug
+        await this.onChooseRegion({
+          key: 'province',
+          id: nextState.province.id,
+          name: provinceName,
+        })
+
+        if (nextState.city.id) {
+          await this.onChooseRegion({
+            key: 'city',
+            id: nextState.city.id,
+            name: cityName,
+          })
+        }
+
+        this.setState(nextState)
+      },
+    })
   }
 
   // 处理表单变化
   handleFormChange = (name, value) => {
-    console.log(name)
     this.setState({
       addressData: {
         ...this.state.addressData,
@@ -290,9 +331,9 @@ class AddAddress extends Component {
     } = this.state
 
     return (
-      <View className="container">
+      <View>
         <AtMessage />
-        <AtForm onSubmit={this.onSubmit}>
+        <AtForm onSubmit={this.onSubmit} className="container">
           <View className="form">
             <AtInput
               name="linkMan"
