@@ -10,4 +10,4 @@ export const addWxFormId = data => request({
     type: 'form',
     ...data,
   },
-})
+}).catch(error => console.error(error))

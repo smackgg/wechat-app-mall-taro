@@ -4,17 +4,21 @@ import { connect } from '@tarojs/redux'
 import classNames from 'classnames'
 import { AtButton, AtInput, AtIndexes, AtDrawer, AtForm, AtMessage } from 'taro-ui'
 import { getProvince, getNextRegion } from '@/redux/actions/config'
-import { cError } from '@/utils'
+import { cError, theme } from '@/utils'
 import { addWxFormId } from '@/services/wechat'
-import { addAddress, updateAddress } from '@/services/user'
+import { addAddress, updateAddress, deleteAddress } from '@/services/user'
 import commonCityData from '@/third-utils/city'
 
 import './index.scss'
 
-@connect(({ config: { provinces, citys, districts } }) => ({
+@connect(({
+    config: { provinces, citys, districts },
+    user: { addressList },
+}) => ({
   provinces,
   citys,
   districts,
+  addressList,
 }), dispatch => ({
     getProvince: () => dispatch(getProvince()),
     getNextRegion: data => dispatch(getNextRegion(data)),
@@ -43,27 +47,65 @@ export default class EditAddress extends Component {
     hideDistrict: false, // 是否隐藏街道选项
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(this.props, nextProps)
-  // }
-
-  componentWillUnmount() { }
-
   async componentWillMount() {
-    this.type = this.$router.params.type || 'add'
-    await this.props.getProvince()
-    this.setState({
-      regionList: this.props.provincesIndexs,
+    Taro.setNavigationBarColor({
+      backgroundColor: theme['$color-brand'],
+      frontColor: '#ffffff',
     })
+    this.addressId = this.$router.params.id
+    if (this.addressId) {
+      const { addressList } = this.props
 
-    this.props.getNextRegion({
-      pid: 110000,
-      key: 'city',
-    })
-    this.props.getNextRegion({
-      pid: 130000,
-      key: 'city',
-    })
+      const addressDetail = addressList.filter(item => item.id === +this.addressId)[0]
+      if (!addressDetail) {
+        Taro.navigateBack()
+        return
+      }
+      const {
+        linkMan,
+        mobile,
+        address,
+        code,
+        provinceId,
+        provinceStr,
+        cityId,
+        cityStr,
+        districtId,
+        areaStr,
+      } = addressDetail
+      const nextState = {
+        addressData: {
+          linkMan,
+          mobile,
+          address,
+          code,
+        },
+        province: {
+          id: provinceId,
+          name: provinceStr,
+        },
+        city: {
+          id: cityId,
+          name: cityStr,
+        },
+        district: {
+          id: districtId,
+          name: areaStr,
+        },
+      }
+      await this.handleAddressPickerData({
+        province: nextState.province,
+        city: nextState.city,
+      })
+
+      this.setState(nextState)
+
+    } else {
+      await this.props.getProvince()
+      this.setState({
+        regionList: this.props.provincesIndexs,
+      })
+    }
   }
 
   // 从微信导入数据
@@ -135,12 +177,35 @@ export default class EditAddress extends Component {
             name: cityName,
           })
         }
+        await this.handleAddressPickerData({
+          province: nextState.province,
+          city: nextState.city,
+        })
 
         this.setState(nextState)
       },
     })
   }
 
+  // 处理回填、微信读取地址piker的初始化
+  // 拉取服务器地址数据校准
+  // 也处理用户此时继续点击下拉菜单没有数据的bug
+  handleAddressPickerData = async addressData => {
+    const { province, city } = addressData
+    await this.onChooseRegion({
+      key: 'province',
+      id: province.id,
+      name: province.name,
+    })
+
+    if (city.id) {
+      await this.onChooseRegion({
+        key: 'city',
+        id: city.id,
+        name: city.name,
+      })
+    }
+  }
   // 处理表单变化
   handleFormChange = (name, value) => {
     this.setState({
@@ -150,12 +215,6 @@ export default class EditAddress extends Component {
       },
     })
     return value
-  }
-
-  onAddressPickerChange = value => {
-    this.setState({
-      [value.key]: value,
-    })
   }
 
   // 地址选择器处理事件
@@ -279,38 +338,63 @@ export default class EditAddress extends Component {
       return this.atMessageError('请填写邮政编码')
     }
 
-    if (this.type === 'add') {
-      // 添加地址
-      Taro.showLoading({
-        title: '加载中',
-      })
-      const [error] = await cError(addAddress({
-        provinceId: province.id,
-        cityId: city.id,
-        districtId: district.id || '',
-        linkMan,
-        address,
-        mobile,
-        code,
-        isDefault: true,
-      }))
-      Taro.hideLoading()
-      if (error) {
-        Taro.showModal({
-          title: '失败',
-          content: error.msg,
-        })
-        return
-      }
-      // 跳转到结算页面
-      Taro.navigateBack()
+    const addressData = {
+      provinceId: province.id,
+      cityId: city.id,
+      districtId: district.id || '',
+      linkMan,
+      address,
+      mobile,
+      code,
+      isDefault: true,
     }
+    // 添加地址
+    Taro.showLoading({
+      title: '加载中',
+    })
+    let error
+
+    if (this.addressId) {
+      // 编辑地址
+      [error] = await cError(updateAddress({
+        ...addressData,
+        id: this.addressId,
+      }))
+    } else {
+      // 添加地址
+      [error] = await cError(addAddress(addressData))
+    }
+    Taro.hideLoading()
+    if (error) {
+      Taro.showModal({
+        title: '失败',
+        content: error.msg,
+      })
+      return
+    }
+    // 跳转到之前的页面
+    Taro.navigateBack()
   }
 
+  // 报错信息
   atMessageError = message => {
     Taro.atMessage({
       message,
       type: 'error',
+    })
+  }
+
+  // 删除地址
+  deleteAddress = () => {
+    Taro.showModal({
+      title: '提示',
+      content: '确定要删除该收货地址吗？',
+      success: async res => {
+        if (res.confirm) {
+          await deleteAddress({ id: this.addressId })
+          Taro.navigateBack()
+        }
+      },
     })
   }
 
@@ -383,8 +467,9 @@ export default class EditAddress extends Component {
           </View>
           <View className="buttons">
             <AtButton className="button" type="primary" formType="submit">保存</AtButton>
-            <AtButton className="button wx" type="primary" onClick={this.readFromWx}>从微信导入</AtButton>
-            <AtButton className="button" formType="reset">取消</AtButton>
+            {!this.addressId && <AtButton className="button wx" type="primary" onClick={this.readFromWx}>从微信导入</AtButton>}
+            {this.addressId && <AtButton className="button" type="secondary" onClick={this.deleteAddress}>删除地址</AtButton>}
+            <AtButton className="button">取消</AtButton>
           </View>
           <AtDrawer
             show={showDrawer}

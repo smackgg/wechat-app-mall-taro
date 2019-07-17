@@ -44,6 +44,12 @@ export const levelList = () => request({
   method: 'post',
 })
 
+// 获取地址列表
+export const addressList = () => request({
+  url: '/user/shipping-address/list',
+})
+
+
 // 添加地址
 export const addAddress = data => request({
   url: '/user/shipping-address/add',
@@ -57,3 +63,11 @@ export const updateAddress = data => request({
   method: 'post',
   data,
 })
+
+// 删除地址
+export const deleteAddress = data => request({
+  url: '/user/shipping-address/delete',
+  method: 'post',
+  data,
+})
+

@@ -1,7 +1,7 @@
 {
   "projectname": "wechat-app-mall-taro",
   "description": "taro 电商项目",
-  "appid": "touristappid",
+  "appid": "wx9240aa3496e36a49",
   "setting": {
     "urlCheck": false,
     "es6": false,
