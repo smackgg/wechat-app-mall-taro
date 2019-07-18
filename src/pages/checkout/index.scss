@@ -3,7 +3,11 @@
   background: $color-gray;
 
   .remark {
-    margin-top: 40rpx;
+    margin-top: 20rpx;
     border: none !important;
+    padding: 20rpx 40rpx;
+    textarea {
+      font-size: 28rpx !important;
+    }
   }
 }

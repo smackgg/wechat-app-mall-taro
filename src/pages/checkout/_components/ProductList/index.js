@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro'
+import PropTypes from 'prop-types'
 import { View, Image } from '@tarojs/components'
 import './index.scss'
 
@@ -20,4 +21,8 @@ export default function ProductList(props) {
       })
     }
   </View>
+}
+
+ProductList.propTypes = {
+  productList: PropTypes.array,
 }
