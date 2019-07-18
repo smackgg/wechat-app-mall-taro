@@ -1,0 +1,16 @@
+.price-info {
+  margin-top: 40rpx;
+  padding: 40rpx;
+  background: $color-white;
+
+  .price-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 26rpx;
+    margin-bottom: 30rpx;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}

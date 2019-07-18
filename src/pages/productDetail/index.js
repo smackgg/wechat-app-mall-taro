@@ -321,12 +321,14 @@ class ProductDetail extends Component {
         name,
         logisticsId,
         weight,
+        characteristic,
       },
       logistics,
     } = this.state.productInfo
 
     // 商品信息
     const productInfo = {
+      characteristic,
       goodsId: id,
       pic,
       name,

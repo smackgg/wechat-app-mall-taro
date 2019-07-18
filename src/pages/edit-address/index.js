@@ -398,6 +398,11 @@ export default class EditAddress extends Component {
     })
   }
 
+  // 取消
+  onCancel = () => {
+    Taro.navigateBack()
+  }
+
   render() {
     const {
       addressData: {
@@ -469,7 +474,7 @@ export default class EditAddress extends Component {
             <AtButton className="button" type="primary" formType="submit">保存</AtButton>
             {!this.addressId && <AtButton className="button wx" type="primary" onClick={this.readFromWx}>从微信导入</AtButton>}
             {this.addressId && <AtButton className="button" type="secondary" onClick={this.deleteAddress}>删除地址</AtButton>}
-            <AtButton className="button">取消</AtButton>
+            <AtButton className="button" onClick={this.onCancel}>取消</AtButton>
           </View>
           <AtDrawer
             show={showDrawer}

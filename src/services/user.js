@@ -71,3 +71,8 @@ export const deleteAddress = data => request({
   data,
 })
 
+// 获取默认地址
+export const defaultAddress = () => request({
+  url: '/user/shipping-address/default',
+})
+

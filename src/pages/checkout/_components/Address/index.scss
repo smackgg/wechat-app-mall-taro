@@ -1,0 +1,42 @@
+.address {
+  background: $color-white;
+  height: 150rpx;
+
+  .add-address {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .address-content {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 28rpx;
+    .address-icon {
+      width: 40rpx;
+      margin-left: 40rpx;
+      margin-right: 20rpx;
+    }
+
+    .name {
+      margin-right: 15rpx;
+    }
+    .detail {
+      font-size: 24rpx;
+      color: $text-color-gray;
+      margin-top: 10rpx;
+      width: 500rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .chevron-right {
+      margin-right: 40rpx;
+      margin-left: 20rpx;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+.container {
+  min-height: 100vh;
+  background: $color-gray;
+
+  .remark {
+    margin-top: 40rpx;
+    border: none !important;
+  }
+}
