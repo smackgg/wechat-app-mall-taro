@@ -49,7 +49,9 @@ export default class Address extends Component {
               收货地址{defaultAddress.provinceStr}{defaultAddress.cityStr}{defaultAddress.areaStr === '-' ? '' : defaultAddress.areaStr}{defaultAddress.address}
             </View>
           </View>
-          <AtIcon className="chevron-right" value="chevron-right" size="18" color="#000"></AtIcon>
+          <View className="chevron-right">
+            <AtIcon value="chevron-right" size="18" color="#000"></AtIcon>
+          </View>
         </View>
       }
     </View>
