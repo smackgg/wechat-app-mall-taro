@@ -16,6 +16,20 @@ export default class Address extends Component {
     needLogistics: false,
   }
 
+  // 添加地址
+  addAddress = () => {
+    Taro.navigateTo({
+      url: "/pages/edit-address/index",
+    })
+  }
+
+  // 用户切换地址
+  chooseAddress = () => {
+    Taro.navigateTo({
+      url: "/pages/select-address/index",
+    })
+  }
+
   render() {
     const { needLogistics, defaultAddress } = this.props
     return needLogistics && <View className="address">

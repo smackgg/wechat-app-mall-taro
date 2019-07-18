@@ -109,25 +109,6 @@ export default class Checkout extends Component {
     })
   }
 
-  // 添加地址
-  addAddress = () => {
-    Taro.navigateTo({
-      url: "/pages/edit-address/index",
-    })
-  }
-
-  // 用户切换地址
-  chooseAddress = () => {
-    Taro.navigateTo({
-      url: "/pages/select-address/index",
-    })
-  }
-
-  // 获取金额
-  getPrice = () => {
-
-  }
-
   render () {
     const { defaultAddress } = this.props
     const {
