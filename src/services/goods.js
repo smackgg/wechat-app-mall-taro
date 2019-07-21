@@ -14,3 +14,17 @@ export const productPrice = data => request({
   method: 'post',
   data,
 })
+
+// 获取商品列表
+
+/*
+*
+* @param {String} categoryId
+* recommendStatus
+*/
+// 获取sku库存、价格
+export const products = data => request({
+  url: '/shop/goods/list',
+  method: 'post',
+  data,
+})

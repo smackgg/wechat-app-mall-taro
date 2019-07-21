@@ -20,7 +20,7 @@ import './index.scss'
   },
 }) => ({
   orders,
-  userAmount
+  userAmount,
 }), dispatch => ({
   getOrderDetail: data => dispatch(getOrderDetail(data)),
   getUserAmount: () => dispatch(getUserAmount()),

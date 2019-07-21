@@ -1,6 +1,8 @@
-import { productDetail } from '@/services/goods'
+import { productDetail, products } from '@/services/goods'
 
 export const GET_PRODUCT_DETAIL_SUCCESS = 'config/GET_PRODUCT_DETAIL_SUCCESS'
+export const GET_PRODUCTS_SUCCESS = 'config/GET_PRODUCTS_SUCCESS'
+
 
 // 商品详情
 export const getProductDetail = (data = {}) => async dispatch => {
@@ -14,3 +16,14 @@ export const getProductDetail = (data = {}) => async dispatch => {
   })
 }
 
+// 商品详情
+export const getProducts = (data = {}) => async dispatch => {
+  const { key } = data
+  delete data.key
+  const res = await products(data)
+  dispatch({
+    type: GET_PRODUCTS_SUCCESS,
+    data: res.data,
+    key,
+  })
+}

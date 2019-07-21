@@ -1,5 +1,6 @@
 import {
   GET_PRODUCT_DETAIL_SUCCESS,
+  GET_PRODUCTS_SUCCESS,
 } from '../actions/goods'
 
 const INITIAL_STATE = {
@@ -15,6 +16,11 @@ export default function user(state = INITIAL_STATE, action) {
           ...state.productDetail,
           [action.productId]: action.data,
         },
+      }
+    case GET_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        [action.key]: action.data,
       }
     default:
       return state
