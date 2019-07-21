@@ -10,10 +10,10 @@ import classNames from 'classnames'
 import './index.scss'
 
 // 首页多加滤镜
-@connect(({ config, goods }) => ({
+@connect(({ config, goods: { products } }) => ({
   banners: config.banners['index'],
-  recommendProducts: goods.homeRecommendProducts,
-  allProducts: goods.allProducts,
+  recommendProducts: products.homeRecommendProducts,
+  allProducts: products.allProducts,
 }), dispatch => ({
   getBanners: type => dispatch(getBanners(type)),
   getProducts: data => dispatch(getProducts(data)),

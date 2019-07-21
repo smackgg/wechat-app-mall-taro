@@ -32,6 +32,7 @@ class App extends Component {
       'pages/edit-address/index',
       'pages/select-address/index',
       'pages/order-detail/index',
+      'pages/category/index',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -52,7 +53,7 @@ class App extends Component {
           text: '首页',
         },
         {
-          pagePath: 'pages/index/index',
+          pagePath: 'pages/category/index',
           iconPath: 'assets/icon/category.jpg',
           selectedIconPath: 'assets/icon/category-selected.jpg',
           text: '分类',
@@ -157,10 +158,10 @@ class App extends Component {
   // }
 
   componentDidShow () {
-    Taro.setNavigationBarColor({
-      backgroundColor: theme['$color-brand'],
-      frontColor: '#ffffff',
-    })
+    // Taro.setNavigationBarColor({
+    //   backgroundColor: theme['$color-brand'],
+    //   frontColor: '#ffffff',
+    // })
     // 获取 token
     const token = Taro.getStorageSync('token')
     // 跳转啊授权登录页面

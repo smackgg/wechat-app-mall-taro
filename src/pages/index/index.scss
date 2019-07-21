@@ -23,7 +23,6 @@
       width: 20rpx;
       height: 20rpx;
       border-radius: 50%;
-      // background: rgba($color-white, .4);
       background: $color-white;
       margin-right: 20rpx;
       &:last-of-type {
@@ -31,7 +30,7 @@
       }
 
       &.active {
-        background: rgba($color-white, .4);
+        opacity: .4;
       }
     }
   }

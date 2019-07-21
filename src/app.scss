@@ -1,7 +1,8 @@
 @import "~taro-ui/dist/style/index.scss";
 @import "./assets/font/font.scss";
 
-view {
+view,
+scroll-view {
   box-sizing: border-box;
 }
 

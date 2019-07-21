@@ -1,10 +1,13 @@
 import {
   GET_PRODUCT_DETAIL_SUCCESS,
   GET_PRODUCTS_SUCCESS,
+  GET_CATEGORY_SUCCESS,
 } from '../actions/goods'
 
 const INITIAL_STATE = {
   productDetail: {},
+  category: [],
+  products: {},
 }
 
 export default function user(state = INITIAL_STATE, action) {
@@ -20,7 +23,15 @@ export default function user(state = INITIAL_STATE, action) {
     case GET_PRODUCTS_SUCCESS:
       return {
         ...state,
-        [action.key]: action.data,
+        products: {
+          ...state.products,
+          [action.key]: action.data,
+        },
+      }
+    case GET_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        category: action.data,
       }
     default:
       return state

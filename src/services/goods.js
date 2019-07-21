@@ -28,3 +28,8 @@ export const products = data => request({
   method: 'post',
   data,
 })
+
+// 获取分类
+export const category = () => request({
+  url: '/shop/goods/category/all',
+})
