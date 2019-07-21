@@ -11,3 +11,15 @@ export const createOrder = data => request({
   data,
 })
 
+// 获取订单详情
+export const orderDetail = data => request({
+  url: '/order/detail',
+  data,
+})
+
+// 使用余额支付订单
+export const orderPay = data => request({
+  url: '/order/pay',
+  method: 'post',
+  data,
+})

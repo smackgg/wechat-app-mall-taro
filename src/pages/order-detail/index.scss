@@ -1,0 +1,14 @@
+.container {
+  min-height: 100vh;
+  background: $color-gray;
+
+ .order-status {
+   height: 150rpx;
+   padding: 0 40rpx;
+   display: flex;
+   align-items: center;
+   background: $color-brand;
+   color: $color-white;
+   font-size: 28rpx;
+ }
+}
