@@ -65,13 +65,12 @@ class Index extends Component {
   render () {
     const { banners = [], recommendProducts, allProducts } = this.props
     const { swiperIndex } = this.state
-    console.log(swiperIndex)
+
     return (
       <View className="index">
+        {/* banner */}
         <Swiper
           className="swiper"
-          // indicatorColor="#999"
-          // indicatorActiveColor="#333"
           circular
           indicatorDots={false}
           autoplay
@@ -81,12 +80,15 @@ class Index extends Component {
             <Image showMenuByLongpress className="swiper-item_image" src={item.picUrl} mode="aspectFill" />
           </SwiperItem>) }
         </Swiper>
+        {/* 轮播图 dots */}
         <View className="indicator-dots">
           {banners.map((item, index) => <View className={classNames('indicator-dot', {
             active: swiperIndex === index,
           })} key={item.id}
           ></View>)}
         </View>
+
+        {/* 精品推荐商品块 */}
         {
           recommendProducts && recommendProducts.length > 0 && <View className="recommend-products">
             <View className="title title-line">精品推荐</View>
@@ -106,6 +108,8 @@ class Index extends Component {
             </View>
           </View>
         }
+
+        {/* 发现更多商品块 */}
         {
           allProducts && allProducts.length > 0 && <View className="all-products">
             <View className="title title-line">发现更多</View>
