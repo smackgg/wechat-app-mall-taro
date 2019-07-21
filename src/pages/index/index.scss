@@ -1,5 +1,6 @@
 .index {
   background: $color-gray;
+  position: relative;
   .swiper {
     height: 628rpx;
   }
@@ -8,6 +9,30 @@
     .swiper-item_image {
       width: 100%;
       height: 100%;
+    }
+  }
+
+  .indicator-dots {
+    position: absolute;
+    top: 0;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    top: 470rpx;
+    .indicator-dot {
+      width: 20rpx;
+      height: 20rpx;
+      border-radius: 50%;
+      // background: rgba($color-white, .4);
+      background: $color-white;
+      margin-right: 20rpx;
+      &:last-of-type {
+        margin-right: 0;
+      }
+
+      &.active {
+        background: rgba($color-white, .4);
+      }
     }
   }
 
@@ -85,19 +110,31 @@
       }
 
       .name,
-      .price,
       .characteristic {
         line-height: 36rpx;
         font-size: 24rpx;
       }
 
-      .price {
-        font-size: 32rpx;
-        line-height: 42rpx;
+      .price-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-top: 10rpx;
-        font-family: 'PingFangSC-Semibold';
-      }
+        .price {
+          font-size: 32rpx;
+          line-height: 42rpx;
+          font-family: 'PingFangSC-Semibold';
+          color: $text-color-red;
+        }
 
+        .small-text {
+          font-size: 20rpx;
+        }
+        .sold-amount {
+          color: $text-color-gray;
+          font-size: 20rpx;
+        }
+      }
     }
   }
 }

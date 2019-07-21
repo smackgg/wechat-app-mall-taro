@@ -5,6 +5,7 @@ import { connect } from '@tarojs/redux'
 import { getBanners } from '@/redux/actions/config'
 import { getProducts } from '@/redux/actions/goods'
 import { priceToFloat } from '@/utils'
+import classNames from 'classnames'
 
 import './index.scss'
 
@@ -24,7 +25,9 @@ class Index extends Component {
     navigationStyle: 'custom',
   }
 
-  componentWillUnmount () { }
+  state = {
+    swiperIndex: 0,
+  }
 
   componentDidShow () {
     // 展示启动页
@@ -52,9 +55,17 @@ class Index extends Component {
     })
   }
 
+  // 监听轮播图变化
+  onSwiperChange = e => {
+    this.setState({
+      swiperIndex: e.detail.current,
+    })
+  }
+
   render () {
-    const { banners, recommendProducts, allProducts } = this.props
-    console.log(recommendProducts)
+    const { banners = [], recommendProducts, allProducts } = this.props
+    const { swiperIndex } = this.state
+    console.log(swiperIndex)
     return (
       <View className="index">
         <Swiper
@@ -64,11 +75,18 @@ class Index extends Component {
           circular
           indicatorDots={false}
           autoplay
+          onChange={this.onSwiperChange}
         >
-          {banners.map((item, index) => <SwiperItem className="swiper-item" key={index}>
+          {banners.map(item => <SwiperItem className="swiper-item" key={item.id}>
             <Image showMenuByLongpress className="swiper-item_image" src={item.picUrl} mode="aspectFill" />
           </SwiperItem>) }
         </Swiper>
+        <View className="indicator-dots">
+          {banners.map((item, index) => <View className={classNames('indicator-dot', {
+            active: swiperIndex === index,
+          })} key={item.id}
+          ></View>)}
+        </View>
         {
           recommendProducts && recommendProducts.length > 0 && <View className="recommend-products">
             <View className="title title-line">精品推荐</View>
@@ -93,13 +111,20 @@ class Index extends Component {
             <View className="title title-line">发现更多</View>
             <View className="list">{
               allProducts.map(product => {
-                const { id, pic, name, characteristic, minPrice, minScore } = product
+                const { id, pic, name, characteristic, minPrice, minScore, numberSells } = product
                 return <View key={id} className="item" onClick={this.goToProductDetail.bind(this, id)}>
                   <Image className="product-image" src={pic} mode="aspectFill"></Image>
                   <View className="name clamp">{name}</View>
                   <View className="characteristic clamp">{characteristic}</View>
-                  <View className="price">{(minPrice > 0 || minScore === 0)
-                    ? `￥${priceToFloat(minPrice)}` : `${minScore} 积分`}</View>
+                  <View className="price-wrapper">
+                    <View className="price">{(minPrice > 0 || minScore === 0)
+                      ? <View><Text className="small-text">￥</Text>{priceToFloat(minPrice)}</View>
+                      : <View>{minScore}<Text className="small-text"> 积分</Text></View>}
+                    </View>
+                    <View className="sold-amount">
+                      已售:{numberSells > 999 ? '999+' : numberSells}件
+                    </View>
+                  </View>
                 </View>
               })
             }</View>
