@@ -76,3 +76,7 @@ export const defaultAddress = () => request({
   url: '/user/shipping-address/default',
 })
 
+// 查看用户资产
+export const userAmount = () => request({
+  url: '/user/amount',
+})

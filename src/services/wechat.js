@@ -11,3 +11,17 @@ export const addWxFormId = data => request({
     ...data,
   },
 }).catch(error => console.error(error))
+
+// 模板消息
+export const sendTempleMsg = data => request({
+  url: '/template-msg/put',
+  method: 'post',
+  data,
+}).catch(error => console.error(error))
+
+// 微信支付
+export const wxpay = data => request({
+  url: '/pay/wx/wxapp',
+  method: 'post',
+  data,
+})

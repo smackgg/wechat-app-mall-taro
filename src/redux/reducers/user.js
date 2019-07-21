@@ -3,6 +3,7 @@ import {
   GET_LEVEL_LIST_SUCCESS,
   GET_ADDRESS_LIST_SUCCESS,
   GET_DEFAULT_ADDRESS_SUCCESS,
+  GET_USER_AMOUNT_SUCCESS,
 } from '../actions/user'
 
 const INITIAL_STATE = {
@@ -11,6 +12,7 @@ const INITIAL_STATE = {
   userLevel: null,
   addressList: [],
   defaultAddress: null,
+  userAmount: {},
 }
 
 export default function user(state = INITIAL_STATE, action) {
@@ -35,6 +37,11 @@ export default function user(state = INITIAL_STATE, action) {
       return {
         ...state,
         defaultAddress: action.data,
+      }
+    case GET_USER_AMOUNT_SUCCESS:
+      return {
+        ...state,
+        userAmount: action.data,
       }
     default:
       return state
