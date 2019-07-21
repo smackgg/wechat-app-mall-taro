@@ -1,4 +1,5 @@
 @import "~taro-ui/dist/style/index.scss";
+@import "./assets/font/font.scss";
 
 view {
   box-sizing: border-box;
@@ -8,4 +9,40 @@ view {
 .at-input-number,
 .at-input-number__input {
   border-color: $color-brand-light !important;
+}
+
+// 两行截取、单行截取
+.clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    word-break: break-all;
+}
+
+.clamp {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+// 标签主题前面的线
+.title-line {
+  position: relative;
+  font-size: 36rpx;
+  line-height: 54rpx;
+  padding-left: 26rpx;
+  font-family: 'PingFangSC-Semibold';
+
+  &::before {
+    position: absolute;
+    content: "";
+    width: 6rpx;
+    height: 40rpx;
+    background: $tag-color;
+    left: 0;
+    top: 7rpx;
+  }
 }
