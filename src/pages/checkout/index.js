@@ -1,12 +1,14 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { getDefaultAddress } from '@/redux/actions/user'
 import { createOrder } from '@/services/order'
 import { AtTextarea } from 'taro-ui'
 import { cError, theme } from '@/utils'
+import { addWxFormId, sendTempleMsg } from '@/services/wechat'
 import { PriceInfo, ProductList, Address, BottomBar } from './_components'
+
 import './index.scss'
 
 @connect(({
@@ -134,6 +136,13 @@ export default class Checkout extends Component {
 
   // 下单
   placeOrder = async e => {
+    if (e) {
+      addWxFormId({
+        type: 'form',
+        formId: e.detail.formId,
+      })
+    }
+
     const { remark, peisongType, needLogistics } = this.state
     const { defaultAddress } = this.props
     let postData = {
@@ -182,23 +191,92 @@ export default class Checkout extends Component {
       return
     }
 
+    // 查询价格信息
+    if (!e) {
+      const {
+        amountLogistics,
+        amountTotle,
+        isNeedLogistics,
+        score,
+      } = result.data
+      this.setState({
+        totalAmount: amountTotle + amountLogistics,
+        shippingAmount: amountLogistics,
+        score,
+        needLogistics: isNeedLogistics,
+      })
+      return
+    }
+
     const {
-      amountLogistics,
-      amountTotle,
-      goodsNumber,
-      isNeedLogistics,
-      score,
+      id,
+      dateAdd,
+      orderNumber,
+      amountReal,
     } = result.data
-    // shippingAmount
-    // couponAmount
-    this.setState({
-      totalAmount: amountTotle + amountLogistics,
-      shippingAmount: amountLogistics,
-      score,
-      needLogistics: isNeedLogistics,
-      // couponAmount:
+
+    // 配置模板消息
+    const color = '#173177'
+    // 订单取消模板消息
+    sendTempleMsg({
+      module: 'order',
+      business_id: id,
+      trigger: -1,
+      postJsonString: JSON.stringify({
+        keyword1: {
+          value: dateAdd,
+          color,
+        },
+        keyword2: {
+          value: `${amountReal}元`,
+          color,
+        },
+        keyword3: {
+          value: orderNumber,
+          color,
+        },
+        keyword4: {
+          value: '订单已关闭',
+          color,
+        },
+        keyword5: {
+          value: '您可以重新下单，请在30分钟内完成支付',
+          color,
+        },
+      }),
+      template_id: 'CnzS9AtwGj3Zo9rsRGxYvkdflUyz5lsRwNf6c7NgcrA',
+      type: 0,
+      url: 'pages/index/index',
     })
-    console.log(result)
+
+    // 发货通知模板消息
+    sendTempleMsg({
+      module: 'order',
+      business_id: id,
+      trigger: 2,
+      postJsonString: JSON.stringify({
+        keyword1: {
+          value: '已发货',
+          color,
+        },
+        keyword2: {
+          value: orderNumber,
+          color,
+        },
+        keyword4: {
+          value: dateAdd,
+          color,
+        },
+      }),
+      template_id: 'CnzS9AtwGj3Zo9rsRGxYvkdflUyz5lsRwNf6c7NgcrA',
+      type: 0,
+      url: `pages/order-detail/index?id=${id}`,
+    })
+
+    // 下单成功，跳转到订单详情
+    Taro.redirectTo({
+      url: `/pages/order-detail/index?id=${id}`,
+    })
   }
 
   render () {
