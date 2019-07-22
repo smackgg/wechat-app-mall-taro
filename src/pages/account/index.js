@@ -3,23 +3,28 @@ import { View, Image, Swiper, SwiperItem, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { getLevelList, getUserAmount } from '@/redux/actions/user'
+import {
+  getOrderStatistics,
+} from '@/redux/actions/order'
 // import { AtButton } from 'taro-ui'
-import { theme } from '@/utils'
+import { theme, priceToFloat } from '@/utils'
 import classNames from 'classnames'
+import { AtIcon } from 'taro-ui'
 
 import './index.scss'
 
 const SWIPER_ITEM_MARGIN = '45rpx'
 
 @connect(
-  ({ global, user, user: { userAmount } }) => ({
-    global,
+  ({
     user,
-    userAmount,
+  }) => ({
+    user,
   }),
   dispatch => ({
     getLevelList: () => dispatch(getLevelList()),
     getUserAmount: () => dispatch(getUserAmount()),
+    getOrderStatistics: () => dispatch(getOrderStatistics()),
   }),
 )
 
@@ -33,6 +38,34 @@ class Account extends Component {
     swiperIndex: 0,
   }
 
+  orderStatus = [
+    {
+      icon: '/assets/icon/payment.jpg',
+      name: '待付款',
+      type: 0,
+    },
+    {
+      icon: '/assets/icon/shipped.jpg',
+      name: '待发货',
+      type: 1,
+    },
+    {
+      icon: '/assets/icon/receive.jpg',
+      name: '待收货',
+      type: 2,
+    },
+    {
+      icon: '/assets/icon/comment.jpg',
+      name: '待评价',
+      type: 3,
+    },
+    {
+      icon: '/assets/icon/aftersale.jpg',
+      name: '退货/售后',
+      type: 4,
+    },
+  ]
+
   componentWillMount() {
     Taro.setNavigationBarColor({
       backgroundColor: theme['$color-brand'],
@@ -43,7 +76,7 @@ class Account extends Component {
   async componentDidShow() {
     // 获取用户资产
     this.getUserAmount()
-
+    this.props.getOrderStatistics()
     // 获取vip等级列表
     await this.props.getLevelList()
   }
@@ -60,6 +93,13 @@ class Account extends Component {
     })
   }
 
+  // 跳转 url
+  goPage = url => {
+    Taro.navigateTo({
+      url,
+    })
+  }
+
   render () {
     const { swiperIndex } = this.state
     const {
@@ -68,8 +108,12 @@ class Account extends Component {
         lv = 1,
         name,
       },
-      userLevel,
       levelList,
+      userAmount: {
+        balance,
+        freeze,
+        score,
+      },
     } = this.props.user
 
     return (
@@ -115,6 +159,79 @@ class Account extends Component {
           </Swiper>
 
           <View>{mobile}</View>
+        </View>
+
+        {/* 我的订单 */}
+        <View className="orders-wrapper">
+          <View className="title title-line">
+            <Text>我的订单</Text>
+            <Image
+              className="arrow-right"
+              src="/assets/icon/arrow-right.png"
+              mode="aspectFill"
+            />
+          </View>
+          <View className="order-status">
+            {
+              this.orderStatus.map(item => <View key={item.type} className="item">
+                <Image
+                  className={classNames('image', {
+                    active: false,
+                  })}
+                  src={item.icon}
+                  mode="aspectFill"
+                />
+                <Text>{item.name}</Text>
+              </View>)
+            }
+          </View>
+        </View>
+
+        {/* 我的钱包 */}
+        <View className="amount-wrapper">
+          <View className="title title-line">
+            <Text>我的钱包</Text>
+            <Image
+              className="arrow-right"
+              src="/assets/icon/arrow-right.png"
+              mode="aspectFill"
+            />
+          </View>
+          <View className="list">
+            <View className="item">
+              <Text className="text-color-red price">{priceToFloat(balance)}</Text>
+              <Text>余额(元)</Text>
+            </View>
+            <View className="item">
+              <Text className="price">{priceToFloat(freeze)}</Text>
+              <Text>冻结(元)</Text>
+            </View>
+            <View className="item">
+              <Text className="price">{score}</Text>
+              <Text>积分(元)</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* 其它 */}
+
+        <View className="other-wrapper">
+            {
+              [{
+                title: '收货地址',
+                url: '/pages/select-address/index',
+              }, {
+                title: '关于我们',
+                url: '',
+              }].map((item, index) => <View key={index} className="item" onClick={this.goPage.bind(this, item.url)}>
+                <Text>{item.title}</Text>
+                <Image
+                  className="arrow-right"
+                  src="/assets/icon/arrow-right.png"
+                  mode="aspectFill"
+                />
+              </View>)
+            }
         </View>
       </View>
     )

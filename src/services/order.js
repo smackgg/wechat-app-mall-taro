@@ -23,3 +23,9 @@ export const orderPay = data => request({
   method: 'post',
   data,
 })
+
+// 查询订单统计
+export const orderStatistics = () => request({
+  url: '/order/statistics',
+})
+

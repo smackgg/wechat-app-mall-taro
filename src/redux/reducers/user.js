@@ -12,7 +12,11 @@ const INITIAL_STATE = {
   userLevel: {},
   addressList: [],
   defaultAddress: null,
-  userAmount: {},
+  userAmount: {
+    balance: 0,
+    freeze: 0,
+    score: 0,
+  },
 }
 
 export default function user(state = INITIAL_STATE, action) {

@@ -35,6 +35,7 @@ var config = {
   copy: {
     patterns: [
       { from: './shopConfig.js', to: 'dist/shopConfig.js' },
+      { from: './src/assets/', to: 'dist/assets/' },
     ],
   },
   weapp: {

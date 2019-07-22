@@ -1,6 +1,7 @@
-import { orderDetail } from '@/services/order'
+import { orderDetail, orderStatistics } from '@/services/order'
 
 export const GET_ORDER_DETAIL_SUCCESS = 'config/GET_ORDER_DETAIL_SUCCESS'
+export const GET_ORDER_STATISTICS_SUCCESS = 'config/GET_ORDER_STATISTICS_SUCCESS'
 
 // 订单详情
 export const getOrderDetail = (data = {}) => async dispatch => {
@@ -14,3 +15,11 @@ export const getOrderDetail = (data = {}) => async dispatch => {
   })
 }
 
+// 查询订单统计
+export const getOrderStatistics= (data = {}) => async dispatch => {
+  const res = await orderStatistics()
+  return dispatch({
+    type: GET_ORDER_STATISTICS_SUCCESS,
+    data: res.data,
+  })
+}
