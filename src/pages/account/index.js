@@ -187,7 +187,7 @@ export default class Account extends Component {
         </View>
 
         {/* 我的钱包 */}
-        <View className="amount-wrapper">
+        <View className="amount-wrapper" onClick={this.goPage.bind(this, '/pages/asset/index')}>
           <View className="title title-line">
             <Text>我的钱包</Text>
             <Image
@@ -207,7 +207,7 @@ export default class Account extends Component {
             </View>
             <View className="item">
               <Text className="price">{score}</Text>
-              <Text>积分(元)</Text>
+              <Text>积分</Text>
             </View>
           </View>
         </View>
