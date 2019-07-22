@@ -80,3 +80,8 @@ export const defaultAddress = () => request({
 export const userAmount = () => request({
   url: '/user/amount',
 })
+
+// 查看用户用户资金流水
+export const userCashLog = () => request({
+  url: '/user/cashLog',
+})

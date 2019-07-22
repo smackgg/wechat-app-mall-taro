@@ -33,6 +33,7 @@ class App extends Component {
       'pages/select-address/index',
       'pages/order-detail/index',
       'pages/category/index',
+      'pages/asset/index',
     ],
     window: {
       backgroundTextStyle: 'light',

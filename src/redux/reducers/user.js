@@ -4,6 +4,7 @@ import {
   GET_ADDRESS_LIST_SUCCESS,
   GET_DEFAULT_ADDRESS_SUCCESS,
   GET_USER_AMOUNT_SUCCESS,
+  GET_USER_CASHLOG_SUCCESS,
 } from '../actions/user'
 
 const INITIAL_STATE = {
@@ -17,6 +18,7 @@ const INITIAL_STATE = {
     freeze: 0,
     score: 0,
   },
+  cashLog: [], // 资金流水
 }
 
 export default function user(state = INITIAL_STATE, action) {
@@ -48,6 +50,11 @@ export default function user(state = INITIAL_STATE, action) {
       return {
         ...state,
         userAmount: action.data,
+      }
+    case GET_USER_CASHLOG_SUCCESS:
+      return {
+        ...state,
+        cashLog: action.data,
       }
     default:
       return state

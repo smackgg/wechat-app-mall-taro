@@ -28,7 +28,7 @@ const SWIPER_ITEM_MARGIN = '45rpx'
   }),
 )
 
-class Account extends Component {
+export default class Account extends Component {
 
   config = {
     navigationBarTitleText: '个人中心',
@@ -73,17 +73,16 @@ class Account extends Component {
     })
   }
 
-  async componentDidShow() {
+  componentDidShow() {
     // 获取用户资产
-    this.getUserAmount()
+    this.props.getUserAmount()
+    // 获取订单统计
     this.props.getOrderStatistics()
     // 获取vip等级列表
-    await this.props.getLevelList()
+    this.props.getLevelList()
   }
 
   getUserAmount = async () => {
-    await this.props.getUserAmount()
-    console.log(this.props.userAmount)
   }
 
   // 会员卡轮播图变化
@@ -237,5 +236,3 @@ class Account extends Component {
     )
   }
 }
-
-export default Account

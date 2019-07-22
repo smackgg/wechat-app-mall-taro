@@ -1,0 +1,128 @@
+.container {
+  background: $color-gray;
+  min-height: 100vh;
+  padding-bottom: 26rpx;
+
+  .user-amount {
+    height: 416rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .content {
+      width: 690rpx;
+      height: 356rpx;
+      background-image: linear-gradient(-135deg, #FF7979 0%, #EA2929 100%);
+      box-shadow: 0 10px 20px 0 rgba(178,0,0,0.20);
+      border-radius: 8rpx;
+      color: $color-white;
+      display: flex;
+
+      .left,
+      .right {
+        width: 100%;
+        padding: 20rpx 30rpx 30rpx;
+      }
+      .price-info {
+        padding-left: 30rpx;
+        display: flex;
+        flex-direction: column;
+        font-size: 24rpx;
+        line-height: 33rpx;
+
+        .price {
+          font-size: 56rpx;
+          line-height: 80rpx;
+          font-family: 'DINAlternate-Bold';
+        }
+        .price2 {
+          font-size: 40rpx;
+          line-height: 50rpx;
+          font-family: 'DINAlternate-Bold';
+        }
+      }
+
+      .score-wraper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        .score-shop-button {
+          font-size: 24rpx;
+          line-height: 33rpx;
+          font-family: 'PingFangSC-Medium';
+          margin-bottom: 8rpx;
+        }
+      }
+
+      .button {
+        width: 256rpx;
+        height: 60rpx;
+        border: 2rpx solid $color-white;
+        border-radius: 30rpx;
+        font-size: 24rpx;
+        line-height: 60rpx;
+        text-align: center;
+        margin: 20rpx auto 30rpx;
+
+        &.hidden {
+          visibility: hidden;
+        }
+      }
+    }
+
+  }
+
+  .cash-log {
+    width: 100%;
+    margin-top: 26rpx;
+    background: $color-white;
+
+    .nav {
+      display: flex;
+      border-bottom: 1rpx solid $border-color;
+
+      .nav-item {
+        flex: 1;
+        text-align: center;
+        padding: 20rpx 0;
+        font-size: 28rpx;
+        line-height: 40rpx;
+        color: #333;
+
+        &.active {
+          border-bottom: 2rpx solid $tag-color;
+          color: $tag-color;
+        }
+        &.hidden {
+          visibility: hidden;
+        }
+      }
+    }
+
+    .log {
+      margin-left: 60rpx;
+      padding: 20rpx 60rpx 20rpx 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1rpx solid $border-color;
+      &:last-of-type {
+        border-bottom: none;
+      }
+      .name {
+        font-size: 28rpx;
+        line-height: 40rpx;
+        font-family: 'PingFangSC-Medium';
+        margin-bottom: 6rpx;
+      }
+      .date {
+        font-size: 26rpx;
+        line-height: 36rpx;
+      }
+
+      .color-warn {
+        color: $tag-color;
+      }
+    }
+  }
+}

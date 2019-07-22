@@ -4,6 +4,7 @@ import {
   addressList,
   defaultAddress,
   userAmount,
+  userCashLog,
 } from '@/services/user'
 import { cError } from '@/utils'
 
@@ -12,6 +13,8 @@ export const GET_LEVEL_LIST_SUCCESS = 'config/GET_LEVEL_LIST_SUCCESS'
 export const GET_ADDRESS_LIST_SUCCESS = 'config/GET_ADDRESS_LIST_SUCCESS'
 export const GET_DEFAULT_ADDRESS_SUCCESS = 'config/GET_DEFAULT_ADDRESS_SUCCESS'
 export const GET_USER_AMOUNT_SUCCESS = 'config/GET_USER_AMOUNT_SUCCESS'
+export const GET_USER_CASHLOG_SUCCESS = 'config/GET_USER_CASHLOG_SUCCESS'
+
 
 // 用户详情
 export const getUserDetail = () => async dispatch => {
@@ -56,6 +59,16 @@ export const getUserAmount = () => async dispatch => {
   const [error, res] = await cError(userAmount())
   dispatch({
     type: GET_USER_AMOUNT_SUCCESS,
+    data: error ? {} : res.data,
+  })
+  return res.data
+}
+
+// 获取用户资产
+export const getUserCashLog = () => async dispatch => {
+  const [error, res] = await cError(userCashLog())
+  dispatch({
+    type: GET_USER_CASHLOG_SUCCESS,
     data: error ? {} : res.data,
   })
   return res.data

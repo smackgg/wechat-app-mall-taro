@@ -19,7 +19,7 @@ import './index.scss'
   getUserDetail: () => dispatch(getUserDetail()),
 }))
 
-class Auth extends Component {
+export default class Auth extends Component {
 
   state = {
     showTelAuthModal: false,
@@ -215,5 +215,3 @@ class Auth extends Component {
     )
   }
 }
-
-export default Auth
