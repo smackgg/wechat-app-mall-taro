@@ -9,7 +9,7 @@ import {
 const INITIAL_STATE = {
   userDetail: {},
   levelList: [],
-  userLevel: null,
+  userLevel: {},
   addressList: [],
   defaultAddress: null,
   userAmount: {},
@@ -22,12 +22,14 @@ export default function user(state = INITIAL_STATE, action) {
         ...state,
         userDetail: action.data,
       }
-    case GET_LEVEL_LIST_SUCCESS:
+    case GET_LEVEL_LIST_SUCCESS: {
+      const levelList = (action.data || []).map((level, index) => ({ ...level, lv: index + 1 }))
       return {
         ...state,
-        levelList: action.data,
-        userLevel: action.data.filter(item => item.id === state.userDetail.levelId)[0],
+        levelList,
+        userLevel: levelList.filter(item => item.id === state.userDetail.levelId)[0] || {},
       }
+    }
     case GET_ADDRESS_LIST_SUCCESS:
       return {
         ...state,
