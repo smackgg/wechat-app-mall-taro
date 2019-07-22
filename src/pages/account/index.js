@@ -2,31 +2,24 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Swiper, SwiperItem, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import { getLevelList } from '@/redux/actions/user'
-import { AtButton } from 'taro-ui'
+import { getLevelList, getUserAmount } from '@/redux/actions/user'
+// import { AtButton } from 'taro-ui'
 import { theme } from '@/utils'
 import classNames from 'classnames'
-import Bg from '@/assets/img/account_bg.png'
-import Vip1Icon from '@/assets/icon/vip1_icon.png'
-import Vip2Icon from '@/assets/icon/vip2_icon.png'
-import Vip3Icon from '@/assets/icon/vip3_icon.png'
-import Vip4Icon from '@/assets/icon/vip4_icon.png'
 
-import Vip1Bg from '@/assets/img/vip1_bg.png'
-import Vip2Bg from '@/assets/img/vip2_bg.png'
-import Vip3Bg from '@/assets/img/vip3_bg.png'
-import Vip4Bg from '@/assets/img/vip4_bg.png'
 import './index.scss'
 
 const SWIPER_ITEM_MARGIN = '45rpx'
 
 @connect(
-  ({ global, user }) => ({
+  ({ global, user, user: { userAmount } }) => ({
     global,
     user,
+    userAmount,
   }),
   dispatch => ({
     getLevelList: () => dispatch(getLevelList()),
+    getUserAmount: () => dispatch(getUserAmount()),
   }),
 )
 
@@ -40,29 +33,6 @@ class Account extends Component {
     swiperIndex: 0,
   }
 
-  vipList = [
-    {
-      icon: Vip1Icon,
-      lv: 1,
-      bg: Vip1Bg,
-    },
-    {
-      icon: Vip2Icon,
-      lv: 2,
-      bg: Vip2Bg,
-    },
-    {
-      icon: Vip3Icon,
-      lv: 3,
-      bg: Vip3Bg,
-    },
-    {
-      icon: Vip4Icon,
-      lv: 4,
-      bg: Vip4Bg,
-    },
-  ]
-
   componentWillMount() {
     Taro.setNavigationBarColor({
       backgroundColor: theme['$color-brand'],
@@ -71,7 +41,16 @@ class Account extends Component {
   }
 
   async componentDidShow() {
+    // 获取用户资产
+    this.getUserAmount()
+
+    // 获取vip等级列表
     await this.props.getLevelList()
+  }
+
+  getUserAmount = async () => {
+    await this.props.getUserAmount()
+    console.log(this.props.userAmount)
   }
 
   // 会员卡轮播图变化
@@ -86,26 +65,24 @@ class Account extends Component {
     const {
       userDetail: { avatarUrl, nick, mobile },
       userLevel: {
-        lv,
+        lv = 1,
         name,
       },
       userLevel,
       levelList,
     } = this.props.user
-    const {
-      icon,
-    } = (this.vipList[lv - 1] || {})
+
     return (
       <View className="container">
         {/* 用户信息 */}
         <View className="userinfo" style={{ backgroundColor: theme['$color-brand'] }}>
-          <Image className="userinfo-bg" src={Bg}></Image>
+          <Image className="userinfo-bg" src="/assets/img/account_bg.png"></Image>
           <View className="content">
             <Image className="avatar" src={avatarUrl}></Image>
             <View className="info">
               <View className="nickname">{nick}</View>
               <View className="vip-info">
-                <Image className="vip-icon" src={icon}></Image>
+                <Image className="vip-icon" src={`/assets/icon/vip${lv}_icon.png`}></Image>
                 <View className={`vip-name vip${lv}`}>{name}</View>
                 <View className={`vip-level vip${lv}`}>Lv.{lv}</View>
               </View>
@@ -126,7 +103,7 @@ class Account extends Component {
                   className={classNames('image', {
                     active: swiperIndex === index,
                   })}
-                  src={this.vipList[level.lv - 1].bg}
+                  src={`/assets/img/vip${level.lv}_bg.png`}
                   mode="aspectFill"
                 />
                 <View className="vip-names">
