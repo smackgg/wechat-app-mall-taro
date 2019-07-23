@@ -3,6 +3,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  .message {
+    position: fixed;
+    top: 0;
+  }
   .no-data {
     margin-top: 150rpx;
     color: $text-color-gray;

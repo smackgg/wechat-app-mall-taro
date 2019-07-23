@@ -13,6 +13,7 @@ export default class CouponList extends Component {
   static propTypes = {
     list: PropTypes.array,
     isGetCoupon: PropTypes.bool, // 是否是领取优惠券
+    atMessage: PropTypes.func,
   }
 
   static defaultProps = {
@@ -30,54 +31,47 @@ export default class CouponList extends Component {
     const [error, res] =  await cError(getCoupon({
       id: coupon.id,
     }))
+    const { atMessage } = this.props
 
-    // console.log(error, res)
     if (!error) {
-      Taro.showToast({
-        title: '领取成功，赶紧去下单吧~',
-        icon: 'success',
-        duration: 2000,
+      atMessage({
+        message: '领取成功~',
+        type: 'success',
       })
       return
     }
 
     if (error.code == 20001 || error.code == 20002) {
-      Taro.showModal({
-        title: '领取失败',
-        content: '来晚了~',
-        showCancel: false,
+      atMessage({
+        message: '领取失败, 来晚了呀~',
+        type: 'error',
       })
       return
     }
     if (error.code == 20003) {
-      Taro.showModal({
-        title: '领取失败',
-        content: '你已经领过了，别贪心哦~',
-        showCancel: false,
+      atMessage({
+        message: '您已经领过了，别贪心哦~',
+        type: 'error',
       })
       return
     }
     if (error.code == 30001) {
-      Taro.showModal({
-        title: '领取失败',
-        content: '您的积分不足',
-        showCancel: false,
+      atMessage({
+        message: '您的积分不足',
+        type: 'error',
       })
       return
     }
     if (error.code == 20004) {
-      Taro.showModal({
-        title: '领取失败',
-        content: '已过期~',
-        showCancel: false,
+      atMessage({
+        message: '领取失败, 优惠券已过期~',
+        type: 'error',
       })
       return
     }
-
-    Taro.showModal({
-      title: '领取失败',
-      content: error.msg,
-      showCancel: false,
+    atMessage({
+      message: '领取失败, ' + error.msg,
+      type: 'error',
     })
   }
   render () {
@@ -89,7 +83,7 @@ export default class CouponList extends Component {
       }
       {
         list.map(item => {
-          let { id, name, moneyMin, moneyMax, dateAdd, moneyHreshold, needScore, money } = item
+          let { id, name, moneyMin, moneyMax, dateEnd, dateEndDays, dateEndType, moneyHreshold, needScore, money } = item
           if (money) {
             moneyMin = moneyMax = money
           }
@@ -123,7 +117,8 @@ export default class CouponList extends Component {
                     满{moneyHreshold}元可用
                   </View>
                   <View className="date">
-                    有效期：{dateFormat(dateAdd, 'yyyy/MM/dd')}
+                    {(!isGetCoupon || dateEndType === 0) ? `有效期：${dateFormat(dateEnd, 'yyyy/MM/dd')}` : ''}
+                    {(isGetCoupon && dateEndType === 1) ? `有效期：领取 ${dateEndDays} 天内有效` : ''}
                   </View>
                 </View>
             </View>

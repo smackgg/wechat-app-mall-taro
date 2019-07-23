@@ -1,13 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { getCoupons, getGetableCoupons } from '@/redux/actions/user'
 
-// import { AtButton } from 'taro-ui'
-import { theme, priceToFloat } from '@/utils'
-import classNames from 'classnames'
-import { AtTabs, AtTabsPane } from 'taro-ui'
+import { AtTabs, AtTabsPane, AtMessage } from 'taro-ui'
 import CouponList from './_components/CouponList'
 
 import './index.scss'
@@ -40,12 +37,12 @@ export default class Coupons extends Component {
     tabIndex: 0,
   }
 
-  componentWillMount() {
-    Taro.setNavigationBarColor({
-      backgroundColor: theme['$color-brand'],
-      frontColor: '#ffffff',
-    })
-  }
+  // componentWillMount() {
+  //   Taro.setNavigationBarColor({
+  //     backgroundColor: theme['$color-brand'],
+  //     frontColor: '#ffffff',
+  //   })
+  // }
 
   async componentDidShow() {
     // 获取用户优惠券
@@ -87,20 +84,21 @@ export default class Coupons extends Component {
 
     return (
       <View className="container">
+        <AtMessage />
         <AtTabs current={tabIndex} tabList={this.tabs} onClick={this.onTabChange} >
           <AtTabsPane current={tabIndex} index={0} >
             <View>
-              <CouponList list={getableCoupons} isGetCoupon />
+              <CouponList list={getableCoupons} isGetCoupon atMessage={Taro.atMessage} />
             </View>
           </AtTabsPane>
           <AtTabsPane current={tabIndex} index={1}>
             <View>
-              <CouponList list={coupons} />
+              <CouponList list={coupons} atMessage={Taro.atMessage} />
             </View>
           </AtTabsPane>
           <AtTabsPane current={tabIndex} index={2}>
             <View>
-              <CouponList list={invalidCoupons} />
+              <CouponList list={invalidCoupons} atMessage={Taro.atMessage} />
             </View>
           </AtTabsPane>
         </AtTabs >
