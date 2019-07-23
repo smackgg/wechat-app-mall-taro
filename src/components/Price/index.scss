@@ -1,0 +1,16 @@
+
+
+.price {
+  font-family: 'DINAlternate-Bold';
+
+  // 优惠券价格样式
+  &.coupon-price {
+
+    font-size: 60rpx;
+    color: $tag-color;
+
+    .small-text {
+      font-size: 30rpx;
+    }
+  }
+}
