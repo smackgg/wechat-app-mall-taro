@@ -48,10 +48,18 @@ export default class EditAddress extends Component {
   }
 
   async componentWillMount() {
-    Taro.setNavigationBarColor({
-      backgroundColor: theme['$color-brand'],
-      frontColor: '#ffffff',
+    // Taro.setNavigationBarColor({
+    //   backgroundColor: theme['$color-brand'],
+    //   frontColor: '#ffffff',
+    // })
+
+    // 拉取省级联
+    this.props.getProvince().then(() => {
+      this.setState({
+        regionList: this.props.provincesIndexs,
+      })
     })
+
     this.addressId = this.$router.params.id
     if (this.addressId) {
       const { addressList } = this.props
@@ -93,18 +101,13 @@ export default class EditAddress extends Component {
           name: areaStr,
         },
       }
+
       await this.handleAddressPickerData({
         province: nextState.province,
         city: nextState.city,
       })
-
       this.setState(nextState)
 
-    } else {
-      await this.props.getProvince()
-      this.setState({
-        regionList: this.props.provincesIndexs,
-      })
     }
   }
 

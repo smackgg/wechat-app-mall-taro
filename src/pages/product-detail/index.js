@@ -19,7 +19,7 @@ import './index.scss'
   }),
 )
 
-class ProductDetail extends Component {
+export default class ProductDetail extends Component {
 
   config = {
     navigationBarTitleText: '',
@@ -526,4 +526,3 @@ class ProductDetail extends Component {
   }
 }
 
-export default ProductDetail

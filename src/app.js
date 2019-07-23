@@ -34,6 +34,7 @@ class App extends Component {
       'pages/order-detail/index',
       'pages/category/index',
       'pages/asset/index',
+      'pages/coupons/index',
     ],
     window: {
       backgroundTextStyle: 'light',

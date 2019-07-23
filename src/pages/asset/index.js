@@ -66,6 +66,21 @@ export default class Asset extends Component {
     })
   }
 
+  tabs = [
+    {
+      title: '资金明细',
+      hidden: false,
+    },
+    {
+      title: '提现记录',
+      hidden: true,
+    },
+    {
+      title: '押金记录',
+      hidden: true,
+    },
+  ]
+
   render () {
     const {
       userAmount: {
@@ -100,7 +115,7 @@ export default class Asset extends Component {
             </View>
             <View className="right">
               <View className="price-info">
-                <Text>冻结：(元)</Text>
+                <Text>冻结(元)</Text>
                 <Text className="price">{priceToFloat(freeze)}</Text>
               </View>
               <View className="button hidden">
@@ -124,27 +139,14 @@ export default class Asset extends Component {
         <View className="cash-log">
           <View className="nav">
             {
-              [
-                {
-                  title: '资金明细',
-                  hidden: false,
-                },
-                {
-                  title: '提现记录',
-                  hidden: true,
-                },
-                {
-                  title: '押金记录',
-                  hidden: true,
-                },
-              ].map((item, index) => <View
+              this.tabs.map((item, index) => <View
                 key={index}
                 className={classNames('nav-item', {
                   active: navIndex === index,
                   hidden: item.hidden,
                 })}
                 onClick={this.onChangeNav.bind(this, index, item.hidden)}
-              >资金明细</View>)
+              >{item.title}</View>)
             }
           </View>
           {

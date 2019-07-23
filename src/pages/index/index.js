@@ -42,7 +42,6 @@ class Index extends Component {
     // 展示发现更多商品块
     this.props.getProducts({
       key: 'allProducts',
-      recommendStatus: 1,
       page: 1,
       pageSize: 10,
     })

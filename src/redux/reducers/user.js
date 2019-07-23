@@ -5,6 +5,8 @@ import {
   GET_DEFAULT_ADDRESS_SUCCESS,
   GET_USER_AMOUNT_SUCCESS,
   GET_USER_CASHLOG_SUCCESS,
+  GET_COUPONS_SUCCESS,
+  GET_GETABLE_COUPONS_SUCCESS,
 } from '../actions/user'
 
 const INITIAL_STATE = {
@@ -19,6 +21,7 @@ const INITIAL_STATE = {
     score: 0,
   },
   cashLog: [], // 资金流水
+  coupons: [],
 }
 
 export default function user(state = INITIAL_STATE, action) {
@@ -55,6 +58,16 @@ export default function user(state = INITIAL_STATE, action) {
       return {
         ...state,
         cashLog: action.data,
+      }
+    case GET_COUPONS_SUCCESS:
+      return {
+        ...state,
+        coupons: action.data,
+      }
+    case GET_GETABLE_COUPONS_SUCCESS:
+      return {
+        ...state,
+        getableCoupons: action.data,
       }
     default:
       return state

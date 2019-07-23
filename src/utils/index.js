@@ -1,5 +1,7 @@
 import Taro from '@tarojs/taro'
 
+export { default as dateFormat } from './dateFormat'
+
 export * from '../shopConfig.js'
 
 // 重写 toast 的 complete 方法

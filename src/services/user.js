@@ -85,3 +85,21 @@ export const userAmount = () => request({
 export const userCashLog = () => request({
   url: '/user/cashLog',
 })
+
+// 查询用户优惠券
+export const coupons = () => request({
+  url: '/discounts/my',
+})
+
+// 查询可领取优惠券
+export const getableCoupons = data => request({
+  url: '/discounts/coupons',
+  data,
+})
+
+// 领取优惠券
+export const getCoupon = data => request({
+  url: '/discounts/fetch',
+  method: 'post',
+  data,
+})

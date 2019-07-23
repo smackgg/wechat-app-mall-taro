@@ -5,6 +5,8 @@ import {
   defaultAddress,
   userAmount,
   userCashLog,
+  coupons,
+  getableCoupons,
 } from '@/services/user'
 import { cError } from '@/utils'
 
@@ -14,6 +16,9 @@ export const GET_ADDRESS_LIST_SUCCESS = 'config/GET_ADDRESS_LIST_SUCCESS'
 export const GET_DEFAULT_ADDRESS_SUCCESS = 'config/GET_DEFAULT_ADDRESS_SUCCESS'
 export const GET_USER_AMOUNT_SUCCESS = 'config/GET_USER_AMOUNT_SUCCESS'
 export const GET_USER_CASHLOG_SUCCESS = 'config/GET_USER_CASHLOG_SUCCESS'
+
+export const GET_COUPONS_SUCCESS = 'config/GET_COUPONS_SUCCESS'
+export const GET_GETABLE_COUPONS_SUCCESS = 'config/GET_GETABLE_COUPONS_SUCCESS'
 
 
 // 用户详情
@@ -74,3 +79,20 @@ export const getUserCashLog = () => async dispatch => {
   return res.data
 }
 
+// 获取优惠券列表
+export const getCoupons = () => async dispatch => {
+  const [error, res] = await cError(coupons())
+  return dispatch({
+    type: GET_COUPONS_SUCCESS,
+    data: error ? {} : res.data,
+  })
+}
+
+// 获取可领取优惠券
+export const getGetableCoupons = data => async dispatch => {
+  const [error, res] = await cError(getableCoupons(data))
+  return dispatch({
+    type: GET_GETABLE_COUPONS_SUCCESS,
+    data: error ? [] : res.data,
+  })
+}

@@ -1,0 +1,102 @@
+.container {
+  padding: 20rpx 30rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .no-data {
+    margin-top: 150rpx;
+    color: $text-color-gray;
+    font-size: 32rpx;
+  }
+  .coupon {
+    width: 100%;
+    padding: 0 40rpx;
+    height: 250rpx;
+    background: $color-white;
+    margin-bottom: 26rpx;
+    position: relative;
+
+    .title-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1rpx dotted $border-color;
+
+      .title {
+        padding: 15rpx 0;
+        width: 100%;
+        font-size: 28rpx;
+        font-family: 'PingFangSC-Semibold';
+        color: $text-color-gray-light;
+      }
+
+      .button-wrapper {
+        display: flex;
+        align-items: center;
+        .button {
+          font-size: 24rpx;
+          width: 130rpx;
+          height: 40rpx;
+          line-height: 40rpx;
+          background: linear-gradient(135deg,rgba(81,81,81,1) 0%,rgba(0,0,0,1) 100%);
+          color: $color-white;
+          border-radius: 40rpx;
+        }
+
+        .score-info {
+          margin-right: 10rpx;
+          font-size: 20rpx;
+          color: $text-color-gray;
+          width: 120rpx;
+        }
+      }
+
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 28rpx;
+      background-image: radial-gradient(white 0, white 8px, transparent 8px);
+      /** 如果只设置为半径的两倍(直径)，那么半圆之间没有类似堤岸的间隔 */
+      background-size: 28rpx 28rpx;
+      background-position: 0 4rpx;
+      background-repeat: repeat-y;
+      z-index: 1;
+    }
+
+    &::before {
+      left: -14rpx;
+    }
+
+    &::after {
+      right: -14rpx;
+    }
+  }
+
+  .content {
+    display: flex;
+
+    .price-wrapper {
+      margin-top: 30rpx;
+      width: 300rpx;
+    }
+
+    .coupon-info {
+      margin-top: 30rpx;
+      .hreshold {
+        font-size: 30rpx;
+        color: $text-color-gray-light;
+      }
+      .date {
+        margin-top: 40rpx;
+        font-size: 24rpx;
+        color: $text-color-gray;
+      }
+    }
+  }
+
+}
