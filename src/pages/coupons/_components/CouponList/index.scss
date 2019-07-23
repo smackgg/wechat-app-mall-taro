@@ -42,7 +42,7 @@
           width: 130rpx;
           height: 40rpx;
           line-height: 40rpx;
-          background: linear-gradient(135deg,rgba(81,81,81,1) 0%,rgba(0,0,0,1) 100%);
+          background: $tag-color;
           color: $color-white;
           border-radius: 40rpx;
         }
@@ -102,5 +102,4 @@
       }
     }
   }
-
 }

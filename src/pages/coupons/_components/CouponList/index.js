@@ -22,14 +22,29 @@ export default class CouponList extends Component {
   }
 
   // 领取优惠券
-  onGetCoupon = async (coupon, e) => {
+  onGetCoupon = async (coupon, e, confirm) => {
+    const { needScore, id } = coupon
     addWxFormId({
       type: 'form',
       formId: e.detail.formId,
     })
 
+    // 消耗积分需要二次确认
+    if (needScore && !confirm) {
+      Taro.showModal({
+        title: '提示',
+        content: `确定要消耗${needScore}积分兑换该优惠券么？`,
+        success: res => {
+          if (res.confirm) {
+            this.onGetCoupon(coupon, e, true)
+          }
+        },
+      })
+      return
+    }
+
     const [error, res] =  await cError(getCoupon({
-      id: coupon.id,
+      id,
     }))
     const { atMessage } = this.props
 
