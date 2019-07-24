@@ -149,13 +149,14 @@ export default class OrderDetail extends Component {
         orderNumber,
         dateAdd,
         status,
+        hasRefund,
       },
       logistics,
     } = this.state
 
     return (
       <View className="container">
-        <View className="order-status">订单状态：{statusStr}</View>
+        <View className="order-status">订单状态：{statusStr}<Text className="refund">{hasRefund ? '(已退款)': ''}</Text></View>
         {/* 地址 */}
         {logistics && <Address address={logistics} needLogistics type={1} />}
 

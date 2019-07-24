@@ -15,7 +15,7 @@ export default function ProductList(props) {
           <Image className="product-image" src={pic} mode="aspectFill"></Image>
           <View className="product-info">
             <Text className="name">{goodsName || name}</Text>
-            <Text className="property">{ `规格: ${property}` }</Text>
+            <Text className="property">规格: {property || '无规格参数'}</Text>
             <Price className="product-price" price={amount} score={score} />
           </View>
           <View className="count">x{number}</View>

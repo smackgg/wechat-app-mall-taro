@@ -72,13 +72,15 @@ export default class CouponList extends Component {
             goodsNumber,
             status,
             statusStr,
+            hasRefund,
           } = item
 
           return <View key={id} className="order" onClick={this.goToOrderDetail.bind(this, id)}>
             <View className="title-wrapper">
               <View className="order-number">订单号: <Text selectable>{orderNumber}</Text></View>
               <View className="order-status">
-                {statusStr}
+                {hasRefund && <Text className="refund">(已退款)</Text>}
+                <Text>{statusStr}</Text>
                 <Image
                   className="arrow-right"
                   src="/assets/icon/arrow-right.png"

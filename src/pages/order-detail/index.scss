@@ -12,6 +12,12 @@ page {
     background: $color-brand;
     color: $color-white;
     font-size: 28rpx;
+
+    .refund {
+      font-size: 24rpx;
+      color: $tag-color;
+      margin-left: 15rpx;
+    }
   }
   .product-list {
     margin-top: 26rpx;
