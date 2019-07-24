@@ -13,7 +13,6 @@
   .order {
     background: $color-white;
     width: 100%;
-    padding: 0 30rpx;
     margin-bottom: 26rpx;
   }
 
@@ -22,6 +21,7 @@
     display: flex;
     justify-content: space-between;
     padding: 20rpx 0;
+    margin: 0 30rpx;
     border-bottom: 1rpx solid $border-color;
 
     .order-status {
@@ -36,6 +36,7 @@
   }
 
   .total-wrapper {
+    margin: 0 30rpx;
     border-top: 1rpx solid $border-color;
 
     .amount-real {
