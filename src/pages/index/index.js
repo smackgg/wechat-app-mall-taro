@@ -1,10 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
+import { View, Image, Video, Swiper, SwiperItem, CoverView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { getBanners } from '@/redux/actions/config'
 import { getProducts } from '@/redux/actions/goods'
-import { priceToFloat } from '@/utils'
 import classNames from 'classnames'
 import { Price } from '@/components'
 
@@ -13,6 +12,7 @@ import './index.scss'
 // 首页多加滤镜
 @connect(({ config, goods: { products } }) => ({
   banners: config.banners['index'],
+  systemConfig: config.systemConfig,
   recommendProducts: products.homeRecommendProducts,
   allProducts: products.allProducts,
 }), dispatch => ({
@@ -28,6 +28,7 @@ class Index extends Component {
 
   state = {
     swiperIndex: 0,
+    playVideo: false,
   }
 
   componentDidShow () {
@@ -62,10 +63,30 @@ class Index extends Component {
     })
   }
 
-  render () {
-    const { banners = [], recommendProducts, allProducts } = this.props
-    const { swiperIndex } = this.state
+  // 播放视频
+  playVideo = () => {
+    this.setState({
+      playVideo: true,
+    }, () => {
+        const videoContext = Taro.createVideoContext('playVideo')
+      videoContext.requestFullScreen()
+    })
+  }
 
+  onFullScreenChange = e => {
+    if (!e.detail.fullScreen) {
+      this.setState({
+        playVideo: false,
+      })
+    }
+  }
+
+  render () {
+    const { banners = [], recommendProducts, allProducts, systemConfig } = this.props
+    const { swiperIndex, playVideo } = this.state
+
+    const videoUrl = systemConfig.index_video_1 && systemConfig.index_video_1.value
+    const videoUrl2 = systemConfig.index_video_2 && systemConfig.index_video_2.value
     return (
       <View className="index">
         {/* banner */}
@@ -105,6 +126,35 @@ class Index extends Component {
                 })
               }
             </View>
+            {/* 店内环境 */}
+            {
+              videoUrl && <View onClick={this.playVideo}>
+                <View className="title title-line">店内环境</View>
+                <View className="video-wrapper">
+                  <Video
+                    src={videoUrl}
+                    loop
+                    autoplay
+                    muted
+                    controls={false}
+                    object-fit="fill"
+                  >
+                    <View class="mask">
+                      <View class="play-button"></View>
+                    </View>
+                  </Video>
+                </View>
+                {playVideo && <Video
+                  src={videoUrl2}
+                  loop
+                  autoplay
+                  object-fit="fill"
+                  id="playVideo"
+                  onFullScreenChange={this.onFullScreenChange}
+                >
+                </Video>}
+              </View>
+            }
           </View>
         }
 

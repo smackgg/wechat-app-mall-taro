@@ -10,8 +10,9 @@ export const vipLevel = () => request({
 })
 
 // 获取系统参数等（商城名称、最小充值金额
-export const systemConfig = () => request({
+export const systemConfig = data => request({
   url: '/config/values',
+  data,
 })
 
 // 获取banner

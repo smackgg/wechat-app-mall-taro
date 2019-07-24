@@ -7,6 +7,7 @@ import {
 
 const INITIAL_STATE = {
   vipLevel: 0,
+  systemConfig: {},
   mallName: '', // 商城名称
   rechargeAmountMin: undefined, // 充值最小金额
   allowSelfCollection: '', // 是否允许到店自提
@@ -28,7 +29,10 @@ export default function config(state = INITIAL_STATE, action) {
     case GET_SYSTEM_CONFIG_SUCCESS:
       return {
         ...state,
-        ...(action.data || {}),
+        systemConfig: (action.data || []).reduce((pre, item) => {
+          pre[item.key] = item
+          return pre
+        }, {}),
       }
     case GET_BANNERS_SUCCESS:
       return {

@@ -80,6 +80,57 @@
       font-size: 24rpx;
       font-weight: bolder;
     }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 20rpx;
+      width: 100%;
+      height: 100%;
+
+      video {
+        width: 570rpx;
+        height: 426rpx;
+      }
+      .mask {
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 26rpx;
+        color: $color-white;
+
+        .play-button {
+          position: absolute;
+          z-index: 1;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 55px;
+          height: 55px;
+          background: rgba(0, 0, 0, .6);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 2px solid $color-white;
+          &::before {
+              position: relative;
+              left: 14px;
+              content: '';
+              display: block;
+              width: 0;
+              height: 0;
+              border: 14px solid $color-white;
+              border-width: 14px 20px;
+              border-color: transparent transparent transparent $color-white;
+          }
+      }
+      }
+    }
   }
 
   .all-products {

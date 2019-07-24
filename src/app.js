@@ -131,7 +131,9 @@ class App extends Component {
     store.dispatch(getVipLevel())
 
     // 获取系统参数（店铺信息等
-    store.dispatch(getSystemConfig())
+    store.dispatch(getSystemConfig({
+      keys: ['index_video_1', 'index_video_2'].join(','),
+    }))
 
     // 积分赠送规则
 

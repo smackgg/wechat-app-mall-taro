@@ -15,8 +15,8 @@ export const getVipLevel = () => async dispatch => {
 }
 
 // 系统参数
-export const getSystemConfig = () => async dispatch => {
-  const res = await systemConfig()
+export const getSystemConfig = data => async dispatch => {
+  const res = await systemConfig(data)
   dispatch({
     type: GET_SYSTEM_CONFIG_SUCCESS,
     data: res.data,
