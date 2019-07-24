@@ -41,28 +41,28 @@ export default class Account extends Component {
   orderStatus = [
     {
       icon: '/assets/icon/payment.jpg',
-      name: '待付款',
-      type: 0,
+      name: '待支付',
+      status: 0,
     },
     {
       icon: '/assets/icon/shipped.jpg',
       name: '待发货',
-      type: 1,
+      status: 1,
     },
     {
       icon: '/assets/icon/receive.jpg',
       name: '待收货',
-      type: 2,
+      status: 2,
     },
     {
       icon: '/assets/icon/comment.jpg',
       name: '待评价',
-      type: 3,
+      status: 3,
     },
     {
       icon: '/assets/icon/aftersale.jpg',
       name: '退货/售后',
-      type: 4,
+      status: 99,
     },
   ]
 
@@ -93,7 +93,8 @@ export default class Account extends Component {
   }
 
   // 跳转 url
-  goPage = url => {
+  goPage = (url, e) => {
+    e.stopPropagation()
     Taro.navigateTo({
       url,
     })
@@ -161,7 +162,7 @@ export default class Account extends Component {
         </View>
 
         {/* 我的订单 */}
-        <View className="orders-wrapper">
+        <View className="orders-wrapper" onClick={this.goPage.bind(this, '/pages/order-list/index')}>
           <View className="title title-line">
             <Text>我的订单</Text>
             <Image
@@ -172,7 +173,7 @@ export default class Account extends Component {
           </View>
           <View className="order-status">
             {
-              this.orderStatus.map(item => <View key={item.type} className="item">
+              this.orderStatus.map(item => <View key={item.status} className="item" onClick={this.goPage.bind(this, `/pages/order-list/index?status=${item.status}`)}>
                 <Image
                   className={classNames('image', {
                     active: false,
