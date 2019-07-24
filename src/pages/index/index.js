@@ -6,6 +6,7 @@ import { getBanners } from '@/redux/actions/config'
 import { getProducts } from '@/redux/actions/goods'
 import { priceToFloat } from '@/utils'
 import classNames from 'classnames'
+import { Price } from '@/components'
 
 import './index.scss'
 
@@ -99,8 +100,7 @@ class Index extends Component {
                     <Image className="product-image" src={pic} mode="aspectFill"></Image>
                     <View className="name clamp">{name}</View>
                     <View className="characteristic clamp">{characteristic}</View>
-                    <View className="price">{(minPrice > 0 || minScore === 0)
-                      ? `￥${priceToFloat(minPrice)}` : `${minScore} 积分`}</View>
+                    <Price price={minPrice} score={minScore}></Price>
                   </View>
                 })
               }
@@ -120,10 +120,7 @@ class Index extends Component {
                   <View className="name clamp">{name}</View>
                   <View className="characteristic clamp">{characteristic}</View>
                   <View className="price-wrapper">
-                    <View className="price">{(minPrice > 0 || minScore === 0)
-                      ? <View><Text className="small-text">￥</Text>{priceToFloat(minPrice)}</View>
-                      : <View>{minScore}<Text className="small-text"> 积分</Text></View>}
-                    </View>
+                    <Price price={minPrice} score={minScore}></Price>
                     <View className="sold-amount">
                       已售:{numberSells > 999 ? '999+' : numberSells}件
                     </View>
