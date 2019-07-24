@@ -1,0 +1,24 @@
+.price-info {
+  padding: 30rpx;
+  background: $color-white;
+
+  .price-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 26rpx;
+    margin-bottom: 30rpx;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  .real-amount {
+    border-top: 1rpx solid $border-color;
+    margin-top: 20rpx;
+    padding-top: 20rpx;
+    display: flex;
+    justify-content: flex-end;
+    font-size: 28rpx;
+  }
+}
