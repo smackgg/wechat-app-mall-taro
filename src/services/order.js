@@ -35,3 +35,11 @@ export const orderList = data => request({
   method: 'post',
   data,
 })
+
+// 取消订单
+export const orderClose = data => request({
+  url: '/order/close',
+  method: 'post',
+  data,
+})
+

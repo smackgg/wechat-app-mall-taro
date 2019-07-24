@@ -27,7 +27,6 @@ const PRICE_MAP = {
 }
 export default function PriceInfo(props) {
   const { realAmount, score } = props
-  console.log(realAmount, 'realAmount')
   const list = Object.keys(PRICE_MAP).filter(key => props[key] !== undefined && props[key] >= 0)
 
   return <View className="price-info">

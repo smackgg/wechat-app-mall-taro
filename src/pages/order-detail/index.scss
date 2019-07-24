@@ -1,6 +1,7 @@
 page {
   min-height: 100vh;
   background: $color-gray;
+  padding-bottom: 120rpx;
 }
 .container {
   .order-status {
@@ -16,23 +17,50 @@ page {
     margin-top: 26rpx;
   }
 
+  .order-info {
+    padding: 30rpx;
+    background: $color-white;
+    font-size: 26rpx;
+    margin-top: 26rpx;
+    .content {
+      margin-bottom: 20rpx;
+      display: flex;
+    }
+
+    .value {
+      font-size: 24rpx;
+      margin-left: 10rpx;
+      width: 500rpx;
+      color: $text-color-gray;
+    }
+  }
+
   .price-info {
     margin-top: 26rpx;
   }
 
-  .remark-wrapper {
-    margin-top: 26rpx;
-    padding: 30rpx;
-    background: $color-white;
+  .button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 40rpx;
+    height: 100%;
+    button {
+      margin-right: 15rpx;
 
-    .title {
-      font-size: 26rpx;
-      margin-bottom: 10rpx;
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+    .button {
+      background: $tag-color;
+      color: $color-white;
     }
 
-    .content {
-      font-size: 24rpx;
-      color: $text-color-gray;
+    .button-secondary {
+      border: 2rpx solid $tag-color;
+      color: $tag-color;
     }
   }
+
 }

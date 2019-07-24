@@ -1,14 +1,15 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Text, Button, Form } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { getOrderDetail } from '@/redux/actions/order'
 import { getUserAmount } from '@/redux/actions/user'
-import { AtTextarea, AtButton } from 'taro-ui'
+import { addWxFormId } from '@/services/wechat'
+
 import { cError, theme } from '@/utils'
-import { wxPay } from '@/utils/pay'
-import { orderPay } from '@/services/order'
-import { ProductList, Address, PriceInfo } from '@/components'
+import pay from '@/utils/pay'
+import { orderClose } from '@/services/order'
+import { ProductList, Address, PriceInfo, BottomBar } from '@/components'
 
 import './index.scss'
 
@@ -81,65 +82,59 @@ export default class OrderDetail extends Component {
       orderInfo,
       logistics,
     })
-    console.log(this.props.orders)
+  }
+
+  // 表单提交
+  onSubmit = e => {
+    addWxFormId({
+      type: 'form',
+      formId: e.detail.formId,
+    })
   }
 
   // 去支付
   onPay = async () => {
-    const {
-      amountReal,
-      id,
-      score,
-    } = this.state.orderInfo
-    await this.props.getUserAmount()
-    console.log(this.props.userAmount)
-    const { score: userScore, balance } = this.props.userAmount
-    if (userScore < score) {
-      Taro.showToast({
-        title: '您的积分不足，无法支付',
-        icon: 'none',
-      })
-      return
-    }
 
-    let msg = '订单金额: ' + amountReal + ' 元'
-    if (balance > 0) {
-      msg += '，可用余额为 ' + balance + ' 元'
-      if (amountReal - balance > 0) {
-        msg += '，仍需微信支付 ' + (amountReal - balance) + ' 元'
-      }
-    }
-    if (score > 0) {
-      msg += '，并扣除 ' + score + ' 积分'
-    }
+    const { score, amountReal, id } = this.state.orderInfo
+
+    await pay({
+      score,
+      money: amountReal,
+      orderId: id,
+      type: 'order',
+    })
+    this.init()
+  }
+
+  // 取消订单
+  onOrderClose = () => {
+    const { id } = this.state.orderInfo
 
     Taro.showModal({
-      title: '请确认支付',
-      content: msg,
-      confirmText: '确认支付',
-      cancelText: '取消支付',
-      success: (res) => {
+      title: '确定要取消该订单吗？',
+      content: '',
+      success: async res => {
         if (res.confirm) {
-          this.wxPay(id, amountReal - balance)
+          const [error] = await cError(orderClose({
+            orderId: id,
+          }))
+          console.log(error)
+          if (!error) {
+            Taro.showToast({
+              title: '取消成功',
+              icon: 'none',
+            })
+            this.init()
+            return
+          }
+          Taro.showModal({
+            title: '订单取消失败',
+            content: error.msg,
+            showCancel: false,
+          })
         }
       },
     })
-  }
-
-  // 调起微信支付
-  wxPay = async (orderId, money) => {
-    if (money <= 0) {
-      // 直接使用余额支付
-      await orderPay({ orderId })
-      this.init()
-    } else {
-      wxPay({
-        type: 'order',
-        money,
-        orderId,
-        redirectUrl: '/pages/order-list/index',
-      })
-    }
   }
 
   render () {
@@ -151,6 +146,9 @@ export default class OrderDetail extends Component {
         score,
         amountLogistics,
         remark,
+        orderNumber,
+        dateAdd,
+        status,
       },
       logistics,
     } = this.state
@@ -166,10 +164,11 @@ export default class OrderDetail extends Component {
           <ProductList list={productList} />
         </View>
 
-        {/* 留言 */}
-        <View className="remark-wrapper">
-          <View className="title">用户备注</View>
-          <View className="content">{remark}</View>
+        {/* 订单信息 */}
+        <View className="order-info">
+          {remark && <View className="content"><Text>用户备注：</Text><Text className="value" selectable>{remark}{remark}{remark}{remark}</Text></View>}
+          <View className="content"><Text>订单编号：</Text><Text className="value" selectable>{orderNumber}</Text></View>
+          <View className="content"><Text>下单时间：</Text><Text className="value"selectable>{dateAdd}</Text></View>
         </View>
 
         {/* 价格信息 */}
@@ -182,14 +181,39 @@ export default class OrderDetail extends Component {
         </View>
 
         {/* 底部Bar */}
-        <View>
-          <AtButton
-            formType="submit"
-            full
-            type="primary"
-            onClick={this.onPay}
-          >去支付</AtButton>
-        </View>
+        <BottomBar>
+          <Form onSubmit={this.onSubmit}>
+            <View className="button-wrapper">
+              <Button
+                form-type="submit"
+                className="button-secondary"
+                hoverClass="none"
+                size="mini"
+                type="secondary"
+                openType="contact"
+              >咨询客服</Button>
+              {
+                status === 0 && <Button
+                  form-type="submit"
+                  className="button-secondary"
+                  hoverClass="none"
+                  size="mini"
+                  type="secondary"
+                  onClick={this.onOrderClose}
+                >取消订单</Button>
+              }
+              {
+                status === 0 && <Button
+                  form-type="submit"
+                  className="button"
+                  hoverClass="none"
+                  size="mini"
+                  onClick={this.onPay}
+                >立即支付</Button>
+              }
+            </View>
+          </Form>
+        </BottomBar>
       </View>
     )
   }
