@@ -94,6 +94,7 @@ export default class Account extends Component {
 
   // 跳转 url
   goPage = (url, e) => {
+    console.log(url)
     e.stopPropagation()
     Taro.navigateTo({
       url,
@@ -103,9 +104,9 @@ export default class Account extends Component {
   render () {
     const { swiperIndex } = this.state
     const {
-      userDetail: { avatarUrl, nick, mobile },
+      userDetail: { avatarUrl, nick },
       userLevel: {
-        lv = 1,
+        lv = 0,
         name,
       },
       levelList,
@@ -113,8 +114,11 @@ export default class Account extends Component {
         balance,
         freeze,
         score,
+        totleConsumed,
       },
     } = this.props.user
+    // 用户滑动到的等级
+    const swiperLv = levelList[swiperIndex] || {}
 
     return (
       <View className="container">
@@ -141,24 +145,102 @@ export default class Account extends Component {
             onChange={this.onSwiperChange}
             current={lv - 1}
           >
-            {levelList.map((level, index) => <SwiperItem className="swiper-item" key={level.id}>
-              <View className={classNames('item-content', `vip${level.lv}`)}>
-                <Image
-                  className={classNames('image', {
-                    active: swiperIndex === index,
-                  })}
-                  src={`/assets/img/vip${level.lv}_bg.png`}
-                  mode="aspectFill"
-                />
-                <View className="vip-names">
-                  <Text className="vip-name">{level.name}</Text>
-                  <Text className="vip-level">LV.{level.lv}</Text>
+            {levelList.map((level, index) => {
+              const { id } = level
+              // 会员等级小于当前卡会员等级一级以上
+              let progressWidth = '0'
+              if (lv >= level.lv) {
+                // 会员等级大于当前卡的等级
+                progressWidth = '100%'
+              } else if (level.lv - lv === 1) {
+                // 会员等级小于当前卡会员等级一级以内
+                progressWidth = `${(level.upgradeAmount - totleConsumed) / level.upgradeAmount * 100}%`
+              }
+
+              return <SwiperItem className="swiper-item" key={id}>
+                <View className={classNames('item-content', `vip${level.lv}`)}>
+                  <Image
+                    className={classNames('image', {
+                      active: swiperIndex === index,
+                    })}
+                    src={`/assets/img/vip${level.lv}_bg.png`}
+                    mode="aspectFill"
+                  />
+                  <View className="vip-names">
+                    <Text className="vip-name">{level.name}</Text>
+                    <Text className="vip-level">LV.{level.lv}</Text>
+                  </View>
+                  <View className="price-info">
+                    <View className="user-consumed">
+                      当前消费
+                    <Text className="price">{totleConsumed}</Text>
+                      元
+                  </View>
+                    {/* 已经是当前会员 */}
+                    {
+                      (lv >= level.lv) && <View className="level-consumed">
+                        您已经成为本店{level.name}会员
+                    </View>
+                    }
+                    {
+                      (lv < level.lv && totleConsumed < level.upgradeAmount) && <View className="level-consumed">
+                        距离{level.name}还差
+                      <Text className="price">{level.upgradeAmount - totleConsumed}</Text>
+                        元
+                    </View>
+                    }
+                  </View>
+                  <View className="vip-progress">
+                    <View className="bg"></View>
+                    <View className="current" style={{ width: progressWidth }}></View>
+                    <View className="vip-level-steps">
+                      <View className={classNames({
+                        'step-gray': level.lv - 1 > lv,
+                      })}>
+                        <Text className="step">Lv.{level.lv - 1}</Text>
+                        {level.lv - 1 === lv && <Text>(当前等级)</Text>}
+                      </View>
+                      <View className={classNames({
+                        'step-gray': level.lv > lv,
+                      })}>
+                        <Text className="step">Lv.{level.lv}</Text>
+                        {level.lv === lv && <Text>(当前等级)</Text>}
+                      </View>
+                    </View>
+                  </View>
                 </View>
-              </View>
-            </SwiperItem>)}
+              </SwiperItem>
+            })}
           </Swiper>
 
-          <View>{mobile}</View>
+          <View className="vip-interests">
+            <View className="interest" onClick={this.goPage.bind(this, '/pages/score-shop/index')}>
+              <Image
+                className="interest-image"
+                src={`/assets/icon/vip${swiperLv.lv || 1}_score.png`}
+                mode="aspectFill"
+              />
+              <Text>积分兑换</Text>
+            </View>
+            <View className="interest" onClick={this.goPage.bind(this, '/pages/coupons/index')}>
+              <Image
+                className="interest-image"
+                src={`/assets/icon/vip${swiperLv.lv || 1}_coupon.png`}
+                mode="aspectFill"
+              />
+              <Text>领券中心</Text>
+            </View>
+            <View className={classNames('interest', {
+              disabled: swiperLv.lv > lv || swiperLv.rebate === 10,
+            })}>
+              <Image
+                className="interest-image"
+                src={`/assets/icon/vip${swiperLv.lv || 1}_discount.png`}
+                mode="aspectFill"
+              />
+              <Text>{(swiperLv.rebate && swiperLv.rebate < 10) ? `${swiperLv.rebate}折优惠` : '暂无优惠'}</Text>
+            </View>
+          </View>
         </View>
 
         {/* 我的订单 */}

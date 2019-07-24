@@ -29,7 +29,7 @@
     .content {
       display: flex;
       align-items: center;
-      margin-bottom: 30rpx;
+      margin-bottom: 10rpx;
 
       .avatar {
         width: 120rpx;
@@ -89,7 +89,6 @@
       }
     }
     .swiper-wrapper {
-      padding-top: 10rpx;
       height: 330rpx;
       .swiper-item {
         // padding: 10rpx 15rpx;
@@ -105,19 +104,85 @@
           &.vip1 {
             background: linear-gradient(135deg,rgba(209,209,209,1) 0%,rgba(88,95,105,1) 100%);
             box-shadow: 0 10px 20px 0 rgba(0,0,0,.3);
+            .price {
+              color: #464646;
+            }
           }
           &.vip2 {
             background: linear-gradient(135deg,rgba(255,225,125,1) 0%,rgba(161,119,23,1) 100%);
             box-shadow: 0 10px 20px 0 rgba(0,0,0,.3);
+            .price {
+              color: #774C00;
+            }
           }
           &.vip3 {
             background: linear-gradient(135deg,rgba(176,202,225,1) 0%,rgba(82,106,152,1) 100%);
             box-shadow: 0 10px 20px 0 rgba(0,0,0,.3);
+            .price {
+              color: #365AB3;
+            }
           }
 
           &.vip4 {
             background: linear-gradient(135deg,rgba(81,81,81,1) 0%,rgba(0,0,0,1) 100%);
             box-shadow: 0 10px 20px 0 rgba(0,0,0,.3);
+            .price {
+              color: #FFFFFF;
+            }
+
+            .user-consumed,
+            .level-consumed {
+              color: #969696;
+            }
+          }
+
+          .price-info {
+            margin-top: 88rpx;
+            font-size: 20rpx;
+            line-height: 30rpx;
+            padding: 0 40rpx;
+            font-family: 'PingFangSC-Medium';
+            display: flex;
+            justify-content: space-between;
+            z-index: 2;
+            position: relative;
+          }
+
+          .vip-progress {
+            width: 550rpx;
+            margin: 10rpx 40rpx 0;
+            position: relative;
+            z-index: 2;
+            .bg {
+              width: 550rpx;
+              height: 18rpx;
+              border-radius: 18rpx;
+              background: rgba(255, 255, 255, .3);
+            }
+
+            .current {
+              height: 18rpx;
+              border-radius: 18rpx;
+              background: rgba(255, 255, 255, .5);
+              position: absolute;
+              top: 0;
+              left: 0;
+            }
+
+            .vip-level-steps {
+              display: flex;
+              justify-content: space-between;
+              font-size: 18rpx;
+              line-height: 18rpx;
+              margin-top: 6rpx;
+              font-weight: bold;
+              .step-gray {
+                opacity: .4;
+              }
+              .step {
+                margin-right: 4rpx;
+              }
+            }
           }
 
           .image {
@@ -148,6 +213,31 @@
         line-height: 54px;
         font-size: 54rpx;
         font-family: 'PingFangSC-Semibold';
+      }
+    }
+
+    .vip-interests {
+      display: flex;
+      justify-content: space-between;
+      padding: 20rpx 130rpx 0;
+      position: relative;
+      z-index: 2;
+
+      .interest {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 20rpx;
+        line-height: 28rpx;
+        &.disabled {
+          opacity: .2;
+        }
+        .interest-image {
+          width: 70rpx;
+          height: 70rpx;
+          margin-bottom: 8rpx;
+        }
       }
     }
   }
