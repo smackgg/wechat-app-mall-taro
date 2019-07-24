@@ -28,7 +28,7 @@ export default class Price extends Component {
     }
 
     // 只展示价格
-    if (price > 0 && score <= 0) {
+    if (price >= 0 && score <= 0) {
       return <View className={`price ${className}`}>
         <View><Text className="small-text">￥</Text>{priceToFloat(price)}</View>
       </View>
