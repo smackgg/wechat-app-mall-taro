@@ -23,6 +23,16 @@
     justify-content: space-between;
     padding: 20rpx 0;
     border-bottom: 1rpx solid $border-color;
+
+    .order-status {
+      display: flex;
+      align-items: center;
+      .arrow-right {
+        width: 14rpx;
+        display: block;
+        margin-left: 20rpx;
+      }
+    }
   }
 
   .products-wrapper {

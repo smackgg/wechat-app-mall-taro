@@ -3,8 +3,6 @@ import { View, Form, Text, Button, Image } from '@tarojs/components'
 import PropTypes from 'prop-types'
 import { Price } from '@/components'
 import classNames from 'classnames'
-import { dateFormat, cError } from '@/utils'
-import { getCoupon } from '@/services/user'
 import pay from '@/utils/pay'
 import { addWxFormId } from '@/services/wechat'
 import './index.scss'
@@ -25,77 +23,16 @@ export default class CouponList extends Component {
     statusName: '',
   }
 
-  // 领取优惠券
-  onGetCoupon = async (coupon, e, confirm) => {
-    const { needScore, id } = coupon
-    addWxFormId({
-      type: 'form',
-      formId: e.detail.formId,
-    })
-
-    // 消耗积分需要二次确认
-    if (needScore && !confirm) {
-      Taro.showModal({
-        title: '提示',
-        content: `确定要消耗${needScore}积分兑换该优惠券么？`,
-        success: res => {
-          if (res.confirm) {
-            this.onGetCoupon(coupon, e, true)
-          }
-        },
-      })
-      return
-    }
-
-    const [error, res] =  await cError(getCoupon({
-      id,
-    }))
-    const { atMessage } = this.props
-
-    if (!error) {
-      atMessage({
-        message: '领取成功~',
-        type: 'success',
-      })
-      return
-    }
-
-    if (error.code == 20001 || error.code == 20002) {
-      atMessage({
-        message: '领取失败, 来晚了呀~',
-        type: 'error',
-      })
-      return
-    }
-    if (error.code == 20003) {
-      atMessage({
-        message: '您已经领过了，别贪心哦~',
-        type: 'error',
-      })
-      return
-    }
-    if (error.code == 30001) {
-      atMessage({
-        message: '您的积分不足',
-        type: 'error',
-      })
-      return
-    }
-    if (error.code == 20004) {
-      atMessage({
-        message: '领取失败, 优惠券已过期~',
-        type: 'error',
-      })
-      return
-    }
-    atMessage({
-      message: '领取失败, ' + error.msg,
-      type: 'error',
+  // 去订单详情
+  goToOrderDetail = id => {
+    Taro.navigateTo({
+      url: `/pages/order-detail/index?id=${id}`,
     })
   }
 
   // 去支付
   onPay = async (order, e) => {
+    e.stopPropagation()
     addWxFormId({
       type: 'form',
       formId: e.detail.formId,
@@ -110,6 +47,11 @@ export default class CouponList extends Component {
       type: 'order',
     })
     this.props.refreshData()
+  }
+
+  // 阻止冒泡
+  onPayClick = e => {
+    e.stopPropagation()
   }
 
   render () {
@@ -131,10 +73,17 @@ export default class CouponList extends Component {
             status,
           } = item
 
-          return <View key={id} className="order">
+          return <View key={id} className="order" onClick={this.goToOrderDetail.bind(this, id)}>
             <View className="title-wrapper">
               <View className="order-number">订单号: <Text selectable>{orderNumber}</Text></View>
-              <View className="order-status">{statusName}</View>
+              <View className="order-status">
+                {statusName}
+                <Image
+                  className="arrow-right"
+                  src="/assets/icon/arrow-right.png"
+                  mode="widthFix"
+                />
+              </View>
             </View>
             <View className="products-wrapper">
               {
@@ -163,6 +112,7 @@ export default class CouponList extends Component {
                       type="secondary"
                       hoverClass="none"
                       size="mini"
+                      onClick={this.onPayClick}
                     >立即支付</Button>
                   </Form>
                 </View>
