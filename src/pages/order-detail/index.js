@@ -8,7 +8,8 @@ import { AtTextarea, AtButton } from 'taro-ui'
 import { cError, theme } from '@/utils'
 import { wxPay } from '@/utils/pay'
 import { orderPay } from '@/services/order'
-import { ProductList, Address } from '../checkout/_components'
+import { ProductList, Address } from '@/components'
+
 import './index.scss'
 
 @connect(({
@@ -69,6 +70,7 @@ export default class OrderDetail extends Component {
     const {
       goods,
       orderInfo,
+      logistics,
     } = this.props.orders[this.orderId]
     this.setState({
       productList: goods.map(product => ({
@@ -77,6 +79,7 @@ export default class OrderDetail extends Component {
         name: product.goodsName,
       })),
       orderInfo,
+      logistics,
     })
     console.log(this.props.orders)
   }
@@ -145,15 +148,19 @@ export default class OrderDetail extends Component {
       orderInfo: {
         statusStr,
       },
+      logistics,
     } = this.state
+
     return (
       <View className="container">
         <View className="order-status">订单状态：{statusStr}</View>
         {/* 地址 */}
-        <Address />
+        {logistics && <Address address={logistics} needLogistics type={1} />}
 
         {/*  商品卡 */}
-        <ProductList productList={productList} />
+        <View className="product-list">
+          <ProductList list={productList} />
+        </View>
 
         {/* 价格信息 */}
 
