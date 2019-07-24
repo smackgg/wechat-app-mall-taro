@@ -1,4 +1,5 @@
 import { orderDetail, orderStatistics, orderList } from '@/services/order'
+import { cError } from '@/utils'
 
 export const GET_ORDER_DETAIL_SUCCESS = 'config/GET_ORDER_DETAIL_SUCCESS'
 export const GET_ORDER_STATISTICS_SUCCESS = 'config/GET_ORDER_STATISTICS_SUCCESS'
@@ -29,7 +30,11 @@ export const getOrderStatistics= () => async dispatch => {
 // 订单列表
 export const getOrderList = data => async dispatch => {
   const { status = 'all' } = data
-  const res = await orderList(data)
+  const [error, res] = await cError(orderList(data))
+
+  if (error) {
+    return error
+  }
 
   const { goodsMap, logisticsMap } = res.data
 
