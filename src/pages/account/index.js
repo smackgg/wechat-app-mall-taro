@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Swiper, SwiperItem, Text } from '@tarojs/components'
+import { View, Image, Swiper, SwiperItem, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { getLevelList, getUserAmount } from '@/redux/actions/user'
@@ -94,7 +94,9 @@ export default class Account extends Component {
 
   // 跳转 url
   goPage = (url, e) => {
-    console.log(url)
+    if (!url) {
+      return
+    }
     e.stopPropagation()
     Taro.navigateTo({
       url,
@@ -305,14 +307,20 @@ export default class Account extends Component {
               }, {
                 title: '关于我们',
                 url: '',
-              }].map((item, index) => <View key={index} className="item" onClick={this.goPage.bind(this, item.url)}>
+                contact: true,
+              }].map((item, index) => <Button
+                key={index}
+                className="item"
+                onClick={this.goPage.bind(this, item.url)}
+                openType={item.contact ? 'contact' : ''}
+              >
                 <Text>{item.title}</Text>
                 <Image
                   className="arrow-right"
                   src="/assets/icon/arrow-right.png"
                   mode="aspectFill"
                 />
-              </View>)
+              </Button>)
             }
         </View>
       </View>

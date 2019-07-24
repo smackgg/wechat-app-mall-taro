@@ -316,7 +316,10 @@
     margin-top: 26rpx;
     background: $color-white;
     padding: 0 30rpx;
-
+    button {
+      border-radius: 0;
+      font-size: 28rpx;
+    }
     .item {
       padding: 20rpx 30rpx;
       display: flex;

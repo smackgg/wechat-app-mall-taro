@@ -65,6 +65,7 @@ button {
   color: inherit;
   appearance: none;
   font-smoothing: antialiased;
+  line-height: 1;
   outline: none;
   &::after {
     border: none;
