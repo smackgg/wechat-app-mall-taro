@@ -13,7 +13,7 @@
   .order {
     background: $color-white;
     width: 100%;
-    padding: 0 30rpx 20rpx;
+    padding: 0 30rpx;
     margin-bottom: 26rpx;
   }
 
@@ -31,40 +31,6 @@
         width: 14rpx;
         display: block;
         margin-left: 20rpx;
-      }
-    }
-  }
-
-  .products-wrapper {
-    padding-top: 20rpx 0;
-    .product {
-      padding: 20rpx 0;
-      display: flex;
-      align-items: center;
-      position: relative;
-      .product-image {
-        width: 120rpx;
-        height: 120rpx;
-        margin-right: 20rpx;
-      }
-      .product-info {
-        font-size: 28rpx;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        .property {
-          color: $text-color-gray;
-          font-size: 20rpx;
-          margin-bottom: 10rpx;
-        }
-      }
-
-      .count {
-        position: absolute;
-        right: 20rpx;
-        bottom: 20rpx;
-        font-size: 24rpx;
       }
     }
   }
@@ -89,6 +55,7 @@
       .button {
         background: $tag-color;
         color: $color-white;
+        margin-bottom: 10rpx;
       }
     }
   }
