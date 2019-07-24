@@ -305,7 +305,7 @@ export default class Account extends Component {
                 title: '收货地址',
                 url: '/pages/select-address/index',
               }, {
-                title: '关于我们',
+                title: '联系客服',
                 url: '',
                 contact: true,
               }].map((item, index) => <Button
