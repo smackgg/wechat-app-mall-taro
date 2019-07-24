@@ -32,7 +32,7 @@ export default class BottomBar extends Component {
     let style = {}
     if (isIphoneX) {
       style = {
-        height: '150rpx',
+        height: '130rpx',
         paddingBottom: '30rpx',
       }
     }

@@ -1,12 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
 import { connect } from '@tarojs/redux'
-import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
-import { AtIcon, AtButton, AtFloatLayout, AtInputNumber } from 'taro-ui'
+import { View, Image, Text, Swiper, SwiperItem, Button, ScrollView } from '@tarojs/components'
+import { AtIcon, AtFloatLayout, AtInputNumber } from 'taro-ui'
 import { getProductDetail } from '@/redux/actions/goods'
-import { theme } from '@/utils'
 import WxParse from '@/third-utils/wxParse/wxParse'
 import { productPrice } from '@/services/goods'
-
+import { Price, BottomBar } from '@/components'
+import classNames from 'classnames'
 
 import './index.scss'
 
@@ -38,10 +38,10 @@ export default class ProductDetail extends Component {
     const { id } = this.$router.params
     this.productId = id
     // 设置bar颜色
-    Taro.setNavigationBarColor({
-      backgroundColor: theme['$color-brand'],
-      frontColor: '#ffffff',
-    })
+    // Taro.setNavigationBarColor({
+    //   backgroundColor: theme['$color-brand'],
+    //   frontColor: '#ffffff',
+    // })
   }
   async componentDidShow() {
     // 获取商品详情数据
@@ -350,6 +350,20 @@ export default class ProductDetail extends Component {
     }
   }
 
+  // 跳转 url
+  goPage = url => {
+    Taro.navigateTo({
+      url,
+    })
+  }
+
+  // 回首页
+  goHome = () => {
+    Taro.switchTab({
+      url: '/pages/index/index',
+    })
+  }
+
   render () {
     const {
       productInfo,
@@ -376,6 +390,7 @@ export default class ProductDetail extends Component {
         minPrice,
         numberOrders,
         pic,
+        minScore,
       },
       logistics,
       extJson,
@@ -391,8 +406,6 @@ export default class ProductDetail extends Component {
         {/* 轮播图 */}
         <Swiper
           className="swiper"
-          // indicatorColor="#999"
-          // indicatorActiveColor="#333"
           circular
           indicatorDots
           autoplay
@@ -416,7 +429,7 @@ export default class ProductDetail extends Component {
           </View>
           <View className="other">
             <View className="price-wrapper">
-              <Text className="price">￥{minPrice}</Text>
+              <Price price={minPrice} score={minScore}></Price>
               {originalPrice !== minPrice && <Text className="original-price">￥{originalPrice}</Text>}
             </View>
             <Text className="name">邮费：{(!logistics || logistics.isFress) ? '包邮' : '￥' + logistics.details[0].firstAmount}</Text>
@@ -442,84 +455,109 @@ export default class ProductDetail extends Component {
         </View>
 
         {/* 底部 bottom bar */}
-        <View className="bottom-bar">
-          <View>
-            <AtIcon value="search" size="24" color="#5d5d5d"></AtIcon>
-            <Text>客服</Text>
-          </View>
-          <View>
-            <AtIcon value="shopping-cart" size="24" color="#5d5d5d"></AtIcon>
-            <Text>购物车</Text>
-          </View>
-          <View className="button-wrapper">
-            <View className="add-card">
-              <AtButton
-                className="button1"
-                full
-                type="primary"
-                onClick={this.showSelectSku.bind(this, 2)}
-              >加入购物车</AtButton>
+        <BottomBar>
+          <View className="bottombar">
+            <View className="icon-wrapper">
+              <View className="icon" onClick={this.goHome}>
+                <Image
+                  className="icon-image"
+                  src="/assets/icon/shop.jpg"
+                  mode="widthFix"
+                />
+                <Text>店铺</Text>
+              </View>
+              <View className="icon" onClick={this.goPage.bind(this, '/pages/shop-cart/index')}>
+                <Image
+                  className="icon-image"
+                  src="/assets/icon/shopcart.jpg"
+                  mode="widthFix"
+                />
+                <Text>购物车</Text>
+              </View>
+              <Button className="icon" openType="contact">
+                <Image
+                  className="icon-image"
+                  src="/assets/icon/contact.jpg"
+                  mode="widthFix"
+                />
+                <Text>客服</Text>
+              </Button>
             </View>
-            <View>
-              <AtButton
-                className="button"
-                full type="primary"
-                onClick={this.showSelectSku.bind(this, 1)}
-              >立即购买</AtButton>
+            <View className="button-wrapper">
+              <View className="add-card">
+                <Button
+                  className="button button-cart"
+                  full
+                  type="primary"
+                  onClick={this.showSelectSku.bind(this, 2)}
+                >加入购物车</Button>
+              </View>
+              <View>
+                <Button
+                  className="button button-buynow"
+                  full type="primary"
+                  onClick={this.showSelectSku.bind(this, 1)}
+                >立即购买</Button>
+              </View>
             </View>
           </View>
-        </View>
+        </BottomBar>
 
         {/* 选配框 */}
         <AtFloatLayout className="sku-select" isOpened={isSkuFloatLayoutOpened} onClose={this.handleClose}>
-          <View className="select_product-info">
-            <Image mode="widthFix" src={pic} class="product-image" />
-            <View>
-              <View className="price">￥{selectSku.price}</View>
-              {selectSku.originalPrice !== selectSku.price && <View className="original-price">￥{selectSku.originalPrice}</View> }
-              <View>库存：{stores}</View>
-            </View>
-          </View>
-          {/* 规格参数 */}
-          {properties && <View className="properties">
-            {
-              properties.map((propertie, index) => <View key={propertie.id}>
-                <View className="propertie-name">
-                  {propertie.name}
+          <View className="sku-wrapper">
+            <ScrollView scrollY className="select-content">
+              <View className="select_product-info">
+                <Image mode="widthFix" src={pic} class="product-image" />
+                <View>
+                  <View className="price">￥{selectSku.price}</View>
+                  {selectSku.originalPrice !== selectSku.price && <View className="original-price">￥{selectSku.originalPrice}</View>}
+                  <View>库存：{stores}</View>
                 </View>
-                <View className="attributes">
-                  {
-                    propertie.childsCurGoods.map(child => <View key={child.id} className="attribute">
-                      <AtButton
-                        size="small"
-                        className="button"
-                        type={child.checked ? 'primary' : 'secondary'}
-                        onClick={this.onAttributeClick.bind(this, index, child)}
-                      >{child.name}</AtButton>
-                    </View>)
-                  }
-                </View>
-              </View>)
-            }
-          </View>}
+              </View>
+              {/* 规格参数 */}
+              {properties && <View className="properties">
+                {
+                  properties.map((propertie, index) => <View key={propertie.id}>
+                    <View className="propertie-name">
+                      {propertie.name}
+                    </View>
+                    <View className="attributes">
+                      {
+                        propertie.childsCurGoods.map(child => <View key={child.id} className="attribute">
+                          <Button
+                            size="mini"
+                            className={classNames('attribute-button', child.checked ? 'primary' : 'secondary')}
+                            onClick={this.onAttributeClick.bind(this, index, child)}
+                          >{child.name}</Button>
+                        </View>)
+                      }
+                    </View>
+                  </View>)
+                }
+              </View>}
 
-          {/* 数量 */}
-          <View className="amount">
-            <View>数量</View>
-            <AtInputNumber
-              min={1}
-              max={stores}
-              step={1}
-              value={amount}
-              onChange={this.onNumberChange}
-            />
+              {/* 数量 */}
+              <View className="amount">
+                <View>数量</View>
+                <AtInputNumber
+                  min={1}
+                  max={stores}
+                  step={1}
+                  value={amount}
+                  onChange={this.onNumberChange}
+                />
+              </View>
+            </ScrollView>
+            <BottomBar>
+              <Button
+                className="submit-button"
+                type="primary"
+                disabled={stores === 0}
+                onClick={this.handleSubmit}
+              >{stores === 0 ? '已售罄' : (buttonType === 1 ? '立即购买' : '加入购物车')}</Button>
+            </BottomBar>
           </View>
-          <AtButton
-            className="submit-button"
-            full type="primary"
-            disabled={stores === 0}
-            onClick={this.handleSubmit}
-          >{buttonType === 1 ? '立即购买' : '加入购物车'}</AtButton>
         </AtFloatLayout>
       </View>
     )
