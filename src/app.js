@@ -7,7 +7,7 @@ import { getUserDetail } from '@/redux/actions/user'
 import { theme, requireBindMobile, showToast } from './utils'
 
 import Index from './pages/index'
-import configStore from './redux/store'
+import { store } from './redux/store'
 import { UPDATE_GLOBAL_DATA } from './redux/actions/global'
 
 import './app.scss'
@@ -17,8 +17,6 @@ import './app.scss'
 // if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
 //   require('nerv-devtools')
 // }
-
-const store = configStore()
 
 class App extends Component {
 
@@ -31,6 +29,7 @@ class App extends Component {
       'pages/checkout/index',
       'pages/edit-address/index',
       'pages/select-address/index',
+      'pages/order-list/index',
       'pages/order-detail/index',
       'pages/category/index',
       'pages/asset/index',

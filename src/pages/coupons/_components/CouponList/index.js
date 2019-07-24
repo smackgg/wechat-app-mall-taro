@@ -2,7 +2,6 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Form, Text, Button } from '@tarojs/components'
 import PropTypes from 'prop-types'
 import { Price } from '@/components'
-import classNames from 'classnames'
 import { dateFormat, cError } from '@/utils'
 import { getCoupon } from '@/services/user'
 import { addWxFormId } from '@/services/wechat'
@@ -43,9 +42,7 @@ export default class CouponList extends Component {
       return
     }
 
-    const [error, res] =  await cError(getCoupon({
-      id,
-    }))
+    const [error, res] =  await cError(getCoupon({ id }))
     const { atMessage } = this.props
 
     if (!error) {

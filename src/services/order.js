@@ -29,3 +29,9 @@ export const orderStatistics = () => request({
   url: '/order/statistics',
 })
 
+// 订单列表
+export const orderList = data => request({
+  url: '/order/list',
+  method: 'post',
+  data,
+})
