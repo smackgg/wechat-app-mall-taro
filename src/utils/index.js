@@ -25,7 +25,7 @@ export const cError = async fn => {
 }
 
 // 价格处理
-export const priceToFloat = price => {
+export const priceToFloat = (price = 0) => {
   const float = price.toFixed(2)
   return isNaN(float) ? '' : float
 }
