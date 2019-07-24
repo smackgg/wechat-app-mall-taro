@@ -38,18 +38,32 @@ export default class OrderList extends Component {
     this.init()
   }
 
-  init = () => {
-    const { status = 0 } = this.$router.params
-    const tabIndex = status === -1 ? 5 : Number(status)
-    this.setState({
-      tabIndex,
+  init = async () => {
+    const { status } = this.$router.params
+    Taro.showLoading({
+      title: '加载中',
     })
-    this.getOrderList(tabIndex)
+
+    let tabIndex = 0
+    this.tabs.forEach((tab, index) => {
+      if (tab.status === +status) {
+        tabIndex = index
+      }
+    })
+    this.setState({
+      tabIndex: tabIndex,
+    })
+    await this.getOrderList(tabIndex)
+    Taro.hideLoading()
   }
 
   setStateP = data => new Promise(resolve => this.setState(data, resolve))
 
   tabs = [
+    {
+      title: '全部订单',
+      status: 'all',
+    },
     {
       title: '待支付',
       status: 0,
@@ -78,9 +92,12 @@ export default class OrderList extends Component {
 
   // 拉取订单列表
   getOrderList = tabIndex => {
-    this.props.getOrderList({
-      status: this.tabs[tabIndex].status,
-    })
+    const postData = {}
+    const status = this.tabs[tabIndex].status
+    if (status !== 'all') {
+      postData.status = status
+    }
+    return this.props.getOrderList(postData)
   }
 
   // 跳转 url
@@ -101,7 +118,6 @@ export default class OrderList extends Component {
   render () {
     const { orderList } = this.props
     const { tabIndex } = this.state
-    console.log(orderList)
     return (
       <View className="container">
         <AtMessage />

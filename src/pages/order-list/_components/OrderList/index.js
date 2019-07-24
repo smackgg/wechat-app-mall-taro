@@ -71,13 +71,14 @@ export default class CouponList extends Component {
             score,
             goodsNumber,
             status,
+            statusStr,
           } = item
 
           return <View key={id} className="order" onClick={this.goToOrderDetail.bind(this, id)}>
             <View className="title-wrapper">
               <View className="order-number">订单号: <Text selectable>{orderNumber}</Text></View>
               <View className="order-status">
-                {statusName}
+                {statusStr}
                 <Image
                   className="arrow-right"
                   src="/assets/icon/arrow-right.png"

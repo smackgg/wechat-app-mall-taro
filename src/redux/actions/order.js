@@ -28,7 +28,7 @@ export const getOrderStatistics= () => async dispatch => {
 
 // 订单列表
 export const getOrderList = data => async dispatch => {
-  const { status } = data
+  const { status = 'all' } = data
   const res = await orderList(data)
 
   const { goodsMap, logisticsMap } = res.data
