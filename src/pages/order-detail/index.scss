@@ -4,7 +4,7 @@ page {
 }
 .container {
   .order-status {
-    height: 150rpx;
+    height: 120rpx;
     padding: 0 40rpx;
     display: flex;
     align-items: center;
@@ -13,6 +13,26 @@ page {
     font-size: 28rpx;
   }
   .product-list {
-    margin-top: 20rpx;
+    margin-top: 26rpx;
+  }
+
+  .price-info {
+    margin-top: 26rpx;
+  }
+
+  .remark-wrapper {
+    margin-top: 26rpx;
+    padding: 30rpx;
+    background: $color-white;
+
+    .title {
+      font-size: 26rpx;
+      margin-bottom: 10rpx;
+    }
+
+    .content {
+      font-size: 24rpx;
+      color: $text-color-gray;
+    }
   }
 }

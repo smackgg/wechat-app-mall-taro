@@ -8,7 +8,7 @@ import { AtTextarea, AtButton } from 'taro-ui'
 import { cError, theme } from '@/utils'
 import { wxPay } from '@/utils/pay'
 import { orderPay } from '@/services/order'
-import { ProductList, Address } from '@/components'
+import { ProductList, Address, PriceInfo } from '@/components'
 
 import './index.scss'
 
@@ -147,6 +147,10 @@ export default class OrderDetail extends Component {
       productList = [],
       orderInfo: {
         statusStr,
+        amountReal,
+        score,
+        amountLogistics,
+        remark,
       },
       logistics,
     } = this.state
@@ -162,8 +166,20 @@ export default class OrderDetail extends Component {
           <ProductList list={productList} />
         </View>
 
-        {/* 价格信息 */}
+        {/* 留言 */}
+        <View className="remark-wrapper">
+          <View className="title">用户备注</View>
+          <View className="content">{remark}</View>
+        </View>
 
+        {/* 价格信息 */}
+        <View className="price-info">
+          <PriceInfo
+            realAmount={amountReal}
+            score={score}
+            shippingAmount={amountLogistics}
+          />
+        </View>
 
         {/* 底部Bar */}
         <View>
