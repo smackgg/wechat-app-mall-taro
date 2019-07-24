@@ -34,6 +34,7 @@ class App extends Component {
       'pages/category/index',
       'pages/asset/index',
       'pages/coupons/index',
+      'pages/score-shop/index',
     ],
     window: {
       backgroundTextStyle: 'light',
