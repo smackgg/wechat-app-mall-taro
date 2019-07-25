@@ -35,14 +35,7 @@ export default class OrderDetail extends Component {
   state = {
     productList: [],
     orderInfo: {},
-  }
-
-  componentWillMount () {
-    // 设置导航条眼色
-    Taro.setNavigationBarColor({
-      backgroundColor: theme['$color-brand'],
-      frontColor: '#ffffff',
-    })
+    productsAmount: -1,
   }
 
   // setState promise 封装
@@ -72,15 +65,28 @@ export default class OrderDetail extends Component {
       goods,
       orderInfo,
       logistics,
+      orderInfo: {
+        amountReal,
+        amount,
+        amountLogistics,
+      },
     } = this.props.orders[this.orderId]
+
+    const productsAmount = goods.reduce((price, product) => {
+      price += product.amount
+      return price
+    }, 0)
+
     this.setState({
       productList: goods.map(product => ({
         ...product,
-        price: product.amount / product.number,
+        amount: product.amount / product.number,
         name: product.goodsName,
       })),
+      productsAmount,
       orderInfo,
       logistics,
+      couponAmount: (amount * 100 + amountLogistics * 100 - amountReal * 100) / 100,
     })
   }
 
@@ -142,15 +148,17 @@ export default class OrderDetail extends Component {
       productList = [],
       orderInfo: {
         statusStr,
-        amountReal,
         score,
-        amountLogistics,
         remark,
         orderNumber,
         dateAdd,
         status,
         hasRefund,
+        amountReal,
       },
+      productsAmount,
+      couponAmount,
+      otherDiscounts,
       logistics,
     } = this.state
 
@@ -158,7 +166,7 @@ export default class OrderDetail extends Component {
       <View className="container">
         <View className="order-status">订单状态：{statusStr}<Text className="refund">{hasRefund ? '(已退款)': ''}</Text></View>
         {/* 地址 */}
-        {logistics && <Address address={logistics} needLogistics type={1} />}
+        {logistics && <View className="address"><Address address={logistics} needLogistics type={1} /></View>}
 
         {/*  商品卡 */}
         <View className="product-list">
@@ -175,9 +183,11 @@ export default class OrderDetail extends Component {
         {/* 价格信息 */}
         <View className="price-info">
           <PriceInfo
+            productsAmount={productsAmount}
+            couponAmount={couponAmount}
+            otherDiscounts={otherDiscounts}
             realAmount={amountReal}
             score={score}
-            shippingAmount={amountLogistics}
           />
         </View>
 

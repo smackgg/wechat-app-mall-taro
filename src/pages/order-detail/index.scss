@@ -9,17 +9,18 @@ page {
     padding: 0 40rpx;
     display: flex;
     align-items: center;
-    background: $color-brand;
-    color: $color-white;
+    background: $color-white;
+    // color: $color-white;
     font-size: 28rpx;
-
     .refund {
       font-size: 24rpx;
       color: $tag-color;
       margin-left: 15rpx;
     }
   }
-  .product-list {
+
+  .product-list,
+  .address {
     margin-top: 26rpx;
   }
 
