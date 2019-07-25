@@ -65,6 +65,10 @@ export default class ShopCart extends Component {
       selectAll: true,
     })
 
+    if (shopList.length === 0) {
+      nextState.selectAll = false
+    }
+
     this.setState({
       ...nextState,
       productList: shopList,
@@ -89,7 +93,9 @@ export default class ShopCart extends Component {
   // 全选
   toggleSelectAll = () => {
     const { productList, editing, selectAll } = this.state
-
+    if (productList.length === 0) {
+      return
+    }
     // 非编辑模式
     if (!editing) {
       this.props.updateCart({
@@ -126,7 +132,7 @@ export default class ShopCart extends Component {
     return (
       <View className="container shop-cart">
         {productList.length === 0 && <View className="no-data">购物车为空</View>}
-        <ProductList list={productList} edit onChange={this.onListChange}></ProductList>
+        {productList.length > 0 && <ProductList list={productList} edit onChange={this.onListChange}></ProductList>}
         {/* 底部Bar */}
         <View className="bottom-bar-wrapper">
           <Form onSubmit={this.onFromSubmit}>
