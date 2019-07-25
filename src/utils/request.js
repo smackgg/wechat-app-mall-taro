@@ -20,6 +20,13 @@ export default option => new Promise((resolve, reject) => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     success: res => {
+      // token 失效
+      if (res && res.statusCode === 200 && res.data.code === 2000) {
+        Taro.navigateTo({
+          url: '/pages/authorize/index',
+        })
+        return
+      }
       if (res && res.statusCode === 200 && res.data.code === 0) {
         resolve(res.data)
         return
