@@ -15,10 +15,11 @@
 
   .real-amount {
     border-top: 1rpx solid $border-color;
-    margin-top: 20rpx;
+    margin-top: 40rpx;
     padding-top: 20rpx;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     font-size: 28rpx;
   }
 }
