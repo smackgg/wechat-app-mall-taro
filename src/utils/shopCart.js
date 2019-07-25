@@ -103,7 +103,12 @@ export const updateCart = ({ type = 'update', products = [] }) => {
     if (!updated) {
       result.shopList.push(item)
     }
-    result.shopNum += item.number
+
+    // 删除的情况不加 number
+    if (!updated || type !== 'delete') {
+      result.shopNum += item.number
+    }
+
     return result
   }, {
     shopNum: 0,
