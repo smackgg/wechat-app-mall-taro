@@ -87,5 +87,11 @@
     min-height: 100vh;
     background: $color-gray;
     z-index: 99;
+    .unuse-coupon {
+      text-align: center;
+      color: $tag-color;
+      text-decoration: underline;
+      padding: 30rpx 0;
+    }
   }
 }

@@ -326,6 +326,15 @@ export default class Checkout extends Component {
     })
   }
 
+  // 不使用优惠券
+  onUnuseCoupon = () => {
+    this.setState({
+      selectedCoupon: null,
+      showDrawer: false,
+      couponAmount: -1,
+    })
+  }
+
   // 关闭右边栏
   onCloseDrawer = () => {
     this.setState({
@@ -434,6 +443,7 @@ export default class Checkout extends Component {
           onClose={this.onCloseDrawer}
         >
           <View className="coupon-list-wrapper">
+            {selectedCoupon && <View className="unuse-coupon" onClick={this.onUnuseCoupon}>不使用优惠券</View>}
             <CouponList
               list={coupons}
               isUseCoupon
