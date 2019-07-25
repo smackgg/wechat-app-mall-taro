@@ -70,37 +70,50 @@ export const addCart = ({ type = 'cart', productInfo }) => {
 /**
  * 更新购物车
  *
+ * @param {String} type // "update": 更新购物车；"delete": 删除购物车
  * @param {Object} productInfo // 商品信息
+ * @param {Array} productLit // 批量更新
  */
-export const updateCart = ({ productInfo }) => {
-  const { id, number, propertyChildIds } = productInfo
+export const updateCart = ({ type = 'update', products = [] }) => {
   // 购物车数据
   let shopCartInfo = Taro.getStorageSync('shopCartInfo') || {}
 
   if (!shopCartInfo) {
-    shopCartInfo = {
-      shopNum: number,
-      shopList: [productInfo],
-    }
-    return shopCartInfo
+    return
   }
 
 
-  let shopNum = 0
   // 如果历史购物车中有该商品，就直接更新数量和信息
-  shopCartInfo.shopList = shopCartInfo.shopList.map(item => {
-    if (item.goodsId === id && item.propertyChildIds === propertyChildIds) {
-      item.active = true
-      shopNum += number
-      return {
-        ...item,
-        ...productInfo,
+  const { shopNum, shopList } = shopCartInfo.shopList.reduce((result, item) => {
+    let updated = false
+
+    products.forEach(product => {
+      const { goodsId, propertyChildIds } = product
+      if (item.goodsId === goodsId && item.propertyChildIds === propertyChildIds) {
+        updated = true
+        if (type !== 'delete') {
+          result.shopList.push({
+            ...item,
+            ...product,
+          })
+        }
       }
+    })
+
+    if (!updated) {
+      result.shopList.push(item)
     }
-    shopNum += item.number
-    return item
+    result.shopNum += item.number
+    return result
+  }, {
+    shopNum: 0,
+    shopList: [],
   })
-  shopCartInfo.shopNum = shopNum
+
+  shopCartInfo = {
+    shopList,
+    shopNum,
+  }
 
   // 写入本地存储
   Taro.setStorage({

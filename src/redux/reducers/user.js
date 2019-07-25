@@ -95,9 +95,9 @@ export default function user(state = INITIAL_STATE, action) {
       }
     }
     case UPDATE_SHOP_CART: {
-      const { data } = action
+      const { products } = action
       const info = updateCart({
-        productInfo: data,
+        products,
       })
       return {
         ...state,
