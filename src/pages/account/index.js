@@ -119,6 +119,7 @@ export default class Account extends Component {
         totleConsumed,
       },
     } = this.props.user
+
     // 用户滑动到的等级
     const swiperLv = levelList[swiperIndex] || {}
 
@@ -131,11 +132,11 @@ export default class Account extends Component {
             <Image className="avatar" src={avatarUrl}></Image>
             <View className="info">
               <View className="nickname">{nick}</View>
-              <View className="vip-info">
+              {lv !== 0 && <View className="vip-info">
                 <Image className="vip-icon" src={`/assets/icon/vip${lv}_icon.png`}></Image>
                 <View className={`vip-name vip${lv}`}>{name}</View>
                 <View className={`vip-level vip${lv}`}>Lv.{lv}</View>
-              </View>
+              </View>}
             </View>
           </View>
           {/* 会员卡轮播组件 */}
@@ -145,7 +146,7 @@ export default class Account extends Component {
             previousMargin={SWIPER_ITEM_MARGIN}
             nextMargin={SWIPER_ITEM_MARGIN}
             onChange={this.onSwiperChange}
-            current={lv - 1}
+            current={(lv - 1) < 0 ? 0 : (lv - 1)}
           >
             {levelList.map((level, index) => {
               const { id } = level
