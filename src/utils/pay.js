@@ -83,7 +83,7 @@ export default function pay({
           } else {
             await wxPay({
               type,
-              money,
+              money: moneyReal,
               orderId,
             })
           }
