@@ -5,6 +5,7 @@ import { Price } from '@/components'
 import { dateFormat, cError } from '@/utils'
 import { getCoupon } from '@/services/user'
 import { addWxFormId } from '@/services/wechat'
+import classNames from 'classnames'
 import './index.scss'
 
 
@@ -102,13 +103,17 @@ export default class CouponList extends Component {
       }
       {
         list.map(item => {
-          let { id, name, moneyMin, moneyMax, dateEnd, dateEndDays, dateEndType, moneyHreshold, needScore, money } = item
+          let { id, name, moneyMin, moneyMax, dateEnd, dateEndDays, dateEndType, moneyHreshold, needScore, money, status, statusStr } = item
           if (money) {
             moneyMin = moneyMax = money
           }
-          return <View key={id} className="coupon">
+          return <View key={id} className={classNames('coupon', { disabled: status !== 0})}>
             <View className="title-wrapper">
-              <View className="title">{isUseCoupon && selectedCoupon.id === id ? <Text className="selected">[已使用]</Text> : ''}{name}</View>
+              <View className="title">
+                {isUseCoupon && selectedCoupon.id === id ? <Text className="selected">[使用中]</Text> : ''}
+                {status !== 0 && <Text className="selected">[{statusStr}]</Text>}
+                {name}
+              </View>
               {isGetCoupon && <View className="button-wrapper">
                 {needScore > 0 && <Text className="score-info">{needScore}积分兑换</Text>}
                 <Form onSubmit={this.onGetCoupon.bind(this, item)}>

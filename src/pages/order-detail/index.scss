@@ -54,6 +54,7 @@ page {
     height: 100%;
     button {
       margin-right: 15rpx;
+      border: 2rpx solid $tag-color;
 
       &:last-of-type {
         margin-right: 0;
@@ -65,7 +66,6 @@ page {
     }
 
     .button-secondary {
-      border: 2rpx solid $tag-color;
       color: $tag-color;
     }
   }
