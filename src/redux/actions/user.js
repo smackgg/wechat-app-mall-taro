@@ -58,7 +58,7 @@ export const getDefaultAddress = () => async dispatch => {
   const [error, res] = await cError(defaultAddress())
   dispatch({
     type: GET_DEFAULT_ADDRESS_SUCCESS,
-    data: error ? {} : res.data,
+    data: error ? null : res.data,
   })
   return res.data
 }

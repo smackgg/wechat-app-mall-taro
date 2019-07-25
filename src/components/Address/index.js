@@ -41,7 +41,7 @@ export default class Address extends Component {
 
     return needLogistics && <View className="address">
       {
-        (address && !address.id)
+        (!address || (address && !address.id))
         && <View className="add-address" onClick={this.addAddress}>添加收货地址</View>
       }
       {

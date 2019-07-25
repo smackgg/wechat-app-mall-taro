@@ -157,33 +157,41 @@ export default class Checkout extends Component {
     if (needLogistics && peisongType === 'kd') {
       // 没有收货地址
       if (!defaultAddress) {
-        Taro.hideLoading()
-        Taro.showModal({
-          title: '错误',
-          content: '请先设置您的收货地址！',
-          showCancel: false,
-        })
-        return
-      }
-      const { provinceId, cityId, districtId, address, linkMan, mobile, code } = defaultAddress
-      postData = {
-        ...postData,
-        provinceId,
-        cityId,
-        address,
-        linkMan,
-        mobile,
-        code,
-      }
+        // 真实下单
+        if (e) {
+          Taro.hideLoading()
+          Taro.showModal({
+            title: '错误',
+            content: '请先设置您的收货地址！',
+            showCancel: false,
+          })
+          return
+        } else {
+          // 获取价格的情况
+          postData.peisongType = 'zq'
+        }
+      } else {
+        const { provinceId, cityId, districtId, address, linkMan, mobile, code } = defaultAddress
+        postData = {
+          ...postData,
+          provinceId,
+          cityId,
+          address,
+          linkMan,
+          mobile,
+          code,
+        }
 
-      if (districtId) {
-        postData.districtId = districtId
+        if (districtId) {
+          postData.districtId = districtId
+        }
       }
     }
 
     if (selectedCoupon) {
       postData.couponId = selectedCoupon.id
     }
+
 
     const [error, result] = await cError(createOrder(postData))
 
@@ -333,12 +341,12 @@ export default class Checkout extends Component {
       productsAmount,
       shippingAmount,
       couponAmount,
+      otherDiscounts,
       score,
       totalAmount,
       remark,
       showDrawer,
       selectedCoupon,
-      otherDiscounts,
     } = this.state
 
     const noCoupon = coupons.length === 0
