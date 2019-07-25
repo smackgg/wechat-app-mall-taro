@@ -5,6 +5,12 @@
       display: flex;
       align-items: center;
       position: relative;
+      margin-bottom: 20rpx;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
       .product-image {
         width: 120rpx;
         height: 120rpx;

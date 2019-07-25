@@ -1,0 +1,14 @@
+.check-box {
+  border: 2rpx solid $color-brand-dark;
+  border-radius: 50%;
+  width: 40rpx;
+  height: 40rpx;
+  background: $color-brand-dark;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text {
+    display: block;
+  }
+}

@@ -7,15 +7,19 @@ import WxParse from '@/third-utils/wxParse/wxParse'
 import { productPrice } from '@/services/goods'
 import { Price, BottomBar } from '@/components'
 import classNames from 'classnames'
+import { addCart, updateCart } from '@/redux/actions/user'
 
 import './index.scss'
 
 @connect(
-  ({ goods }) => ({
+  ({ goods, user: { shopCartInfo } }) => ({
     productDetail: goods.productDetail,
+    shopCartInfo,
   }),
   dispatch => ({
     getProductDetail: data => dispatch(getProductDetail(data)),
+    addCart: data => dispatch(addCart(data)),
+    updateCart: data => dispatch(updateCart(data)),
   }),
 )
 
@@ -27,7 +31,7 @@ export default class ProductDetail extends Component {
 
   state = {
     productInfo: null,
-    isSkuFloatLayoutOpened: true,
+    isSkuFloatLayoutOpened: false,
     selectSku: {},
     buttonType: 1, // 1: 立即购买 2: 加入购物车
     amount: 1, // 商品数量
@@ -35,14 +39,20 @@ export default class ProductDetail extends Component {
 
   componentWillMount() {
     // 获取页面商品id
-    const { id } = this.$router.params
+    let { id, scene } = this.$router.params
     this.productId = id
-    // 设置bar颜色
-    // Taro.setNavigationBarColor({
-    //   backgroundColor: theme['$color-brand'],
-    //   frontColor: '#ffffff',
-    // })
+
+    // 处理扫码进商品详情页面的逻辑
+    if (scene) {
+      scene = decodeURIComponent(scene)
+      if (scene) {
+        const [productId, referrer] = scene.split(',')
+        this.productId = productId
+        Taro.setStorageSync('referrer', referrer)
+      }
+    }
   }
+
   async componentDidShow() {
     // 获取商品详情数据
     await this.props.getProductDetail({
@@ -50,9 +60,10 @@ export default class ProductDetail extends Component {
     })
 
     const productInfo = this.props.productDetail[this.productId]
-    console.log(productInfo)
 
     this.handleSelectSku(productInfo)
+
+    this.curuid = Taro.getStorageSync('uid')
 
     // 处理商品详情富文本
     WxParse.wxParse('article', 'html', productInfo.content, this.$scope, 5)
@@ -183,7 +194,6 @@ export default class ProductDetail extends Component {
   // 处理用户点击提交按钮逻辑
   handleSubmit = () => {
     const { buttonType } = this.state
-    console.log(buttonType)
     buttonType === 1
       ? this.buyNow()
       : this.addToCart()
@@ -201,13 +211,11 @@ export default class ProductDetail extends Component {
       return
     }
 
-    //组建立即购买信息
-    const buyNowInfo = this.buliduBuyNowInfo()
-
-    // 写入本地存储
-    Taro.setStorage({
-      key: 'buyNowInfo',
-      data: buyNowInfo,
+    // 组建立即购买信息
+    const productInfo = this.buliduCartInfo()
+    this.props.addCart({
+      type: 'buynow',
+      productInfo,
     })
 
     // 关闭弹窗
@@ -220,90 +228,25 @@ export default class ProductDetail extends Component {
 
   // 加购物车（本地缓存）
   addToCart = () => {
-    //组建购物车
-    var shopCarInfo = this.bulidShopCarInfo()
+    // 组建购物车
+    const productInfo = this.buliduCartInfo()
 
-    // this.setData({
-    //   shopCarInfo: shopCarInfo,
-    //   shopNum: shopCarInfo.shopNum
-    // });
-
-    // 写入本地存储
-    wx.setStorage({
-      key: 'shopCarInfo',
-      data: shopCarInfo
+    this.props.addCart({
+      productInfo,
     })
-    this.closePopupTap();
-    wx.showToast({
+
+    // 关闭弹窗
+    this.handleClose()
+
+    Taro.showToast({
       title: '加入购物车成功',
       icon: 'success',
-      duration: 2000
+      duration: 2000,
     })
-    //console.log(shopCarInfo);
-
-    //shopCarInfo = {shopNum:12,shopList:[]}
   }
 
-  // 组建购物车信息
-  bulidShopCartInfo = () => {
-    const {
-      productInfo,
-      basicInfo,
-      selectSku: { propertyChildIds },
-      amount,
-    } = this.state
-
-    // 加入购物车
-    const shopCarMap = {
-      ...basicInfo,
-      propertyChildIds,
-      active: true,
-      amount,
-    }
-    shopCarMap.goodsId = this.data.goodsDetail.basicInfo.id;
-    shopCarMap.pic = this.data.goodsDetail.basicInfo.pic;
-    shopCarMap.name = this.data.goodsDetail.basicInfo.name;
-    // shopCarMap.label=this.data.goodsDetail.basicInfo.id; 规格尺寸
-    shopCarMap.propertyChildIds = this.data.propertyChildIds;
-    shopCarMap.label = this.data.propertyChildNames;
-    shopCarMap.price = this.data.selectSizePrice;
-    shopCarMap.score = this.data.totalScoreToPay;
-    shopCarMap.left = "";
-    shopCarMap.active = true;
-    shopCarMap.number = this.data.buyNumber;
-    shopCarMap.logisticsType = this.data.goodsDetail.basicInfo.logisticsId;
-    shopCarMap.logistics = this.data.goodsDetail.logistics;
-    shopCarMap.weight = this.data.goodsDetail.basicInfo.weight;
-
-    var shopCarInfo = this.data.shopCarInfo;
-    if (!shopCarInfo.shopNum) {
-      shopCarInfo.shopNum = 0;
-    }
-    if (!shopCarInfo.shopList) {
-      shopCarInfo.shopList = [];
-    }
-    var hasSameGoodsIndex = -1;
-    for (var i = 0; i < shopCarInfo.shopList.length; i++) {
-      var tmpShopCarMap = shopCarInfo.shopList[i];
-      if (tmpShopCarMap.goodsId == shopCarMap.goodsId && tmpShopCarMap.propertyChildIds == shopCarMap.propertyChildIds) {
-        hasSameGoodsIndex = i;
-        shopCarMap.number = shopCarMap.number + tmpShopCarMap.number;
-        break;
-      }
-    }
-
-    shopCarInfo.shopNum = shopCarInfo.shopNum + this.data.buyNumber;
-    if (hasSameGoodsIndex > -1) {
-      shopCarInfo.shopList.splice(hasSameGoodsIndex, 1, shopCarMap);
-    } else {
-      shopCarInfo.shopList.push(shopCarMap);
-    }
-    shopCarInfo.kjId = this.data.kjId;
-    return shopCarInfo;
-  }
-
-  // 组建立即购买信息
-  buliduBuyNowInfo = () => {
+  // 组建购物车信息 type=0 立即购买 type=1 购物车
+  buliduCartInfo = () => {
     const {
       selectSku: {
         propertyChildIds,
@@ -338,16 +281,13 @@ export default class ProductDetail extends Component {
       score,
       left: '',
       active: true,
-      number: amount,
+      number: +amount,
       logisticsType: logisticsId,
       logistics,
       weight,
     }
 
-    return {
-      shopNum: 0,
-      shopList: [productInfo],
-    }
+    return productInfo
   }
 
   // 跳转 url

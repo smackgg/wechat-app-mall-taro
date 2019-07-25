@@ -9,5 +9,5 @@ module.exports = {
     '$color-brand': '#181923',
     '$color-brand-light': '#52535a',
     '$color-brand-dark': '#13141c',
-  }, // 主体颜色 详情见 https://nervjs.github.io/taro-ui-theme-preview/
+  }, // 主题颜色 详情见 https://nervjs.github.io/taro-ui-theme-preview/
 }

@@ -1,3 +1,6 @@
+import Taro from '@tarojs/taro'
+import { addCart, updateCart } from '@/utils/shopCart'
+
 import {
   GET_USER_DETAIL_SUCCESS,
   GET_LEVEL_LIST_SUCCESS,
@@ -7,7 +10,11 @@ import {
   GET_USER_CASHLOG_SUCCESS,
   GET_COUPONS_SUCCESS,
   GET_GETABLE_COUPONS_SUCCESS,
+  ADD_SHOP_CART,
+  UPDATE_SHOP_CART,
 } from '../actions/user'
+
+const shopCartInfo = Taro.getStorageSync('shopCartInfo')
 
 const INITIAL_STATE = {
   userDetail: {},
@@ -22,6 +29,7 @@ const INITIAL_STATE = {
   },
   cashLog: [], // 资金流水
   coupons: [],
+  shopCartInfo: shopCartInfo || {},
 }
 
 export default function user(state = INITIAL_STATE, action) {
@@ -69,6 +77,33 @@ export default function user(state = INITIAL_STATE, action) {
         ...state,
         getableCoupons: action.data,
       }
+    case ADD_SHOP_CART: {
+      const { actionType, data } = action
+      const info = addCart({
+        type: actionType,
+        productInfo: data,
+      })
+
+      if (actionType === 'cart') {
+        return {
+          ...state,
+          shopCartInfo: info,
+        }
+      }
+      return {
+        ...state,
+      }
+    }
+    case UPDATE_SHOP_CART: {
+      const { data } = action
+      const info = updateCart({
+        productInfo: data,
+      })
+      return {
+        ...state,
+        shopCartInfo: info,
+      }
+    }
     default:
       return state
   }

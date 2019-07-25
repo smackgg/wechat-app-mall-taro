@@ -17,9 +17,13 @@ export const GET_DEFAULT_ADDRESS_SUCCESS = 'config/GET_DEFAULT_ADDRESS_SUCCESS'
 export const GET_USER_AMOUNT_SUCCESS = 'config/GET_USER_AMOUNT_SUCCESS'
 export const GET_USER_CASHLOG_SUCCESS = 'config/GET_USER_CASHLOG_SUCCESS'
 
+// 优惠券
 export const GET_COUPONS_SUCCESS = 'config/GET_COUPONS_SUCCESS'
 export const GET_GETABLE_COUPONS_SUCCESS = 'config/GET_GETABLE_COUPONS_SUCCESS'
 
+// 购物车
+export const ADD_SHOP_CART = 'config/ADD_SHOP_CART'
+export const UPDATE_SHOP_CART = 'config/UPDATE_SHOP_CART'
 
 // 用户详情
 export const getUserDetail = () => async dispatch => {
@@ -94,5 +98,27 @@ export const getGetableCoupons = data => async dispatch => {
   return dispatch({
     type: GET_GETABLE_COUPONS_SUCCESS,
     data: error ? [] : res.data,
+  })
+}
+
+// 添加购物车
+export const addCart = ({
+  type = 'cart',
+  productInfo,
+}) => async dispatch => {
+  return dispatch({
+    type: ADD_SHOP_CART,
+    data: productInfo,
+    actionType: type,
+  })
+}
+
+// 更新购物车信息
+export const updateCart = ({
+  productInfo,
+}) => async dispatch => {
+  return dispatch({
+    type: UPDATE_SHOP_CART,
+    data: productInfo,
   })
 }

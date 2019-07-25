@@ -39,11 +39,13 @@ export default function pay({
       return
     }
 
+    const moneyReal = (money * 100 - balance * 100) / 100 // 浮点数bug
+
     let msg = '订单金额: ' + money + ' 元'
     if (balance > 0) {
       msg += '，可用余额为 ' + balance + ' 元'
-      if (money - balance > 0) {
-        msg += '，仍需微信支付 ' + (money - balance) + ' 元'
+      if (moneyReal > 0) {
+        msg += '，仍需微信支付 ' + moneyReal + ' 元'
       }
     }
 
@@ -56,14 +58,12 @@ export default function pay({
       }
     }
 
-    const moneyReal = money - balance
-
     Taro.showModal({
       title: '请确认支付',
       content: msg,
       confirmText: '确认支付',
       cancelText: '取消支付',
-      success: async (res) => {
+      success: async res => {
         if (res.confirm) {
           // 直接支付订单
           if (orderId && moneyReal <= 0) {

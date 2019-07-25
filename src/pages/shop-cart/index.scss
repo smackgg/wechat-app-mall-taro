@@ -1,0 +1,13 @@
+page {
+  background: $color-gray;
+}
+.container {
+  min-height: 100vh;
+
+  .no-data {
+    margin-top: 150rpx;
+    color: $text-color-gray;
+    font-size: 32rpx;
+    text-align: center;
+  }
+}
