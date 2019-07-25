@@ -36,6 +36,9 @@ var config = {
     patterns: [
       { from: './shopConfig.js', to: 'dist/shopConfig.js' },
       { from: './src/assets/', to: 'dist/assets/' },
+      { from: './src/third-utils/wxParse/wxParse.wxml', to: 'dist/third-utils/wxParse/wxParse.wxml' },
+      { from: './src/third-utils/wxParse/wxParse.wxss', to: 'dist/third-utils/wxParse/wxParse.wxss' },
+      // { from: './src/third-utils/wxParse/emojis/', to: 'dist/third-utils/wxParse/emojis/' },
     ],
   },
   weapp: {
