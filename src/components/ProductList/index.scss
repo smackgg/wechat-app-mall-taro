@@ -32,8 +32,12 @@
       .count {
         position: absolute;
         right: 20rpx;
-        bottom: 20rpx;
+        bottom: 0;
         font-size: 24rpx;
       }
+    }
+
+    .check-box {
+      margin-right: 30rpx;
     }
   }
