@@ -3,6 +3,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  .arrow-right {
+    width: 14rpx;
+    height: 25rpx;
+    display: block;
+    margin-left: 20rpx;
+  }
 
   .no-data {
     margin-top: 150rpx;
@@ -27,11 +33,6 @@
     .order-status {
       display: flex;
       align-items: center;
-      .arrow-right {
-        width: 14rpx;
-        display: block;
-        margin-left: 20rpx;
-      }
     }
 
     .refund {
