@@ -121,7 +121,7 @@ export default class Auth extends Component {
         }
 
         // 登录错误
-        if (error || result.code != 0) {
+        if (error || result.code !== 0) {
           Taro.hideLoading()
           Taro.showModal({
             title: '提示',

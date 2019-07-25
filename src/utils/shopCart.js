@@ -92,6 +92,7 @@ export const updateCart = ({ type = 'update', products = [] }) => {
       if (item.goodsId === goodsId && item.propertyChildIds === propertyChildIds) {
         updated = true
         if (type !== 'delete') {
+          result.shopNum += product.number
           result.shopList.push({
             ...item,
             ...product,
@@ -104,10 +105,10 @@ export const updateCart = ({ type = 'update', products = [] }) => {
       result.shopList.push(item)
     }
 
-    // 删除的情况不加 number
-    if (!updated || type !== 'delete') {
+    if (!updated) {
       result.shopNum += item.number
     }
+
 
     return result
   }, {
