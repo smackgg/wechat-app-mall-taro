@@ -187,7 +187,7 @@ export default class ProductDetail extends Component {
   // 处理数量变更
   onNumberChange = value => {
     this.setState({
-      amount: value,
+      amount: +value,
     })
   }
 

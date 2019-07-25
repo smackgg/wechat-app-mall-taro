@@ -14,7 +14,7 @@ export default function Checkbox(props) {
   }
 
   return <View className={classNames('check-box', { checked })} onClick={onClick}>
-    <AtIcon value="check" size="10" color="#fff"></AtIcon>
+    <AtIcon value="check" size="14" color="#fff"></AtIcon>
   </View>
 }
 
