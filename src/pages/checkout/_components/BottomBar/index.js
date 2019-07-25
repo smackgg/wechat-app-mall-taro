@@ -9,7 +9,7 @@ import './index.scss'
 export default function BottomBar(props) {
   const { totalAmount, placeOrder } = props
   return <View className="bottom-bar">
-    {totalAmount >= 0 && <Text>实付款：￥{priceToFloat(totalAmount)}</Text>}
+    {totalAmount >= 0 && <Text>实付：￥{priceToFloat(totalAmount)}</Text>}
     <AtForm onSubmit={placeOrder}>
       <View className="place-order">
         <AtButton

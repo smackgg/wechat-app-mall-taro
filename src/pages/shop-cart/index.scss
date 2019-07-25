@@ -12,20 +12,6 @@ page {
     text-align: center;
   }
 
-  .button {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    z-index: 10;
-    height: 100%;
-    width: 260rpx;
-    background: $tag-color;
-    border-radius: 0;
-    font-size: 28rpx;
-    line-height: 100rpx;
-    color: $color-white;
-  }
-
   .bottom-bar {
     padding: 0 30rpx;
     display: flex;
@@ -34,6 +20,19 @@ page {
     font-size: 26rpx;
     line-height: 1;
 
+    .button {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+      height: 100%;
+      width: 260rpx;
+      background: $tag-color;
+      border-radius: 0;
+      font-size: 28rpx;
+      line-height: 100rpx;
+      color: $color-white;
+    }
     .checkbox-wrapper {
       height: 100%;
       display: flex;

@@ -84,11 +84,11 @@ export const getUserCashLog = () => async dispatch => {
 }
 
 // 获取优惠券列表
-export const getCoupons = () => async dispatch => {
-  const [error, res] = await cError(coupons())
+export const getCoupons = (data = {}) => async dispatch => {
+  const [error, res] = await cError(coupons(data))
   return dispatch({
     type: GET_COUPONS_SUCCESS,
-    data: error ? {} : res.data,
+    data: error ? [] : res.data,
   })
 }
 

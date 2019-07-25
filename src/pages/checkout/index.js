@@ -1,24 +1,27 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Text, Form, Button, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import { getDefaultAddress } from '@/redux/actions/user'
+import { getDefaultAddress, getCoupons } from '@/redux/actions/user'
 import { createOrder } from '@/services/order'
-import { AtTextarea } from 'taro-ui'
-import { cError, theme } from '@/utils'
+import { AtTextarea, AtDrawer } from 'taro-ui'
+import { cError } from '@/utils'
 import { addWxFormId, sendTempleMsg } from '@/services/wechat'
-import { PriceInfo, ProductList, Address, BottomBar } from './_components'
+import { PriceInfo, ProductList, Address, BottomBar, Price, CouponList } from '@/components'
 
 import './index.scss'
 
 @connect(({
   user: {
     defaultAddress,
+    coupons,
   },
 }) => ({
   defaultAddress,
+  coupons: coupons.filter(coupon => coupon.status === 0),
 }), dispatch => ({
   getDefaultAddress: type => dispatch(getDefaultAddress(type)),
+  getCoupons: data => dispatch(getCoupons(data)),
 }))
 
 export default class Checkout extends Component {
@@ -33,18 +36,15 @@ export default class Checkout extends Component {
     shippingAmount: -1, // 运费
     couponAmount: -1, // 优惠券
     totalAmount: -1, // 总价格
+    otherDiscounts: -1, // 其它减免 会员折扣等
     score: -1, // 积分
     remark: '', // 留言
+    selectedCoupon: null,
+    showDrawer: false,
   }
 
   componentWillMount () {
     this.goodsJsonStr = ''
-
-    // 设置导航条眼色
-    Taro.setNavigationBarColor({
-      backgroundColor: theme['$color-brand'],
-      frontColor: '#ffffff',
-    })
   }
 
   // setState promise 封装
@@ -73,11 +73,16 @@ export default class Checkout extends Component {
       productList,
     })
 
-    // 拉取默认地址
-    await this.props.getDefaultAddress()
+    // 拉取优惠券 getCoupons
+    this.props.getCoupons({
+      status: 0,
+    })
 
     // 处理数据初始化
     await this.initData(productList)
+
+    // 拉取默认地址
+    await this.props.getDefaultAddress()
 
     this.placeOrder()
   }
@@ -106,13 +111,6 @@ export default class Checkout extends Component {
         logisticsType: 0,
         inviter_id: inviterId,
       })
-      // result.goodsJsonStr += (result.goodsJsonStr ? ',' : '') + JSON.stringify({
-      //   goodsId,
-      //   number,
-      //   propertyChildIds,
-      //   logisticsType: 0,
-      //   inviter_id: inviterId,
-      // })
       return result
     }, {
       needLogistics: false,
@@ -143,12 +141,12 @@ export default class Checkout extends Component {
       })
     }
 
-    const { remark, peisongType, needLogistics } = this.state
+    const { remark, peisongType, needLogistics, selectedCoupon, productsAmount } = this.state
     const { defaultAddress } = this.props
     let postData = {
       goodsJsonStr: this.goodsJsonStr,
-      remark: remark,
-      peisongType: peisongType,
+      remark,
+      peisongType,
       calculate: !e, // 计算价格
     }
 
@@ -180,6 +178,10 @@ export default class Checkout extends Component {
       }
     }
 
+    if (selectedCoupon) {
+      postData.couponId = selectedCoupon.id
+    }
+
     const [error, result] = await cError(createOrder(postData))
 
     if (error) {
@@ -199,11 +201,16 @@ export default class Checkout extends Component {
         isNeedLogistics,
         score,
       } = result.data
+
+      // 会员折扣
+      const otherDiscounts = productsAmount - amountTotle > 0 ? productsAmount - amountTotle : -1
+      console.log(otherDiscounts)
       this.setState({
         totalAmount: amountTotle + amountLogistics,
         shippingAmount: amountLogistics,
         score,
         needLogistics: isNeedLogistics,
+        otherDiscounts,
       })
       return
     }
@@ -279,8 +286,36 @@ export default class Checkout extends Component {
     })
   }
 
+  // 展示优惠券列表
+  showCoupons = noCoupon => {
+    console.log(1)
+    if (noCoupon) {
+      return
+    }
+    this.setState({
+      showDrawer: true,
+    })
+  }
+
+  // 用户选择优惠券
+  onSelectCoupon = coupon => {
+    const { totalAmount } = this.state
+    this.setState({
+      selectedCoupon: coupon,
+      showDrawer: false,
+      couponAmount: totalAmount >= coupon.money ? coupon.money : totalAmount,
+    })
+  }
+
+  // 关闭右边栏
+  onCloseDrawer = () => {
+    this.setState({
+      showDrawer: false,
+    })
+  }
+
   render () {
-    const { defaultAddress } = this.props
+    const { defaultAddress, coupons } = this.props
     const {
       productList,
       needLogistics,
@@ -290,41 +325,24 @@ export default class Checkout extends Component {
       score,
       totalAmount,
       remark,
+      showDrawer,
+      selectedCoupon,
+      otherDiscounts,
     } = this.state
 
-    const priceList = [
-      {
-        key: 'productsAmount',
-        title: '商品金额',
-        price: productsAmount,
-        symbol: '￥',
-      },
-      {
-        key: 'shippingAmount',
-        title: '运费',
-        price: shippingAmount,
-        symbol: '+￥',
-      },
-      {
-        key: 'couponAmount',
-        title: '优惠券',
-        price: couponAmount,
-        symbol: '-￥',
-      },
-      {
-        key: 'score',
-        title: '消耗积分',
-        price: score,
-        symbol: '-',
-      },
-    ]
+    const noCoupon = coupons.length === 0
+
+    const realAmount = selectedCoupon ? totalAmount - couponAmount : totalAmount
+
     return (
       <View className="container">
         {/* 地址 */}
-        <Address needLogistics={needLogistics} defaultAddress={defaultAddress} />
+        <Address needLogistics={needLogistics} address={defaultAddress} />
 
         {/*  商品卡 */}
-        <ProductList productList={productList} />
+        <View className="product-list">
+          <ProductList list={productList} />
+        </View>
 
         {/* 留言 */}
         <AtTextarea
@@ -335,13 +353,68 @@ export default class Checkout extends Component {
           placeholder="买家留言"
         />
 
+        <View className="coupons-wrapper" onClick={this.showCoupons.bind(this, noCoupon)}>
+          <Text>优惠券</Text>
+          <View className="right">
+            <Text className={noCoupon ? 'gray' : 'red'}>
+              {noCoupon ? '暂无优惠券' : (selectedCoupon ? `${selectedCoupon.name}： ${selectedCoupon.money}元优惠券` : '不使用优惠券')}
+            </Text>
+            {
+              !noCoupon && <Image
+                className="arrow-right"
+                src="/assets/icon/arrow-right.png"
+                mode="widthFix"
+              />
+            }
+          </View>
+        </View>
+
         {/* 价格信息 */}
-        <PriceInfo
-          list={priceList}
-        />
+        <View className="price-info">
+          <PriceInfo
+            productsAmount={productsAmount}
+            shippingAmount={shippingAmount}
+            couponAmount={couponAmount}
+            score={score}
+            realAmount={realAmount}
+            otherDiscounts={otherDiscounts}
+          />
+        </View>
 
         {/* 底部Bar */}
-        <BottomBar totalAmount={totalAmount} placeOrder={this.placeOrder} />
+        <BottomBar>
+          <Form onSubmit={this.placeOrder}>
+            <View className="bottom-bar">
+              <Text className="price">实付：</Text>
+              <Price price={realAmount} score={score} />
+              <Button
+                form-type="submit"
+                className="button"
+                hoverClass="none"
+                size="mini"
+                type="secondary"
+              >去结算</Button>
+            </View>
+          </Form>
+        </BottomBar>
+
+        {/* 优惠券侧弹窗 */}
+        <AtDrawer
+          show={showDrawer}
+          width="90vw"
+          mask
+          right
+          onClose={this.onCloseDrawer}
+        >
+          <View className="coupon-list-wrapper">
+            <CouponList
+              list={coupons}
+              isUseCoupon
+              selectedCoupon={selectedCoupon}
+              onSelectCoupon={this.onSelectCoupon}
+            ></CouponList>
+          </View>
+        </AtDrawer>
       </View>
     )
   }

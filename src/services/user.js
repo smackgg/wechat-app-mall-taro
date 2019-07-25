@@ -87,8 +87,9 @@ export const userCashLog = () => request({
 })
 
 // 查询用户优惠券
-export const coupons = () => request({
+export const coupons = data => request({
   url: '/discounts/my',
+  data,
 })
 
 // 查询可领取优惠券

@@ -406,6 +406,13 @@ export default class EditAddress extends Component {
     Taro.navigateBack()
   }
 
+  // 关闭右边栏
+  onCloseDrawer = () => {
+    this.setState({
+      showDrawer: false,
+    })
+  }
+
   render() {
     const {
       addressData: {
@@ -484,6 +491,7 @@ export default class EditAddress extends Component {
             width="90vw"
             mask
             right
+            onClose={this.onCloseDrawer}
           >
             <View className="region-indexes">
               <AtIndexes

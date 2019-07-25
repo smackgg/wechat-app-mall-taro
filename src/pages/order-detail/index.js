@@ -167,7 +167,7 @@ export default class OrderDetail extends Component {
 
         {/* 订单信息 */}
         <View className="order-info">
-          {remark && <View className="content"><Text>用户备注：</Text><Text className="value" selectable>{remark}{remark}{remark}{remark}</Text></View>}
+          {remark && <View className="content"><Text>用户备注：</Text><Text className="value" selectable>{remark}</Text></View>}
           <View className="content"><Text>订单编号：</Text><Text className="value" selectable>{orderNumber}</Text></View>
           <View className="content"><Text>下单时间：</Text><Text className="value"selectable>{dateAdd}</Text></View>
         </View>
