@@ -5,7 +5,7 @@ import { connect } from '@tarojs/redux'
 import { getCoupons, getGetableCoupons } from '@/redux/actions/user'
 
 import { AtTabs, AtTabsPane, AtMessage } from 'taro-ui'
-import CouponList from './_components/CouponList'
+import { CouponList } from '@/components'
 
 import './index.scss'
 

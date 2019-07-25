@@ -66,6 +66,9 @@
     .red {
       color: $text-color-red;
     }
+    .selected {
+      color: $tag-color;
+    }
     .right {
       display: flex;
       align-items: center;

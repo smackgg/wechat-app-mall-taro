@@ -115,10 +115,12 @@ export const addCart = ({
 
 // 更新购物车信息
 export const updateCart = ({
+  type = 'update',
   products,
 }) => async dispatch => {
   return dispatch({
     type: UPDATE_SHOP_CART,
     products,
+    actionType: type,
   })
 }

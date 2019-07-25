@@ -2,12 +2,13 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Form, Button, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import { getDefaultAddress, getCoupons } from '@/redux/actions/user'
+import { getDefaultAddress, getCoupons, updateCart } from '@/redux/actions/user'
 import { createOrder } from '@/services/order'
 import { AtTextarea, AtDrawer } from 'taro-ui'
 import { cError } from '@/utils'
 import { addWxFormId, sendTempleMsg } from '@/services/wechat'
 import { PriceInfo, ProductList, Address, BottomBar, Price, CouponList } from '@/components'
+import classNames from 'classnames'
 
 import './index.scss'
 
@@ -22,6 +23,7 @@ import './index.scss'
 }), dispatch => ({
   getDefaultAddress: type => dispatch(getDefaultAddress(type)),
   getCoupons: data => dispatch(getCoupons(data)),
+  updateCart: data => dispatch(updateCart(data)),
 }))
 
 export default class Checkout extends Component {
@@ -54,8 +56,9 @@ export default class Checkout extends Component {
 
   async componentDidShow () {
     let productList = []
+    this.orderType = this.$router.params.orderType || 'cart'
     // 立即购买进入结算页
-    if (this.$router.params.orderType === 'buyNow') {
+    if (this.orderType === 'buyNow') {
       var buyNowInfo = Taro.getStorageSync('buyNowInfo')
 
       if (buyNowInfo && buyNowInfo.shopList) {
@@ -141,7 +144,7 @@ export default class Checkout extends Component {
       })
     }
 
-    const { remark, peisongType, needLogistics, selectedCoupon, productsAmount } = this.state
+    const { remark, peisongType, needLogistics, selectedCoupon, productsAmount, productList } = this.state
     const { defaultAddress } = this.props
     let postData = {
       goodsJsonStr: this.goodsJsonStr,
@@ -204,7 +207,7 @@ export default class Checkout extends Component {
 
       // 会员折扣
       const otherDiscounts = productsAmount - amountTotle > 0 ? productsAmount - amountTotle : -1
-      console.log(otherDiscounts)
+
       this.setState({
         totalAmount: amountTotle + amountLogistics,
         shippingAmount: amountLogistics,
@@ -280,6 +283,15 @@ export default class Checkout extends Component {
       url: `pages/order-detail/index?id=${id}`,
     })
 
+    if (this.orderType === 'buyNow') {
+      Taro.removeStorageSync('buyNowInfo')
+    } else {
+      this.props.updateCart({
+        type: 'delete',
+        products: productList,
+      })
+    }
+
     // 下单成功，跳转到订单详情
     Taro.redirectTo({
       url: `/pages/order-detail/index?id=${id}`,
@@ -288,7 +300,6 @@ export default class Checkout extends Component {
 
   // 展示优惠券列表
   showCoupons = noCoupon => {
-    console.log(1)
     if (noCoupon) {
       return
     }
@@ -356,8 +367,16 @@ export default class Checkout extends Component {
         <View className="coupons-wrapper" onClick={this.showCoupons.bind(this, noCoupon)}>
           <Text>优惠券</Text>
           <View className="right">
-            <Text className={noCoupon ? 'gray' : 'red'}>
-              {noCoupon ? '暂无优惠券' : (selectedCoupon ? `${selectedCoupon.name}： ${selectedCoupon.money}元优惠券` : '不使用优惠券')}
+            <Text className={classNames({
+              gray: noCoupon,
+              red: !noCoupon && !selectedCoupon,
+              selected: selectedCoupon,
+            })}>
+              {noCoupon
+                ? '暂无优惠券'
+                : (selectedCoupon
+                  ? `${selectedCoupon.name}： ${selectedCoupon.money}元优惠券`
+                  : `${coupons.length} 张优惠券可用`)}
             </Text>
             {
               !noCoupon && <Image
