@@ -2,6 +2,9 @@
 
 .price {
   font-family: 'DINAlternate-Bold';
+  .small-text {
+    font-size: 24rpx;
+  }
 
   // 优惠券价格样式
   &.coupon-price {

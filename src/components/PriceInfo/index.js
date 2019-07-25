@@ -24,6 +24,10 @@ const PRICE_MAP = {
     title: '消耗积分',
     symbol: '-',
   },
+  otherDiscounts: {
+    title: '其它优惠（包括会员折扣等）',
+    symbol: '-',
+  },
 }
 export default function PriceInfo(props) {
   const { realAmount, score } = props
@@ -44,7 +48,7 @@ export default function PriceInfo(props) {
       })}
     </View>
     <View className="real-amount">
-      实付：<Price price={realAmount} score={score}></Price>
+      <Text>实付：</Text><Price price={realAmount} score={score}></Price>
     </View>
   </View>
 }
