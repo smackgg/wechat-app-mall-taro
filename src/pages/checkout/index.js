@@ -412,7 +412,7 @@ export default class Checkout extends Component {
                 hoverClass="none"
                 size="mini"
                 type="secondary"
-              >去结算</Button>
+              >去下单</Button>
             </View>
           </Form>
         </BottomBar>

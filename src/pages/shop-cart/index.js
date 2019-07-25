@@ -103,7 +103,15 @@ export default class ShopCart extends Component {
 
   // 用户点击提交
   onSubmit = () => {
-    const { editing } = this.state
+    const { editing, productList } = this.state
+    if (!productList || productList.length === 0) {
+      Taro.showToast({
+        title: '购物车为空~',
+        icon: 'none',
+        duration: 2000,
+      })
+      return
+    }
     // 非编辑模式
     if (!editing) {
       // 跳转到结算页
@@ -120,7 +128,7 @@ export default class ShopCart extends Component {
         {productList.length === 0 && <View className="no-data">购物车为空</View>}
         <ProductList list={productList} edit onChange={this.onListChange}></ProductList>
         {/* 底部Bar */}
-        <BottomBar>
+        <View className="bottom-bar-wrapper">
           <Form onSubmit={this.onFromSubmit}>
             <View className="bottom-bar">
               <View className="checkbox-wrapper" onClick={this.toggleSelectAll}>
@@ -139,7 +147,7 @@ export default class ShopCart extends Component {
               >去结算</Button>
             </View>
           </Form>
-        </BottomBar>
+        </View>
       </View>
     )
   }

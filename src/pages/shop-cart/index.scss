@@ -12,6 +12,15 @@ page {
     text-align: center;
   }
 
+  .bottom-bar-wrapper {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 100rpx;
+    background: $color-white;
+    border-top: 1rpx solid $border-color;
+  }
+
   .bottom-bar {
     padding: 0 30rpx;
     display: flex;
