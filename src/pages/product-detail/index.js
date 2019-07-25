@@ -359,7 +359,7 @@ export default class ProductDetail extends Component {
           autoplay
         >
           {pics.map((item, index) => <SwiperItem showMenuByLongpress className="swiper-item" key={index}>
-            <Image className="swiper-item_image" mode="scaleToFill" src={item.pic} />
+            <Image className="swiper-item_image" mode="aspectFill" src={item.pic} />
           </SwiperItem>)}
         </Swiper>
 
