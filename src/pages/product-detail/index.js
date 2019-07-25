@@ -312,6 +312,7 @@ export default class ProductDetail extends Component {
   }
 
   render () {
+    const { shopCartInfo } = this.props
     const {
       productInfo,
       isSkuFloatLayoutOpened,
@@ -420,6 +421,9 @@ export default class ProductDetail extends Component {
                   mode="widthFix"
                 />
                 <Text>购物车</Text>
+                {shopCartInfo && shopCartInfo.shopNum > 0 && <View className="badge">
+                  {shopCartInfo.shopNum > 99 ? '99+' : shopCartInfo.shopNum}
+                </View>}
               </View>
               <Button className="icon" openType="contact">
                 <Image

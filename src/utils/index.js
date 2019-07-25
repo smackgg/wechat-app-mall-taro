@@ -29,3 +29,19 @@ export const priceToFloat = (price = 0) => {
   const float = price.toFixed(2)
   return isNaN(float) ? '' : float
 }
+
+
+// 设置购物车小红点
+export const setCartBadge = () => {
+  const { shopNum } = Taro.getStorageSync('shopCartInfo') || {}
+  if (shopNum && shopNum > 0) {
+    Taro.setTabBarBadge({
+      index: 2,
+      text: String(shopNum),
+    })
+  } else {
+    Taro.removeTabBarBadge({
+      index: 2,
+    })
+  }
+}

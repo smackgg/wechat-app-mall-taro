@@ -6,10 +6,9 @@ import { getLevelList, getUserAmount } from '@/redux/actions/user'
 import {
   getOrderStatistics,
 } from '@/redux/actions/order'
-// import { AtButton } from 'taro-ui'
-import { theme, priceToFloat } from '@/utils'
+
+import { theme, priceToFloat, setCartBadge } from '@/utils'
 import classNames from 'classnames'
-import { AtIcon } from 'taro-ui'
 
 import './index.scss'
 
@@ -67,6 +66,7 @@ export default class Account extends Component {
   ]
 
   componentWillMount() {
+    setCartBadge()
     Taro.setNavigationBarColor({
       backgroundColor: theme['$color-brand'],
       frontColor: '#ffffff',

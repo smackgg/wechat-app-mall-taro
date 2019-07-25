@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro'
 import { addCart, updateCart } from '@/utils/shopCart'
+import { setCartBadge } from '@/utils'
 
 import {
   GET_USER_DETAIL_SUCCESS,
@@ -14,7 +15,10 @@ import {
   UPDATE_SHOP_CART,
 } from '../actions/user'
 
-const shopCartInfo = Taro.getStorageSync('shopCartInfo')
+const shopCartInfo = Taro.getStorageSync('shopCartInfo') || {}
+
+setCartBadge()
+
 
 const INITIAL_STATE = {
   userDetail: {},
@@ -85,6 +89,7 @@ export default function user(state = INITIAL_STATE, action) {
       })
 
       if (actionType === 'cart') {
+        setCartBadge()
         return {
           ...state,
           shopCartInfo: info,
@@ -100,6 +105,7 @@ export default function user(state = INITIAL_STATE, action) {
         type: actionType,
         products,
       })
+      setCartBadge()
       return {
         ...state,
         shopCartInfo: info,

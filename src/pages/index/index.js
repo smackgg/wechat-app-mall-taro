@@ -1,11 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Video, Swiper, SwiperItem, CoverView } from '@tarojs/components'
+import { View, Image, Video, Swiper, SwiperItem } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { getBanners } from '@/redux/actions/config'
 import { getProducts } from '@/redux/actions/goods'
 import classNames from 'classnames'
 import { Price } from '@/components'
+import { setCartBadge } from '@/utils'
 
 import './index.scss'
 
@@ -29,6 +30,10 @@ class Index extends Component {
   state = {
     swiperIndex: 0,
     playVideo: false,
+  }
+
+  componentWillMount() {
+    setCartBadge()
   }
 
   componentDidShow () {

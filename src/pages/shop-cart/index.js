@@ -5,6 +5,7 @@ import { connect } from '@tarojs/redux'
 import { ProductList, BottomBar, MyCheckbox, Price } from '@/components'
 import { updateCart } from '@/redux/actions/user'
 import { addWxFormId } from '@/services/wechat'
+import { setCartBadge } from '@/utils'
 import './index.scss'
 
 
@@ -32,6 +33,10 @@ export default class ShopCart extends Component {
     totalScore: -1,
     productList: [],
     selectAll: false,
+  }
+
+  componentWillMount() {
+    setCartBadge()
   }
 
   async componentDidShow() {
