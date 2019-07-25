@@ -7,6 +7,7 @@ import request from '@/utils/request'
 // 检测登录token是否有效
 export const checkToken = () => request({
   url: '/user/check-token',
+  interceptTokenError: false,
 })
 
 // 登录
@@ -17,6 +18,7 @@ export const login = data => request({
     ...data,
     type: 2,
   },
+  interceptTokenError: false,
 })
 
 // 注册

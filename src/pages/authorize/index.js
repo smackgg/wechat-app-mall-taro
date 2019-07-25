@@ -33,6 +33,7 @@ export default class Auth extends Component {
   }
 
   componentWillMount() {
+    Taro.removeStorageSync('token')
     Taro.setNavigationBarColor({
       backgroundColor: theme['$color-brand'],
       frontColor: '#ffffff',
@@ -112,6 +113,7 @@ export default class Auth extends Component {
       success: async res => {
         // 登录接口
         const [error, result] = await cError(login({ code: res.code }))
+
         // 去注册
         if (error && error.code == 10000) {
           this.registerUser()
