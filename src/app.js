@@ -63,7 +63,7 @@ class App extends Component {
           text: '分类',
         },
         {
-          pagePath: 'pages/index/index',
+          pagePath: 'pages/shop-cart/index',
           iconPath: 'assets/icon/shopcart.jpg',
           selectedIconPath: 'assets/icon/shopcart-selected.jpg',
           text: '购物车',

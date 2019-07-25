@@ -291,8 +291,15 @@ export default class ProductDetail extends Component {
   }
 
   // 跳转 url
-  goPage = url => {
-    Taro.navigateTo({
+  goPage = (url, tabBar = false) => {
+    if (!tabBar) {
+      Taro.navigateTo({
+        url,
+      })
+      return
+    }
+
+    Taro.switchTab({
       url,
     })
   }
@@ -406,7 +413,7 @@ export default class ProductDetail extends Component {
                 />
                 <Text>店铺</Text>
               </View>
-              <View className="icon" onClick={this.goPage.bind(this, '/pages/shop-cart/index')}>
+              <View className="icon" onClick={this.goPage.bind(this, '/pages/shop-cart/index', true)}>
                 <Image
                   className="icon-image"
                   src="/assets/icon/shopcart.jpg"
