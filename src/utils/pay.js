@@ -25,7 +25,7 @@ export default function pay({
         content: '支付失败，请稍候重试~',
         showCancel: false,
       })
-      return
+      return reject()
     }
 
     console.log(userAmount, 'userAmount')
@@ -36,7 +36,7 @@ export default function pay({
         title: '您的积分不足，无法支付',
         icon: 'none',
       })
-      return
+      return reject()
     }
 
     const moneyReal = (money * 100 - balance * 100) / 100 // 浮点数bug
@@ -76,18 +76,21 @@ export default function pay({
                   content: err.msg,
                   showCancel: false,
                 })
-                return
+                return reject()
               }
               // 提示支付成功
               Taro.showToast({
                 title: '支付成功',
               })
             } else {
-              await wxPay({
+              const [err] = await cError(wxPay({
                 type,
                 money: moneyReal,
                 orderId,
-              })
+              }))
+              if (err) {
+                return reject(err)
+              }
             }
             resolve()
           }
@@ -101,6 +104,8 @@ export default function pay({
         type,
         money,
       })
+      .then(() => resolve)
+      .catch(e => reject(e))
     }
   })
 }
@@ -113,7 +118,7 @@ export function wxPay({
 }) {
   return new Promise((resolve, reject) => {
     let remark = '在线充值'
-    let nextAction = {}
+    let nextAction
 
     // 订单
     if (type === 'order') {
@@ -138,7 +143,7 @@ export function wxPay({
       money,
       remark,
       payName: remark,
-      nextAction: JSON.stringify(nextAction),
+      nextAction: nextAction && JSON.stringify(nextAction),
     }).then(res => {
       const {
         timeStamp,
@@ -165,6 +170,7 @@ export function wxPay({
             icon: 'none',
             duration: 2000,
           })
+          reject(msg)
         },
         success: () => {
           // 保存 formid
@@ -186,6 +192,7 @@ export function wxPay({
         content: code + ':' + msg,
         showCancel: false,
       })
+      reject(msg)
     })
   })
 }
