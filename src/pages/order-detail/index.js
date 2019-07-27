@@ -155,6 +155,7 @@ export default class OrderDetail extends Component {
         status,
         hasRefund,
         amountReal,
+        amountLogistics,
       },
       productsAmount,
       couponAmount,
@@ -187,6 +188,7 @@ export default class OrderDetail extends Component {
             couponAmount={couponAmount}
             otherDiscounts={otherDiscounts}
             realAmount={amountReal}
+            shippingAmount={amountLogistics}
             score={score}
           />
         </View>
