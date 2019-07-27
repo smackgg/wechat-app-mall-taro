@@ -23,6 +23,11 @@
   }
   .button {
     margin: 0 60rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 30rpx;
+    background: $color-brand2;
+    color: $color-white;
     // background: #1da836;
     // border-color: #1da836;
   }
