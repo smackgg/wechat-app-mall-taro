@@ -108,7 +108,7 @@ export default class Asset extends Component {
                 <Text>余额(元)</Text>
                 <Text className="price">{priceToFloat(balance)}</Text>
               </View>
-              <View className="button">
+              <View className="button" onClick={this.goPage.bind(this, '/pages/recharge/index')}>
                 充值
               </View>
               <View className="price-info">

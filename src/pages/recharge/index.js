@@ -72,6 +72,7 @@ export default class Recharge extends Component {
   }
 
   handlePay = money => {
+    console.log(money)
     const rechargeAmountMin = +this.props.rechargeAmountMin
 
     if (!money || money < 0) {
@@ -103,7 +104,7 @@ export default class Recharge extends Component {
 
     return (
       <View className="container">
-        <AtForm reportSubmit onSubmit={this.onSubmit} className="container">
+        <AtForm reportSubmit onSubmit={this.onFormSubmit} className="container">
           <View className="input-wrapper">
             <AtInput
               name="value"

@@ -8,7 +8,7 @@ import { getUserDetail } from '@/redux/actions/user'
 
 import wechatSafeIcon from '@/assets/icon/wechat-safe.png'
 import successIcon from '@/assets/icon/success.png'
-import { addWxFormId } from '@/services/wechat'
+// import { addWxFormId } from '@/services/wechat'
 
 import { AtButton, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import './index.scss'
