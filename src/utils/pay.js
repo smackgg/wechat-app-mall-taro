@@ -1,6 +1,10 @@
 /**
- * type: order 支付订单 recharge 充值 paybill 优惠买单
- * data: 扩展数据对象，用于保存参数
+ * 添加购物车
+ *
+ * @param {String} type // order 支付订单 recharge 充值 paybill 优惠买单
+ * @param {Number} score // 积分
+ * @param {Number} money // 金额
+ * @param {orderId} money // 订单 id
  */
 import Taro from '@tarojs/taro'
 
@@ -28,7 +32,6 @@ export default function pay({
       return reject()
     }
 
-    console.log(userAmount, 'userAmount')
     const { score: userScore, balance } = userAmount
 
     if (userScore < score) {
@@ -66,34 +69,36 @@ export default function pay({
         confirmText: '确认支付',
         cancelText: '取消支付',
         success: async res => {
-          if (res.confirm) {
-            // 直接支付订单
-            if (orderId && moneyReal <= 0) {
-              const [err] = await cError(orderPay({ orderId }))
-              if (err) {
-                Taro.showModal({
-                  title: '支付失败',
-                  content: err.msg,
-                  showCancel: false,
-                })
-                return reject()
-              }
-              // 提示支付成功
-              Taro.showToast({
-                title: '支付成功',
-              })
-            } else {
-              const [err] = await cError(wxPay({
-                type,
-                money: moneyReal,
-                orderId,
-              }))
-              if (err) {
-                return reject(err)
-              }
-            }
-            resolve()
+          if (!res.confirm) {
+            return reject()
           }
+
+          // 直接支付订单 余额
+          if (orderId && moneyReal <= 0) {
+            const [err] = await cError(orderPay({ orderId }))
+            if (err) {
+              Taro.showModal({
+                title: '支付失败',
+                content: err.msg,
+                showCancel: false,
+              })
+              return reject()
+            }
+            // 提示支付成功
+            Taro.showToast({
+              title: '支付成功',
+            })
+          } else {
+            const [err] = await cError(wxPay({
+              type,
+              money: moneyReal,
+              orderId,
+            }))
+            if (err) {
+              return reject(err)
+            }
+          }
+          resolve()
         },
       })
     }
@@ -159,7 +164,6 @@ export function wxPay({
         signType: 'MD5',
         paySign: sign,
         fail: err => {
-          // console.log(err)
           let msg = err.errMsg
           if (msg.includes('fail cancel')) {
             msg = '支付取消'

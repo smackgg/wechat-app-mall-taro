@@ -6,10 +6,11 @@ import { getDefaultAddress, getCoupons, updateCart } from '@/redux/actions/user'
 import { createOrder } from '@/services/order'
 import { AtTextarea, AtDrawer } from 'taro-ui'
 import { cError } from '@/utils'
+import pay from '@/utils/pay'
 import { addWxFormId, sendTempleMsg } from '@/services/wechat'
 import { PriceInfo, ProductList, Address, BottomBar, Price, CouponList } from '@/components'
 import classNames from 'classnames'
-
+import dateFormat from '@/utils/dateFormat'
 import './index.scss'
 
 @connect(({
@@ -229,8 +230,10 @@ export default class Checkout extends Component {
     const {
       id,
       dateAdd,
+      dateClose,
       orderNumber,
       amountReal,
+      score,
     } = result.data
 
     // 配置模板消息
@@ -281,12 +284,16 @@ export default class Checkout extends Component {
           value: orderNumber,
           color,
         },
-        keyword4: {
+        keyword3: {
           value: dateAdd,
           color,
         },
+        keyword4: {
+          value: defaultAddress.provinceStr + defaultAddress.cityStr + (defaultAddress.areaStr === '-' ? '' : defaultAddress.areaStr) + defaultAddress.address,
+          color,
+        },
       }),
-      template_id: 'CnzS9AtwGj3Zo9rsRGxYvkdflUyz5lsRwNf6c7NgcrA',
+      template_id: 'nsHgGpdWxvT2mxwAL3i-4zoCEreb-t50J2tbxWpLTgs',
       type: 0,
       url: `pages/order-detail/index?id=${id}`,
     })
@@ -300,7 +307,55 @@ export default class Checkout extends Component {
       })
     }
 
-    // 下单成功，跳转到订单详情
+    // 下单成功调起支付
+    await pay({
+      score,
+      money: amountReal,
+      orderId: id,
+      type: 'order',
+    }).catch(() => {
+      console.log(11111)
+      // 订单待支付模板消息
+      sendTempleMsg({
+        module: 'order',
+        business_id: id,
+        trigger: 0,
+        module: 'immediately',
+        postJsonString: JSON.stringify({
+          keyword1: {
+            value: '待支付',
+            color,
+          },
+          keyword2: {
+            value: `${amountReal}元`,
+            color,
+          },
+          keyword3: {
+            value: orderNumber,
+            color,
+          },
+          keyword4: {
+            value: dateAdd,
+            color,
+          },
+          keyword5: {
+            value: `请在${dateFormat(dateClose, 'HH:mm')}之前完成支付`,
+            color,
+          },
+          keyword6: {
+            value: dateClose,
+            color,
+          },
+        }),
+        template_id: 'LDpMo2-1M7tdBcz8OCVGGyNuWiMx02rhxxI_kSllPG4',
+        type: 0,
+        url: `pages/order-detail/index?id=${id}`,
+      })
+      return Promise.resolve()
+    })
+
+    console.log(222)
+
     Taro.redirectTo({
       url: `/pages/order-detail/index?id=${id}`,
     })
