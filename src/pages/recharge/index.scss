@@ -1,0 +1,63 @@
+.container {
+  background: $color-gray;
+  min-height: 100vh;
+
+  .input-wrapper {
+    background: $color-white;
+  }
+
+  .button-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 30rpx;
+    padding-bottom: 10rpx;
+    margin-top: 26rpx;
+    background: $color-white;
+    .button {
+      border-color: $color-green;
+      color: $color-green;
+      margin-right: 20rpx;
+      margin-bottom: 20rpx;
+      min-width: 200rpx;
+
+      .button-line {
+        font-size: 28rpx;
+        line-height: 45rpx;
+      }
+    }
+  }
+
+  .recharge-button {
+    margin: 26rpx 40rpx 0;
+  }
+
+  .recharge-info-wrapper {
+    margin-top: 26rpx;
+    background: $color-white;
+    padding: 0 30rpx;
+    .title {
+      font-size: 28rpx;
+      border-bottom: 1rpx solid $border-color;
+      padding: 20rpx;
+    }
+    .info-item {
+      font-size: 28rpx;
+      padding: 30rpx 30rpx 30rpx 0;
+      margin-left: 30rpx;
+      border-bottom: 1rpx solid $border-color;
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+      .info-title {
+        line-height: 36rpx;
+      }
+      .info-desp {
+        color: $text-color-gray;
+        font-size: 24rpx;
+        margin-top: 10rpx;
+      }
+    }
+  }
+}

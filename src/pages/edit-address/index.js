@@ -432,7 +432,7 @@ export default class EditAddress extends Component {
     return (
       <View>
         <AtMessage />
-        <AtForm onSubmit={this.onSubmit} className="container">
+        <AtForm reportSubmit onSubmit={this.onSubmit} className="container">
           <View className="form">
             <AtInput
               name="linkMan"

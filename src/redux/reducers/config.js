@@ -41,7 +41,6 @@ export default function config(state = INITIAL_STATE, action) {
         ...state,
         systemConfig: (action.data || []).reduce((pre, item) => {
           const { key } = item
-          console.log(key)
           pre[key] = item.value
           if (key === 'ALLOW_SELF_COLLECTION' || key === 'recharge_amount_min') {
             Taro.setStorage({

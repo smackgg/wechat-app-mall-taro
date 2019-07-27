@@ -1,14 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { getOrderList } from '@/redux/actions/order'
 import { AtTabs, AtTabsPane, AtMessage } from 'taro-ui'
-// import { AtButton } from 'taro-ui'
-import { theme, priceToFloat } from '@/utils'
-import classNames from 'classnames'
-import './index.scss'
 import List from './_components/OrderList'
+
+import './index.scss'
 
 @connect(
   ({

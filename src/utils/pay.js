@@ -12,7 +12,7 @@ import { cError } from '@/utils'
 import { orderPay } from '@/services/order'
 
 export default function pay({
-  score,
+  score = 0,
   money,
   orderId,
   type = 'order',
@@ -58,39 +58,50 @@ export default function pay({
       }
     }
 
-    Taro.showModal({
-      title: '请确认支付',
-      content: msg,
-      confirmText: '确认支付',
-      cancelText: '取消支付',
-      success: async res => {
-        if (res.confirm) {
-          // 直接支付订单
-          if (orderId && moneyReal <= 0) {
-            const [err] = await cError(orderPay({ orderId }))
-            if (err) {
-              Taro.showModal({
-                title: '支付失败',
-                content: err.msg,
-                showCancel: false,
+    // 订单支付
+    if (type === 'order') {
+      Taro.showModal({
+        title: '请确认支付',
+        content: msg,
+        confirmText: '确认支付',
+        cancelText: '取消支付',
+        success: async res => {
+          if (res.confirm) {
+            // 直接支付订单
+            if (orderId && moneyReal <= 0) {
+              const [err] = await cError(orderPay({ orderId }))
+              if (err) {
+                Taro.showModal({
+                  title: '支付失败',
+                  content: err.msg,
+                  showCancel: false,
+                })
+                return
+              }
+              // 提示支付成功
+              Taro.showToast({
+                title: '支付成功',
               })
-              return
+            } else {
+              await wxPay({
+                type,
+                money: moneyReal,
+                orderId,
+              })
             }
-            // 提示支付成功
-            Taro.showToast({
-              title: '支付成功',
-            })
-          } else {
-            await wxPay({
-              type,
-              money: moneyReal,
-              orderId,
-            })
+            resolve()
           }
-          resolve()
-        }
-      },
-    })
+        },
+      })
+    }
+
+    // 在线充值
+    if (type === 'recharge') {
+      wxPay({
+        type,
+        money,
+      })
+    }
   })
 }
 
@@ -144,8 +155,15 @@ export function wxPay({
         paySign: sign,
         fail: err => {
           // console.log(err)
+          let msg = err.errMsg
+          if (msg.includes('fail cancel')) {
+            msg = '支付取消'
+          }
+
           Taro.showToast({
-            title: '支付失败:' + err.errMsg,
+            title: '支付失败:' + msg,
+            icon: 'none',
+            duration: 2000,
           })
         },
         success: () => {

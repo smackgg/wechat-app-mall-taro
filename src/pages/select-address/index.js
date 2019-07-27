@@ -86,7 +86,7 @@ export default class SelectAddress extends Component {
             })
           }
         </View>
-        <AtForm className="add-address" onSubmit={this.addAddress}>
+        <AtForm reportSubmit className="add-address" onSubmit={this.addAddress}>
           <AtButton type="primary" formType="submit">新建地址</AtButton>
         </AtForm>
       </View>
