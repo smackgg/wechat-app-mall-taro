@@ -31,7 +31,7 @@ export default function ProductList(props) {
   return <View className="product-list">
     {
       list.map(product => {
-        const { id, pic, name, goodsName, number, property, score, amount, active, price } = product
+        const { id, pic, name, goodsName, number, property, score, amount, active, price, label } = product
         return <View className="product" key={id}>
           {edit && <View className="check-box">
             <MyCheckbox checked={active} onChange={onCheckboxChange.bind(this, product)}></MyCheckbox>
@@ -39,7 +39,7 @@ export default function ProductList(props) {
           <Image className="product-image" src={pic} mode="aspectFill"></Image>
           <View className="product-info">
             <Text className="name">{goodsName || name}</Text>
-            <Text className="property">规格: {property || '无规格参数'}</Text>
+            <Text className="property">规格: {property || label || '无规格参数'}</Text>
             <Price className="product-price" price={amount || price} score={score} />
           </View>
           {
