@@ -6,6 +6,7 @@ import { theme } from '@/utils'
 import { AtButton, AtIcon, AtForm } from 'taro-ui'
 import { updateAddress } from '@/services/user'
 import { addWxFormId } from '@/services/wechat'
+import { BottomBar } from '@/components'
 import './index.scss'
 
 // 首页多加滤镜
@@ -26,10 +27,10 @@ export default class SelectAddress extends Component {
 
   componentWillMount() {
     // 设置bar颜色
-    Taro.setNavigationBarColor({
-      backgroundColor: theme['$color-brand'],
-      frontColor: '#ffffff',
-    })
+    // Taro.setNavigationBarColor({
+    //   backgroundColor: theme['$color-brand'],
+    //   frontColor: '#ffffff',
+    // })
   }
 
   // 编辑地址
@@ -86,9 +87,11 @@ export default class SelectAddress extends Component {
             })
           }
         </View>
-        <AtForm reportSubmit className="add-address" onSubmit={this.addAddress}>
-          <AtButton type="primary" formType="submit">新建地址</AtButton>
-        </AtForm>
+        <BottomBar>
+          <AtForm reportSubmit onSubmit={this.addAddress}>
+            <AtButton type="primary" formType="submit">新建地址</AtButton>
+          </AtForm>
+        </BottomBar>
       </View>
     )
   }
