@@ -419,7 +419,7 @@ export default class Checkout extends Component {
 
         {/* 底部Bar */}
         <BottomBar>
-          <Form onSubmit={this.placeOrder}>
+          <Form reportSubmit onSubmit={this.placeOrder}>
             <View className="bottom-bar">
               <Text className="price">实付：</Text>
               <Price price={realAmount} score={score} />

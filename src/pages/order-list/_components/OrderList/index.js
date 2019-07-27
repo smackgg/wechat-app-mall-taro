@@ -100,7 +100,7 @@ export default class CouponList extends Component {
               </View>
               {
                 status === 0 && <View className="button-wrapper">
-                  <Form onSubmit={this.onPay.bind(this, item)}>
+                  <Form reportSubmit onSubmit={this.onPay.bind(this, item)}>
                     <Button
                       form-type="submit"
                       className="button"

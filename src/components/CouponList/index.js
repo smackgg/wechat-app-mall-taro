@@ -30,6 +30,7 @@ export default class CouponList extends Component {
   // 领取优惠券
   onGetCoupon = async (coupon, e, confirm) => {
     const { needScore, id } = coupon
+
     addWxFormId({
       type: 'form',
       formId: e.detail.formId,
@@ -116,7 +117,7 @@ export default class CouponList extends Component {
               </View>
               {isGetCoupon && <View className="button-wrapper">
                 {needScore > 0 && <Text className="score-info">{needScore}积分兑换</Text>}
-                <Form onSubmit={this.onGetCoupon.bind(this, item)}>
+                <Form reportSubmit onSubmit={this.onGetCoupon.bind(this, item)}>
                   <Button
                     form-type="submit"
                     className="button"

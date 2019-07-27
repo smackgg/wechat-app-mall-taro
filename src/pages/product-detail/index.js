@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { connect } from '@tarojs/redux'
-import { View, Image, Text, Swiper, SwiperItem, Button, ScrollView } from '@tarojs/components'
+import { View, Image, Text, Swiper, SwiperItem, Button, ScrollView, Form } from '@tarojs/components'
 import { AtIcon, AtFloatLayout, AtInputNumber } from 'taro-ui'
 import { getProductDetail } from '@/redux/actions/goods'
 import WxParse from '@/third-utils/wxParse/wxParse'
@@ -8,6 +8,7 @@ import { productPrice } from '@/services/goods'
 import { Price, BottomBar } from '@/components'
 import classNames from 'classnames'
 import { addCart, updateCart } from '@/redux/actions/user'
+// import { addWxFormId } from '@/services/wechat'
 
 import './index.scss'
 

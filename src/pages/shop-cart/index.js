@@ -140,7 +140,7 @@ export default class ShopCart extends Component {
         {productList.length > 0 && <ProductList list={productList} edit onChange={this.onListChange}></ProductList>}
         {/* 底部Bar */}
         <View className="bottom-bar-wrapper">
-          <Form onSubmit={this.onFromSubmit}>
+          <Form reportSubmit onSubmit={this.onFromSubmit}>
             <View className="bottom-bar">
               <View className="checkbox-wrapper" onClick={this.toggleSelectAll}>
                 <MyCheckbox checked={selectAll}></MyCheckbox>

@@ -193,7 +193,7 @@ export default class OrderDetail extends Component {
 
         {/* 底部Bar */}
         <BottomBar>
-          <Form onSubmit={this.onSubmit}>
+          <Form reportSubmit onSubmit={this.onSubmit}>
             <View className="button-wrapper">
               <Button
                 form-type="submit"
