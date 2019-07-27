@@ -195,10 +195,10 @@ export default class Auth extends Component {
 
   // 表单提交
   onFormSubmit = e => {
-    addWxFormId({
-      type: 'form',
-      formId: e.detail.formId,
-    })
+    // addWxFormId({
+    //   type: 'form',
+    //   formId: e.detail.formId,
+    // })
   }
 
   render () {
