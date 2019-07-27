@@ -236,6 +236,18 @@ export default class Checkout extends Component {
       score,
     } = result.data
 
+    // 模板消息中的金额信息
+    let amountMsg = `${amountReal}元`
+
+    // 积分
+    if (score > 0) {
+      if (amountReal === 0) {
+        amountMsg = `${score}积分`
+      } else {
+        amountMsg += ` + ${score}积分`
+      }
+    }
+
     // 配置模板消息
     const color = '#173177'
     // 订单取消模板消息
@@ -249,7 +261,7 @@ export default class Checkout extends Component {
           color,
         },
         keyword2: {
-          value: `${amountReal}元`,
+          value: amountMsg,
           color,
         },
         keyword3: {
@@ -314,18 +326,8 @@ export default class Checkout extends Component {
       orderId: id,
       type: 'order',
     }).catch(() => {
+
       // 订单待支付模板消息
-      let amount = `${amountReal}元`
-
-      // 积分
-      if (score > 0) {
-        if (amountReal === 0) {
-          amount = `${score}积分`
-        } else {
-          amount += ` + ${score}积分`
-        }
-      }
-
       sendTempleMsg({
         module: 'order',
         business_id: id,
@@ -337,7 +339,7 @@ export default class Checkout extends Component {
             color,
           },
           keyword2: {
-            value: amount,
+            value: amountMsg,
             color,
           },
           keyword3: {
