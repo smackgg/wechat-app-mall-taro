@@ -68,7 +68,7 @@ export default class Account extends Component {
   componentWillMount() {
     setCartBadge()
     Taro.setNavigationBarColor({
-      backgroundColor: theme['$color-brand'],
+      backgroundColor: theme['$color-brand2'],
       frontColor: '#ffffff',
     })
   }
@@ -126,7 +126,7 @@ export default class Account extends Component {
     return (
       <View className="container">
         {/* 用户信息 */}
-        <View className="userinfo" style={{ backgroundColor: theme['$color-brand'] }}>
+        <View className="userinfo" style={{ backgroundColor: theme['$color-brand2'] }}>
           <Image className="userinfo-bg" src="/assets/img/account_bg.png"></Image>
           <View className="content">
             <Image className="avatar" src={avatarUrl}></Image>

@@ -6,7 +6,7 @@ import { getOrderDetail } from '@/redux/actions/order'
 import { getUserAmount } from '@/redux/actions/user'
 import { addWxFormId } from '@/services/wechat'
 
-import { cError, theme } from '@/utils'
+import { cError } from '@/utils'
 import pay from '@/utils/pay'
 import { orderClose } from '@/services/order'
 import { ProductList, Address, PriceInfo, BottomBar } from '@/components'

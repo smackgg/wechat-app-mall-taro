@@ -6,8 +6,14 @@ module.exports = {
   shareProfile: '百款精品商品，总有一款适合您', // 首页转发的时候话术
   requireBindMobile: true, // 是否强制绑定手机号码才能使用
   theme: {
-    '$color-brand': '#181923',
-    '$color-brand-light': '#52535a',
-    '$color-brand-dark': '#13141c',
+    // 整站主题色
+    '$color-brand': '#d6b44c',
+    '$color-brand-light': '#e0c779',
+    '$color-brand-dark': '#ab903d',
+
+    // 会员中心、登录页面主题色
+    '$color-brand2': '#181923',
+    // '$color-brand-light': '#52535a',
+    // '$color-brand-dark': '#13141c',
   }, // 主题颜色 详情见 https://nervjs.github.io/taro-ui-theme-preview/
 }

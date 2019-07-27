@@ -90,8 +90,8 @@ class Index extends Component {
     const { banners = [], recommendProducts, allProducts, systemConfig } = this.props
     const { swiperIndex, playVideo } = this.state
 
-    const videoUrl = systemConfig.index_video_1 && systemConfig.index_video_1.value
-    const videoUrl2 = systemConfig.index_video_2 && systemConfig.index_video_2.value
+    const videoUrl = systemConfig.index_video_1
+    const videoUrl2 = systemConfig.index_video_2
     return (
       <View className="index">
         {/* banner */}

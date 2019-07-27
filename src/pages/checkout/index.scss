@@ -29,7 +29,7 @@
       z-index: 10;
       height: 100%;
       width: 260rpx;
-      background: $tag-color;
+      background: $color-brand;
       border-radius: 0;
       font-size: 28rpx;
       line-height: 100rpx;
@@ -67,7 +67,7 @@
       color: $text-color-red;
     }
     .selected {
-      color: $tag-color;
+      color: $color-brand;
     }
     .right {
       display: flex;
@@ -89,7 +89,7 @@
     z-index: 99;
     .unuse-coupon {
       text-align: center;
-      color: $tag-color;
+      color: $color-brand;
       text-decoration: underline;
       padding: 30rpx 0;
     }

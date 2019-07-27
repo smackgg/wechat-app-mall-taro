@@ -14,7 +14,7 @@ page {
     font-size: 28rpx;
     .refund {
       font-size: 24rpx;
-      color: $tag-color;
+      color: $color-brand;
       margin-left: 15rpx;
     }
   }
@@ -54,19 +54,19 @@ page {
     height: 100%;
     button {
       margin-right: 15rpx;
-      border: 2rpx solid $tag-color;
+      border: 2rpx solid $color-brand;
 
       &:last-of-type {
         margin-right: 0;
       }
     }
     .button {
-      background: $tag-color;
+      background: $color-brand;
       color: $color-white;
     }
 
     .button-secondary {
-      color: $tag-color;
+      color: $color-brand;
     }
   }
 

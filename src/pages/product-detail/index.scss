@@ -180,7 +180,7 @@
         background-color: #918882;
       }
       .button-buynow {
-        background-color: $tag-color;
+        background-color: $color-brand;
       }
     }
   }
@@ -226,11 +226,11 @@
         .attribute-button {
           &.primary {
             color: $color-white;
-            background: $tag-color;
+            background: $color-brand;
           }
           &.secondary {
-            border: 1px solid $tag-color;
-            color: $tag-color;
+            border: 1px solid $color-brand;
+            color: $color-brand;
           }
         }
       }
@@ -250,7 +250,7 @@
       z-index: 10;
       height: 100%;
       width: 100%;
-      background: $tag-color;
+      background: $color-brand;
       border-radius: 0;
       font-size: 34rpx;
       line-height: 100rpx;

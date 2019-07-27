@@ -37,7 +37,7 @@
 
     .refund {
       font-size: 20rpx;
-      color: $tag-color;
+      color: $color-brand;
       margin-right: 10rpx;
     }
   }
@@ -61,7 +61,7 @@
       justify-content: flex-end;
 
       .button {
-        background: $tag-color;
+        background: $color-brand;
         color: $color-white;
         margin-bottom: 10rpx;
       }

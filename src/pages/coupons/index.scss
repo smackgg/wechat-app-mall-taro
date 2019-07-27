@@ -7,9 +7,9 @@
 
 // taro ui tab 组件样式覆盖
 .at-tabs__item-underline.at-tabs__item-underline {
-  background: $tag-color !important;
+  background: $color-brand !important;
 }
 
 .at-tabs__item.at-tabs__item.at-tabs__item--active {
-  color: $tag-color !important;
+  color: $color-brand !important;
 }

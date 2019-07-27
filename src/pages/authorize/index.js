@@ -35,7 +35,7 @@ export default class Auth extends Component {
   componentWillMount() {
     Taro.removeStorageSync('token')
     Taro.setNavigationBarColor({
-      backgroundColor: theme['$color-brand'],
+      backgroundColor: theme['$color-brand2'],
       frontColor: '#ffffff',
     })
   }
