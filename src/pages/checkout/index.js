@@ -267,7 +267,7 @@ export default class Checkout extends Component {
       }),
       template_id: 'CnzS9AtwGj3Zo9rsRGxYvkdflUyz5lsRwNf6c7NgcrA',
       type: 0,
-      url: 'pages/index/index',
+      url: `pages/order-detail/index?id=${id}`,
     })
 
     // 发货通知模板消息
@@ -314,8 +314,18 @@ export default class Checkout extends Component {
       orderId: id,
       type: 'order',
     }).catch(() => {
-      console.log(11111)
       // 订单待支付模板消息
+      let amount = `${amountReal}元`
+
+      // 积分
+      if (score > 0) {
+        if (amountReal === 0) {
+          amount = `${score}积分`
+        } else {
+          amount += ` + ${score}积分`
+        }
+      }
+
       sendTempleMsg({
         module: 'order',
         business_id: id,
@@ -327,7 +337,7 @@ export default class Checkout extends Component {
             color,
           },
           keyword2: {
-            value: `${amountReal}元`,
+            value: amount,
             color,
           },
           keyword3: {
@@ -339,22 +349,20 @@ export default class Checkout extends Component {
             color,
           },
           keyword5: {
-            value: `请在${dateFormat(dateClose, 'HH:mm')}之前完成支付`,
-            color,
-          },
-          keyword6: {
             value: dateClose,
             color,
           },
+          keyword6: {
+            value: `请在${dateFormat(dateClose, 'HH:mm')}之前完成支付`,
+            color,
+          },
         }),
-        template_id: 'LDpMo2-1M7tdBcz8OCVGGyNuWiMx02rhxxI_kSllPG4',
+        template_id: 'LDpMo2-1M7tdBcz8OCVGGyiHe9k5LR7lsJ4TNVZEd00',
         type: 0,
         url: `pages/order-detail/index?id=${id}`,
       })
       return Promise.resolve()
     })
-
-    console.log(222)
 
     Taro.redirectTo({
       url: `/pages/order-detail/index?id=${id}`,
