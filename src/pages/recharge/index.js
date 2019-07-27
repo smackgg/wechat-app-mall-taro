@@ -36,13 +36,6 @@ export default class Recharge extends Component {
     number: '',
   }
 
-  // componentWillMount() {
-  //   Taro.setNavigationBarColor({
-  //     backgroundColor: theme['$color-brand'],
-  //     frontColor: '#ffffff',
-  //   })
-  // }
-
   componentDidShow() {
     this.props.getRechargeSendRules()
   }
@@ -71,8 +64,8 @@ export default class Recharge extends Component {
     this.handlePay(+this.state.number)
   }
 
-  handlePay = money => {
-    console.log(money)
+  // 支付
+  handlePay = async money => {
     const rechargeAmountMin = +this.props.rechargeAmountMin
 
     if (!money || money < 0) {
@@ -83,7 +76,7 @@ export default class Recharge extends Component {
       })
       return
     }
-    if (money < rechargeAmountMin * 1) {
+    if (money < rechargeAmountMin) {
       Taro.showModal({
         title: '错误',
         content: '单次充值金额至少' + rechargeAmountMin + '元',
@@ -91,9 +84,12 @@ export default class Recharge extends Component {
       })
       return
     }
-    pay({
+    await pay({
       type: 'recharge',
       money,
+    })
+    Taro.redirectTo({
+      url: '/pages/asset/index',
     })
   }
 
@@ -101,7 +97,6 @@ export default class Recharge extends Component {
     const { number } = this.state
     const { rechargeSendRules } = this.props
     const rechargeAmountMin = +this.props.rechargeAmountMin
-
     return (
       <View className="container">
         <AtForm reportSubmit onSubmit={this.onFormSubmit} className="container">
