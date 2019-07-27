@@ -1,3 +1,6 @@
+
+import Taro from '@tarojs/taro'
+
 import {
   GET_VIP_LEVEL_SUCCESS,
   GET_SYSTEM_CONFIG_SUCCESS,
@@ -5,12 +8,19 @@ import {
   GET_PROVINCE_SUCCESS,
 } from '../actions/config'
 
+const rechargeAmountMin = Taro.getStorageSync('recharge_amount_min') || 0
+const allowSelfCollection = !!Taro.getStorageSync('ALLOW_SELF_COLLECTION')
+
 const INITIAL_STATE = {
   vipLevel: 0,
   systemConfig: {},
+  index_video_1: '', // 首页封面视频（短）
+  index_video_2: '', // 首页封面视频 (长)
   mallName: '', // 商城名称
-  rechargeAmountMin: undefined, // 充值最小金额
-  allowSelfCollection: '', // 是否允许到店自提
+  rechargeAmountMin, // 充值最小金额
+  // recharge_amount_min
+  // ALLOW_SELF_COLLECTION
+  allowSelfCollection, // 是否允许到店自提
   banners: {}, // banner
   provinces: [],
   citys: [],
@@ -30,7 +40,15 @@ export default function config(state = INITIAL_STATE, action) {
       return {
         ...state,
         systemConfig: (action.data || []).reduce((pre, item) => {
-          pre[item.key] = item
+          const { key } = item
+          console.log(key)
+          pre[key] = item.value
+          if (key === 'ALLOW_SELF_COLLECTION' || key === 'recharge_amount_min') {
+            Taro.setStorage({
+              key,
+              data: item.value,
+            })
+          }
           return pre
         }, {}),
       }

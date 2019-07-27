@@ -111,3 +111,8 @@ export const getCoupon = data => request({
   method: 'post',
   data,
 })
+
+// 用户充值赠送规则
+export const rechargeSendRules = () => request({
+  url: '/user/recharge/send/rule',
+})

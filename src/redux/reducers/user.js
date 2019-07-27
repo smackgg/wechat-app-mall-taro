@@ -14,6 +14,7 @@ import {
   ADD_SHOP_CART,
   UPDATE_SHOP_CART,
   GET_USER_SCORELOG_SUCCESS,
+  GET_RECHARGE_RULES_SUCCESS,
 } from '../actions/user'
 
 const shopCartInfo = Taro.getStorageSync('shopCartInfo') || {}
@@ -22,20 +23,21 @@ setCartBadge()
 
 
 const INITIAL_STATE = {
-  userDetail: {},
-  levelList: [],
-  userLevel: {},
-  addressList: [],
-  defaultAddress: null,
+  userDetail: {}, // 用户信息
+  levelList: [], // 所有 vip 等级列表
+  userLevel: {}, // 用户 vip 等级
+  addressList: [], // 地址列表
+  defaultAddress: null, // 默认地址
   userAmount: {
     balance: 0,
     freeze: 0,
     score: 0,
-  },
+  }, // 用户资产信息
   cashLog: [], // 资金明细
   scoreLog: [], // 积分明细
   coupons: [],
-  shopCartInfo: shopCartInfo || {},
+  shopCartInfo: shopCartInfo || {}, // 购物车信息
+  rechargeSendRules: [], // 充值赠送规则
 }
 
 export default function user(state = INITIAL_STATE, action) {
@@ -116,6 +118,12 @@ export default function user(state = INITIAL_STATE, action) {
       return {
         ...state,
         shopCartInfo: info,
+      }
+    }
+    case GET_RECHARGE_RULES_SUCCESS: {
+      return {
+        ...state,
+        rechargeSendRules: action.data,
       }
     }
     default:

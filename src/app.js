@@ -37,6 +37,7 @@ class App extends Component {
       'pages/score-shop/index',
       'pages/reputation/index',
       'pages/shop-cart/index',
+      'pages/recharge/index',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -135,7 +136,7 @@ class App extends Component {
 
     // 获取系统参数（店铺信息等
     store.dispatch(getSystemConfig({
-      keys: ['index_video_1', 'index_video_2'].join(','),
+      keys: ['index_video_1', 'index_video_2', 'recharge_amount_min', 'ALLOW_SELF_COLLECTION'].join(','),
     }))
 
     // 积分赠送规则
@@ -156,18 +157,7 @@ class App extends Component {
     }
   }
 
-  // componentDidMount () {
-  //   Taro.setNavigationBarColor({
-  //     backgroundColor: theme['$color-brand'],
-  //     frontColor: '#ffffff',
-  //   })
-  // }
-
   componentDidShow () {
-    // Taro.setNavigationBarColor({
-    //   backgroundColor: theme['$color-brand'],
-    //   frontColor: '#ffffff',
-    // })
     // 获取 token
     const token = Taro.getStorageSync('token')
     // 跳转啊授权登录页面

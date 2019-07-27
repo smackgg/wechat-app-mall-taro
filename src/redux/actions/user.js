@@ -8,6 +8,7 @@ import {
   coupons,
   getableCoupons,
   userScoreLog,
+  rechargeSendRules,
 } from '@/services/user'
 import { cError } from '@/utils'
 
@@ -18,6 +19,7 @@ export const GET_DEFAULT_ADDRESS_SUCCESS = 'config/GET_DEFAULT_ADDRESS_SUCCESS'
 export const GET_USER_AMOUNT_SUCCESS = 'config/GET_USER_AMOUNT_SUCCESS'
 export const GET_USER_CASHLOG_SUCCESS = 'config/GET_USER_CASHLOG_SUCCESS'
 export const GET_USER_SCORELOG_SUCCESS = 'config/GET_USER_SCORELOG_SUCCESS'
+export const GET_RECHARGE_RULES_SUCCESS = 'config/GET_RECHARGE_RULES_SUCCESS'
 
 // 优惠券
 export const GET_COUPONS_SUCCESS = 'config/GET_COUPONS_SUCCESS'
@@ -138,5 +140,14 @@ export const updateCart = ({
     type: UPDATE_SHOP_CART,
     products,
     actionType: type,
+  })
+}
+
+// 获取用户充值赠送规则
+export const getRechargeSendRules = () => async dispatch => {
+  const res = await rechargeSendRules()
+  return dispatch({
+    type: GET_RECHARGE_RULES_SUCCESS,
+    data: res.data,
   })
 }
