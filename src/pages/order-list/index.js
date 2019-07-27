@@ -34,16 +34,8 @@ export default class OrderList extends Component {
     tabIndex: 0,
   }
 
-  componentDidShow() {
-    this.init()
-  }
-
-  init = async () => {
+  componentWillMount() {
     const { status } = this.$router.params
-    Taro.showLoading({
-      title: '加载中',
-    })
-
     let tabIndex = 0
     this.tabs.forEach((tab, index) => {
       if (tab.status === +status) {
@@ -51,9 +43,20 @@ export default class OrderList extends Component {
       }
     })
     this.setState({
-      tabIndex: tabIndex,
+      tabIndex,
     })
-    await this.getOrderList(tabIndex)
+  }
+
+  componentDidShow() {
+    this.init()
+  }
+
+  init = async () => {
+    Taro.showLoading({
+      title: '加载中',
+    })
+
+    await this.getOrderList(this.state.tabIndex)
     Taro.hideLoading()
   }
 

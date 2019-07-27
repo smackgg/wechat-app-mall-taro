@@ -77,28 +77,6 @@
     margin-top: 26rpx;
     background: $color-white;
 
-    .nav {
-      display: flex;
-      border-bottom: 1rpx solid $border-color;
-
-      .nav-item {
-        flex: 1;
-        text-align: center;
-        padding: 20rpx 0;
-        font-size: 28rpx;
-        line-height: 40rpx;
-        color: #333;
-
-        &.active {
-          border-bottom: 2rpx solid $tag-color;
-          color: $tag-color;
-        }
-        &.hidden {
-          visibility: hidden;
-        }
-      }
-    }
-
     .log {
       margin-left: 60rpx;
       padding: 20rpx 60rpx 20rpx 0;
@@ -124,5 +102,13 @@
         color: $tag-color;
       }
     }
+  }
+
+  .no-data {
+    background: $color-gray;
+    padding-top: 130rpx;
+    text-align: center;
+    color: $text-color-gray;
+    font-size: 28rpx;
   }
 }

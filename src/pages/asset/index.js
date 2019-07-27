@@ -1,11 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { getUserCashLog, getUserAmount } from '@/redux/actions/user'
+import { AtTabs, AtTabsPane, AtMessage } from 'taro-ui'
 
-// import { AtButton } from 'taro-ui'
-import { theme, priceToFloat } from '@/utils'
+import { priceToFloat } from '@/utils'
 import classNames from 'classnames'
 import './index.scss'
 
@@ -33,15 +33,15 @@ export default class Asset extends Component {
   }
 
   state = {
-    navIndex: 0,
+    tabIndex: 0,
   }
 
-  componentWillMount() {
-    Taro.setNavigationBarColor({
-      backgroundColor: theme['$color-brand'],
-      frontColor: '#ffffff',
-    })
-  }
+  // componentWillMount() {
+  //   Taro.setNavigationBarColor({
+  //     backgroundColor: theme['$color-brand'],
+  //     frontColor: '#ffffff',
+  //   })
+  // }
 
   async componentDidShow() {
     // 获取用户资产
@@ -57,12 +57,9 @@ export default class Asset extends Component {
   }
 
   // 切换 nav tab
-  onChangeNav = (navIndex, hidden) => {
-    if (hidden) {
-      return
-    }
+  onTabChange = tabIndex => {
     this.setState({
-      navIndex,
+      tabIndex,
     })
   }
 
@@ -70,15 +67,17 @@ export default class Asset extends Component {
     {
       title: '资金明细',
       hidden: false,
+      key: 'cashLog',
     },
     {
-      title: '提现记录',
+      title: '积分明细',
       hidden: true,
+      key: 'scoreLog',
     },
-    {
-      title: '押金记录',
-      hidden: true,
-    },
+    // {
+    //   title: '押金记录',
+    //   hidden: true,
+    // },
   ]
 
   render () {
@@ -93,7 +92,7 @@ export default class Asset extends Component {
     } = this.props
 
     const {
-      navIndex,
+      tabIndex,
     } = this.state
 
     return (
@@ -137,36 +136,40 @@ export default class Asset extends Component {
           !cashLog || cashLog.length < 0 && <View>暂无明细</View>
         }
         <View className="cash-log">
-          <View className="nav">
+          <AtTabs current={tabIndex} tabList={this.tabs} onClick={this.onTabChange} >
             {
-              this.tabs.map((item, index) => <View
-                key={index}
-                className={classNames('nav-item', {
-                  active: navIndex === index,
-                  hidden: item.hidden,
-                })}
-                onClick={this.onChangeNav.bind(this, index, item.hidden)}
-              >{item.title}</View>)
+              this.tabs.map((tab, index) => {
+                const { key } = tab
+                const list = this.props[key] || []
+
+                return <AtTabsPane key={index} current={tabIndex} index={index} >
+                    <View>
+                      {list.length === 0 && <View className="no-data">
+                        暂无数据
+                      </View>}
+                      {
+                        list.map(item => {
+                          const {
+                            id,
+                            amount,
+                            dateAdd,
+                            typeStr,
+                            behavior,
+                          } = item
+                          return <View key={id} className="log">
+                            <View className="log-info">
+                              <View className="name">{typeStr}</View>
+                              <View className="date">{dateAdd}</View>
+                            </View>
+                            <View className={`price ${behavior === 0 ? 'color-warn' : ''}`}>{behavior === 0 ? '+' : '-'}￥{amount}</View>
+                          </View>
+                        })
+                      }
+                    </View>
+                  </AtTabsPane>
+                })
             }
-          </View>
-          {
-            cashLog.map(item => {
-              const {
-                id,
-                amount,
-                dateAdd,
-                typeStr,
-                behavior,
-              } = item
-              return <View key={id} className="log">
-                <View className="log-info">
-                  <View className="name">{typeStr}</View>
-                  <View className="date">{dateAdd}</View>
-                </View>
-                <View className={`price ${behavior === 0 ? 'color-warn' : ''}`}>{behavior === 0 ? '+' : '-'}￥{amount}</View>
-              </View>
-            })
-          }
+          </AtTabs >
         </View>
       </View>
     )
