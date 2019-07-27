@@ -2,11 +2,10 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import { getUserCashLog, getUserAmount } from '@/redux/actions/user'
-import { AtTabs, AtTabsPane, AtMessage } from 'taro-ui'
+import { getUserCashLog, getUserAmount, getUserScoreLog } from '@/redux/actions/user'
+import { AtTabs, AtTabsPane } from 'taro-ui'
 
 import { priceToFloat } from '@/utils'
-import classNames from 'classnames'
 import './index.scss'
 
 
@@ -15,14 +14,17 @@ import './index.scss'
     user: {
       userAmount,
       cashLog,
+      scoreLog,
     },
   }) => ({
     userAmount,
     cashLog,
+    scoreLog,
   }),
   dispatch => ({
     getUserCashLog: () => dispatch(getUserCashLog()),
     getUserAmount: () => dispatch(getUserAmount()),
+    getUserScoreLog: () => dispatch(getUserScoreLog()),
   }),
 )
 
@@ -47,6 +49,7 @@ export default class Asset extends Component {
     // 获取用户资产
     this.props.getUserAmount()
     this.props.getUserCashLog()
+    this.props.getUserScoreLog()
   }
 
   // 跳转 url
@@ -73,6 +76,7 @@ export default class Asset extends Component {
       title: '积分明细',
       hidden: true,
       key: 'scoreLog',
+      noPrice: true,
     },
     // {
     //   title: '押金记录',
@@ -125,7 +129,7 @@ export default class Asset extends Component {
                   <Text>积分</Text>
                   <Text className="price2">{score}</Text>
                 </View>
-                <View className="score-shop-button">
+                <View className="score-shop-button" onClick={this.goPage.bind(this, '/pages/score-shop/index')}>
                   马上兑换 &gt;
                 </View>
               </View>
@@ -161,7 +165,7 @@ export default class Asset extends Component {
                               <View className="name">{typeStr}</View>
                               <View className="date">{dateAdd}</View>
                             </View>
-                            <View className={`price ${behavior === 0 ? 'color-warn' : ''}`}>{behavior === 0 ? '+' : '-'}￥{amount}</View>
+                            <View className={`price ${behavior === 0 ? 'color-warn' : ''}`}>{behavior === 0 ? '+' : '-'}{tab.noPrice ? '' : '￥'}{amount}</View>
                           </View>
                         })
                       }

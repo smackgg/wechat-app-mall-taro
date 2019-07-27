@@ -7,6 +7,7 @@ import {
   userCashLog,
   coupons,
   getableCoupons,
+  userScoreLog,
 } from '@/services/user'
 import { cError } from '@/utils'
 
@@ -16,6 +17,7 @@ export const GET_ADDRESS_LIST_SUCCESS = 'config/GET_ADDRESS_LIST_SUCCESS'
 export const GET_DEFAULT_ADDRESS_SUCCESS = 'config/GET_DEFAULT_ADDRESS_SUCCESS'
 export const GET_USER_AMOUNT_SUCCESS = 'config/GET_USER_AMOUNT_SUCCESS'
 export const GET_USER_CASHLOG_SUCCESS = 'config/GET_USER_CASHLOG_SUCCESS'
+export const GET_USER_SCORELOG_SUCCESS = 'config/GET_USER_SCORELOG_SUCCESS'
 
 // 优惠券
 export const GET_COUPONS_SUCCESS = 'config/GET_COUPONS_SUCCESS'
@@ -73,15 +75,29 @@ export const getUserAmount = () => async dispatch => {
   return res.data
 }
 
-// 获取用户资产
+// 获取用户明细
 export const getUserCashLog = () => async dispatch => {
   const [error, res] = await cError(userCashLog())
   dispatch({
     type: GET_USER_CASHLOG_SUCCESS,
-    data: error ? {} : res.data,
+    data: error ? [] : res.data,
   })
   return res.data
 }
+
+// 获取积分明细
+export const getUserScoreLog = () => async dispatch => {
+  const [error, res] = await cError(userScoreLog())
+  dispatch({
+    type: GET_USER_SCORELOG_SUCCESS,
+    data: (error ? [] : res.data.result).map(item => ({
+      ...item,
+      amount: Math.abs(item.score),
+    })),
+  })
+  return res.data
+}
+
 
 // 获取优惠券列表
 export const getCoupons = (data = {}) => async dispatch => {

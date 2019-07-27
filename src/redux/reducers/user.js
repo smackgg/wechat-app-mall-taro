@@ -13,6 +13,7 @@ import {
   GET_GETABLE_COUPONS_SUCCESS,
   ADD_SHOP_CART,
   UPDATE_SHOP_CART,
+  GET_USER_SCORELOG_SUCCESS,
 } from '../actions/user'
 
 const shopCartInfo = Taro.getStorageSync('shopCartInfo') || {}
@@ -31,7 +32,8 @@ const INITIAL_STATE = {
     freeze: 0,
     score: 0,
   },
-  cashLog: [], // 资金流水
+  cashLog: [], // 资金明细
+  scoreLog: [], // 积分明细
   coupons: [],
   shopCartInfo: shopCartInfo || {},
 }
@@ -70,6 +72,11 @@ export default function user(state = INITIAL_STATE, action) {
       return {
         ...state,
         cashLog: action.data,
+      }
+    case GET_USER_SCORELOG_SUCCESS:
+      return {
+        ...state,
+        scoreLog: action.data,
       }
     case GET_COUPONS_SUCCESS:
       return {

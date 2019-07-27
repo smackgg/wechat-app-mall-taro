@@ -88,6 +88,11 @@ export const userCashLog = () => request({
   url: '/user/cashLog',
 })
 
+// 获取积分明细
+export const userScoreLog = () => request({
+  url: '/score/logs',
+})
+
 // 查询用户优惠券
 export const coupons = data => request({
   url: '/discounts/my',
