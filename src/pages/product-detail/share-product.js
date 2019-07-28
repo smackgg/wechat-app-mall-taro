@@ -78,51 +78,65 @@ export default class ShareProduct extends Component {
     ])
 
     // product image 宽高
-    const pW = CANVAS_WIDTH * 0.96
+    const pW = CANVAS_WIDTH
     const pH = (pW / productImgInfo.width) * productImgInfo.height
     // product image margin
-    const pMargin = CANVAS_WIDTH * 0.02
 
     // canvas 高度
-    let canvasHeight = pH + pMargin
+    let canvasHeight = pH
+
+    // 图片高度
+    const top1 = canvasHeight
+
+    // 商品名高度
+    const top2 = top1 + 30 * ratio
+
+    // 描述高度
+    const top3 = top2 + 20 * ratio
+
+    // 金额高度
+    const top4 = top3 + 35 * ratio
+
+    // 总高度
+    canvasHeight = top4 + 20 * ratio
 
     const ctx = Taro.createCanvasContext('canvas')
 
-    // ctx.fillStyle = '#000000'
-    // ctx.fillRect(0, 0, CANVAS_WIDTH, pH)
+    ctx.fillStyle = '#fff'
+    ctx.fillRect(0, 0, CANVAS_WIDTH, canvasHeight)
 
     // 绘制商品图片
-    ctx.drawImage(productImgInfo.path, pMargin, pMargin, pW, pH)
+    ctx.drawImage(productImgInfo.path, 0, 0, pW, pH)
 
     // 绘制二维码
     // product image 宽高
     const qW = 60 * ratio
     const qH = (qW / qrcodeImgInfo.width) * qrcodeImgInfo.height
 
-    ctx.drawImage(qrcodeImgInfo.path, 215 * ratio, canvasHeight + 10 * ratio, qW, qH)
+    ctx.drawImage(qrcodeImgInfo.path, 215 * ratio, top1 + 10 * ratio, qW, qH)
 
     // 绘制二维码描述
     ctx.setFontSize(10 * ratio)
     ctx.fillStyle = '#000000'
     ctx.fillStyle = '#999999'
     ctx.setTextAlign('left')
-    ctx.fillText('识别二维码查看商品', 198 * ratio, canvasHeight + 85 * ratio)
+    ctx.fillText('识别二维码查看商品', 198 * ratio, top1 + 85 * ratio)
 
     // 绘制商品名
-    canvasHeight += 30 * ratio
+    // canvasHeight += 30 * ratio
     ctx.setFontSize(16 * ratio)
     ctx.fillStyle = '#000000'
     ctx.setTextAlign('left')
-    const productName = this.sliceText(name + name, 13)
-    ctx.fillText(productName, 10 * ratio, canvasHeight)
+    const productName = this.sliceText(nam, 13)
+    ctx.fillText(productName, 10 * ratio, top2)
 
     // 绘制商品描述
-    canvasHeight += 20 * ratio
+    // canvasHeight += 20 * ratio
     ctx.setFontSize(10 * ratio)
     ctx.fillStyle = '#999999'
     ctx.setTextAlign('left')
-    const productChar = this.sliceText(characteristic + characteristic, 20)
-    ctx.fillText(productChar, 10 * ratio, canvasHeight)
+    const productChar = this.sliceText(characteristic, 18)
+    ctx.fillText(productChar, 10 * ratio, top3)
 
     // 绘制商品价格
     // 金额信息
@@ -135,16 +149,16 @@ export default class ShareProduct extends Component {
         amountMsg += ` + ${minScore}积分`
       }
     }
-    canvasHeight += 35 * ratio
+    // canvasHeight += 35 * ratio
     ctx.setFontSize(20 * ratio)
     ctx.fillStyle = '#FF4949'
     ctx.setTextAlign('left')
-    ctx.fillText(amountMsg, 10 * ratio, canvasHeight)
+    ctx.fillText(amountMsg, 10 * ratio, top4)
 
     this.setState({
       canvasStyle: {
         ...this.state.canvasStyle,
-        height: canvasHeight + 20 * ratio,
+        height: canvasHeight,
       },
     })
     ctx.stroke()
@@ -176,7 +190,7 @@ export default class ShareProduct extends Component {
     }
 
     // 测试数据
-    res.data = 'https://dcdn.it120.cc/cuser/951/2019/07/28/f1965613-8e6b-422a-a5c5-dde9e57d8398.png'
+    res.data = 'http://my-home-static.smackgg.cn/gh_4e90d1e6fa97_860.jpg'
     const qrcodeImgInfo = await this.getImageInfo(res.data)
     return qrcodeImgInfo
   }
