@@ -6,20 +6,27 @@
     background: $color-white;
   }
 
+  .tip {
+    font-size: 20rpx;
+    color: $text-color-gray;
+    // padding: 30rpx 20rpx;
+    margin-top: 10rpx;
+    margin-left: 40rpx;
+  }
+
   .button-wrapper {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     flex-wrap: wrap;
-    padding: 30rpx;
-    padding-bottom: 10rpx;
+    padding: 30rpx 40rpx 10rpx;
+
     margin-top: 26rpx;
     background: $color-white;
     .button {
       border-color: $color-green;
       color: $color-green;
-      margin-right: 20rpx;
       margin-bottom: 20rpx;
-      min-width: 200rpx;
+      width: 320rpx;
 
       .button-line {
         font-size: 28rpx;

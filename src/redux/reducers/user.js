@@ -15,6 +15,7 @@ import {
   UPDATE_SHOP_CART,
   GET_USER_SCORELOG_SUCCESS,
   GET_RECHARGE_RULES_SUCCESS,
+  GET_BILL_RULES_SUCCESS,
 } from '../actions/user'
 
 const shopCartInfo = Taro.getStorageSync('shopCartInfo') || {}
@@ -38,6 +39,7 @@ const INITIAL_STATE = {
   coupons: [],
   shopCartInfo: shopCartInfo || {}, // 购物车信息
   rechargeSendRules: [], // 充值赠送规则
+  billDiscountsRules: [], // 买单优惠规则
 }
 
 export default function user(state = INITIAL_STATE, action) {
@@ -124,6 +126,12 @@ export default function user(state = INITIAL_STATE, action) {
       return {
         ...state,
         rechargeSendRules: action.data,
+      }
+    }
+    case GET_BILL_RULES_SUCCESS: {
+      return {
+        ...state,
+        billDiscountsRules: action.data,
       }
     }
     default:

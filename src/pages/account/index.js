@@ -303,6 +303,9 @@ export default class Account extends Component {
         <View className="other-wrapper">
             {
               [{
+                title: '在线买单',
+                url: '/pages/recharge/index?type=1',
+              }, {
                 title: '收货地址',
                 url: '/pages/select-address/index',
               }, {

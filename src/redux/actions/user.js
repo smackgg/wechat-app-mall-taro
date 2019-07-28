@@ -9,6 +9,7 @@ import {
   getableCoupons,
   userScoreLog,
   rechargeSendRules,
+  payBillDiscounts,
 } from '@/services/user'
 import { cError } from '@/utils'
 
@@ -20,6 +21,7 @@ export const GET_USER_AMOUNT_SUCCESS = 'config/GET_USER_AMOUNT_SUCCESS'
 export const GET_USER_CASHLOG_SUCCESS = 'config/GET_USER_CASHLOG_SUCCESS'
 export const GET_USER_SCORELOG_SUCCESS = 'config/GET_USER_SCORELOG_SUCCESS'
 export const GET_RECHARGE_RULES_SUCCESS = 'config/GET_RECHARGE_RULES_SUCCESS'
+export const GET_BILL_RULES_SUCCESS = 'config/GET_BILL_RULES_SUCCESS'
 
 // 优惠券
 export const GET_COUPONS_SUCCESS = 'config/GET_COUPONS_SUCCESS'
@@ -148,6 +150,15 @@ export const getRechargeSendRules = () => async dispatch => {
   const res = await rechargeSendRules()
   return dispatch({
     type: GET_RECHARGE_RULES_SUCCESS,
+    data: res.data,
+  })
+}
+
+// 获取用户在线买单优惠规则
+export const getPayBillDiscounts = () => async dispatch => {
+  const res = await payBillDiscounts()
+  return dispatch({
+    type: GET_BILL_RULES_SUCCESS,
     data: res.data,
   })
 }

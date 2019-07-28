@@ -116,3 +116,8 @@ export const getCoupon = data => request({
 export const rechargeSendRules = () => request({
   url: '/user/recharge/send/rule',
 })
+
+// 用户在线买单减免规则
+export const payBillDiscounts = () => request({
+  url: '/payBill/discounts',
+})

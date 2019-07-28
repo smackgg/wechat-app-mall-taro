@@ -5,6 +5,7 @@
  * @param {Number} score // 积分
  * @param {Number} money // 金额
  * @param {orderId} money // 订单 id
+ * @param {Object} data //  扩展 数据
  */
 import Taro from '@tarojs/taro'
 
@@ -20,6 +21,7 @@ export default function pay({
   money,
   orderId,
   type = 'order',
+  data = {},
 }) {
   return new Promise(async (resolve, reject) => {
     const [error, userAmount] = await cError(store.dispatch(getUserAmount()))
@@ -42,27 +44,27 @@ export default function pay({
       return reject()
     }
 
-    const moneyReal = (money * 100 - balance * 100) / 100 // 浮点数bug
-
-    let msg = '订单金额: ' + money + ' 元'
-    if (balance > 0) {
-      msg += '，可用余额为 ' + balance + ' 元'
-      if (moneyReal > 0) {
-        msg += '，仍需微信支付 ' + moneyReal + ' 元'
-      }
-    }
-
-    if (score > 0) {
-      // 只有积分的情况
-      if (money === 0) {
-        msg = '订单金额:' + score + ' 积分'
-      } else {
-        msg += '，并扣除 ' + score + ' 积分'
-      }
-    }
 
     // 订单支付
     if (type === 'order') {
+      const moneyReal = (money * 100 - balance * 100) / 100 // 浮点数bug
+      let msg = '订单金额: ' + money + ' 元'
+      if (balance > 0) {
+        msg += '，可用余额为 ' + balance + ' 元'
+        if (moneyReal > 0) {
+          msg += '，仍需微信支付 ' + moneyReal + ' 元'
+        }
+      }
+
+      if (score > 0) {
+        // 只有积分的情况
+        if (money === 0) {
+          msg = '订单金额:' + score + ' 积分'
+        } else {
+          msg += '，并扣除 ' + score + ' 积分'
+        }
+      }
+
       Taro.showModal({
         title: '请确认支付',
         content: msg,
@@ -112,6 +114,49 @@ export default function pay({
       .then(() => resolve)
       .catch(e => reject(e))
     }
+
+    // 在线买单
+    if (type === 'paybill') {
+      const { billDiscountsRule } = data
+      let msg = '您本次消费 ' + money + ' 元'
+      let needPayAmount = +money
+      if (billDiscountsRule) {
+        needPayAmount -= billDiscountsRule.discounts
+        msg += '，优惠 ' + billDiscountsRule.discounts + ' 元'
+      }
+      if (+balance > 0) {
+        msg += '，当前账户可用余额 ' + balance + ' 元'
+      }
+      needPayAmount = needPayAmount.toFixed(2) // 需要买单支付的金额
+      const moneyReal = (needPayAmount - balance).toFixed(2) // 需要额外微信支付的金额
+      console.log(needPayAmount)
+      console.log(moneyReal)
+
+      if (moneyReal > 0) {
+        msg += '，仍需微信支付 ' + moneyReal + ' 元'
+      }
+      Taro.showModal({
+        title: '请确认消费金额',
+        content: msg,
+        confirmText: "确认支付",
+        cancelText: "取消支付",
+        success: async res => {
+          if (!res.confirm) {
+            return reject()
+          }
+          const [err] = await cError(wxPay({
+            type,
+            money: moneyReal,
+            orderId,
+          }))
+          if (err) {
+            return reject(err)
+          }
+          resolve()
+        },
+      })
+    }
+
   })
 }
 
@@ -119,7 +164,6 @@ export function wxPay({
   type,
   money,
   orderId,
-  data,
 }) {
   return new Promise((resolve, reject) => {
     let remark = '在线充值'
@@ -136,12 +180,12 @@ export function wxPay({
 
     // 优惠买单
     if (type === 'paybill') {
-      remark = "优惠买单 ：" + data.money,
-        nextAction = {
-          type: 4,
-          uid: Taro.getStorageSync('uid'),
-          money: data.money,
-        }
+      remark = "优惠买单 ：" + money,
+      nextAction = {
+        type: 4,
+        uid: Taro.getStorageSync('uid'),
+        money,
+      }
     }
 
     return wxpay({
