@@ -127,7 +127,7 @@ export default class ShareProduct extends Component {
     ctx.setFontSize(16 * ratio)
     ctx.fillStyle = '#000000'
     ctx.setTextAlign('left')
-    const productName = this.sliceText(nam, 13)
+    const productName = this.sliceText(name, 13)
     ctx.fillText(productName, 10 * ratio, top2)
 
     // 绘制商品描述
