@@ -25,3 +25,10 @@ export const wxpay = data => request({
   method: 'post',
   data,
 })
+
+// 获取微信小程序码
+export const wxaQrcode = data => request({
+  url: '/qrcode/wxa/unlimit',
+  method: 'post',
+  data,
+})

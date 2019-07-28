@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { connect } from '@tarojs/redux'
 import { View, Image, Text, Swiper, SwiperItem, Button, ScrollView, Form } from '@tarojs/components'
-import { AtIcon, AtFloatLayout, AtInputNumber } from 'taro-ui'
+import { AtIcon, AtFloatLayout, AtInputNumber, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import { getProductDetail } from '@/redux/actions/goods'
 import WxParse from '@/third-utils/wxParse/wxParse'
 import { productPrice } from '@/services/goods'
@@ -36,6 +36,7 @@ export default class ProductDetail extends Component {
     selectSku: {},
     buttonType: 1, // 1: 立即购买 2: 加入购物车
     amount: 1, // 商品数量
+    showActionSheet: false,
   }
 
   componentWillMount() {
@@ -264,14 +265,12 @@ export default class ProductDetail extends Component {
         name,
         logisticsId,
         weight,
-        characteristic,
       },
       logistics,
     } = this.state.productInfo
 
     // 商品信息
     const productInfo = {
-      characteristic,
       goodsId: id,
       pic,
       name,
@@ -312,6 +311,31 @@ export default class ProductDetail extends Component {
     })
   }
 
+  // 分享弹窗
+  onToggleActionSheet = toggle => {
+    this.setState({
+      showActionSheet: toggle,
+    })
+  }
+
+  onShareAppMessage = () => {
+    const {
+      basicInfo: {
+        name,
+        id,
+        pic,
+      },
+    } = this.state.productInfo
+
+    const data = {
+      title: name,
+      path: `/pages/product-detail/index?id=${id}&inviter_id=${Taro.getStorageSync('uid')}`,
+      imageUrl: pic,
+    }
+
+    return data
+  }
+
   render () {
     const { shopCartInfo } = this.props
     const {
@@ -323,6 +347,7 @@ export default class ProductDetail extends Component {
       selectSku,
       buttonType,
       amount,
+      showActionSheet,
     } = this.state
 
     // 商品详情页数据未拉取
@@ -371,7 +396,7 @@ export default class ProductDetail extends Component {
               <Text className="name">{name}</Text>
               <Text className="characteristic">{characteristic}</Text>
             </View>
-            <View className="share">
+            <View className="share" onClick={this.onToggleActionSheet.bind(this, true)}>
               <AtIcon value="share-2" size="24" color="#5d5d5d"></AtIcon>
               <View>分享</View>
             </View>
@@ -511,6 +536,16 @@ export default class ProductDetail extends Component {
             </BottomBar>
           </View>
         </AtFloatLayout>
+
+        {/* 分享弹窗 */}
+        <AtActionSheet cancelText="取消" isOpened={showActionSheet} onClose={this.onToggleActionSheet.bind(this, false)}>
+          <AtActionSheetItem>
+            <Button openType="share" className="share-button">直接分享</Button>
+          </AtActionSheetItem>
+          <AtActionSheetItem onClick={this.goPage.bind(this, `/pages/product-detail/share-product?id=${this.productId}`, false)}>
+            生成海报
+          </AtActionSheetItem>
+        </AtActionSheet>
       </View>
     )
   }

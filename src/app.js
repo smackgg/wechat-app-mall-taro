@@ -28,6 +28,7 @@ class App extends Component {
       'pages/product-detail/index',
       'pages/checkout/index',
       'pages/edit-address/index',
+      'pages/product-detail/share-product',
       'pages/select-address/index',
       'pages/order-list/index',
       'pages/order-detail/index',
