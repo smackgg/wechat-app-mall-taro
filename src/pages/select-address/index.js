@@ -26,11 +26,12 @@ export default class SelectAddress extends Component {
   }
 
   componentWillMount() {
-    // 设置bar颜色
-    // Taro.setNavigationBarColor({
-    //   backgroundColor: theme['$color-brand'],
-    //   frontColor: '#ffffff',
-    // })
+    const { type = 0 } = this.$router.params
+    this.type = +type
+
+    Taro.setNavigationBarTitle({
+      title: this.type === 0 ? '选择收货地址' : '设置默认地址',
+    })
   }
 
   // 编辑地址
@@ -58,7 +59,15 @@ export default class SelectAddress extends Component {
       id,
       isDefault: true,
     })
-    Taro.navigateBack()
+    if (this.type === 0) {
+      Taro.navigateBack()
+    } else {
+      Taro.showToast({
+        title: '设置成功',
+        icon: 'success',
+      })
+      this.props.getAddressList()
+    }
   }
 
   render() {
