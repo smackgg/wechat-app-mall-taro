@@ -78,10 +78,29 @@ class Index extends Component {
     })
   }
 
+  // 视频全屏事件
   onFullScreenChange = e => {
     if (!e.detail.fullScreen) {
       this.setState({
         playVideo: false,
+      })
+    }
+  }
+
+  // banner 点击
+  onBannerClick = item => {
+    const { linkUrl } = item
+
+    // 项目内跳转
+    if (/^\/pages\//.test(linkUrl)) {
+      Taro.navigateTo({
+        url: linkUrl,
+      })
+    }
+    // 公众号跳转
+    if (/^http/.test(linkUrl)) {
+      Taro.navigateTo({
+        url: `/pages/webview/index?url=${encodeURIComponent(linkUrl)}`,
       })
     }
   }
@@ -102,7 +121,7 @@ class Index extends Component {
           autoplay
           onChange={this.onSwiperChange}
         >
-          {banners.map(item => <SwiperItem className="swiper-item" key={item.id}>
+          {banners.map(item => <SwiperItem className="swiper-item" key={item.id} onClick={this.onBannerClick.bind(this, item)}>
             <Image showMenuByLongpress className="swiper-item_image" src={item.picUrl} mode="aspectFill" />
           </SwiperItem>) }
         </Swiper>
