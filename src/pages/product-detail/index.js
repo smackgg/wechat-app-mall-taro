@@ -406,7 +406,7 @@ export default class ProductDetail extends Component {
               <Price price={minPrice} score={minScore}></Price>
               {originalPrice !== minPrice && <Text className="original-price">￥{originalPrice}</Text>}
             </View>
-            <Text className="name">邮费：{(!logistics || logistics.isFress) ? '包邮' : '￥' + logistics.details[0].firstAmount}</Text>
+            {logistics && <Text className="name">邮费：{logistics.isFree ? '包邮' : '￥' + logistics.details[0].firstAmount}</Text>}
             <Text>已售：{numberOrders}</Text>
           </View>
         </View>
