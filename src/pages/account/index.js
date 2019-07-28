@@ -2,10 +2,11 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Swiper, SwiperItem, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import { getLevelList, getUserAmount } from '@/redux/actions/user'
+import { getLevelList, getUserAmount, getUserDetail } from '@/redux/actions/user'
 import {
   getOrderStatistics,
 } from '@/redux/actions/order'
+
 
 import { theme, priceToFloat, setCartBadge } from '@/utils'
 import classNames from 'classnames'
@@ -74,6 +75,8 @@ export default class Account extends Component {
   }
 
   componentDidShow() {
+    //
+    this.props.dispatch(getUserDetail())
     // 获取用户资产
     this.props.getUserAmount()
     // 获取订单统计
@@ -299,7 +302,6 @@ export default class Account extends Component {
         </View>
 
         {/* 其它 */}
-
         <View className="other-wrapper">
             {
               [{
@@ -307,7 +309,7 @@ export default class Account extends Component {
                 url: '/pages/recharge/index?type=1',
               }, {
                 title: '收货地址',
-                url: '/pages/select-address/index',
+                url: '/pages/select-address/index?type=1',
               }, {
                 title: '联系客服',
                 url: '',
