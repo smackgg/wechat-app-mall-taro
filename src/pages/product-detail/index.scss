@@ -205,6 +205,7 @@
       padding: 30rpx;
       .product-image {
         width: 120rpx;
+        height: 120rpx;
         margin-right: 40rpx;
       }
     }
@@ -219,17 +220,20 @@
       }
       .attributes {
         display: flex;
+        flex-wrap: wrap;
         .attribute {
           margin-right: 40rpx;
+          margin-bottom: 10rpx;
         }
 
         .attribute-button {
           &.primary {
             color: $color-white;
             background: $color-brand;
+            border: 1rpx solid $color-brand;
           }
           &.secondary {
-            border: 1px solid $color-brand;
+            border: 1rpx solid $color-brand;
             color: $color-brand;
           }
         }

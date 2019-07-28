@@ -8,6 +8,7 @@ import { productPrice } from '@/services/goods'
 import { Price, BottomBar } from '@/components'
 import classNames from 'classnames'
 import { addCart, updateCart } from '@/redux/actions/user'
+import dateFormat from '@/utils/dateFormat'
 // import { addWxFormId } from '@/services/wechat'
 
 import './index.scss'
@@ -336,6 +337,26 @@ export default class ProductDetail extends Component {
     return data
   }
 
+  // 获取预约对应时间
+  getReserveDate = attr => {
+    const now = Date.now()
+    let date = ''
+    switch (attr) {
+      case '今天':
+        date = now
+        break
+      case '明天':
+        date = now + 24 * 60 * 60 * 1000
+        break
+      case '后天':
+        date = now + 24 * 60 * 60 * 1000 * 2
+        break
+      default:
+        break
+    }
+    return date && dateFormat(date, 'MM月dd日')
+  }
+
   render () {
     const { shopCartInfo } = this.props
     const {
@@ -365,6 +386,7 @@ export default class ProductDetail extends Component {
         numberOrders,
         pic,
         minScore,
+        tags,
       },
       logistics,
       extJson,
@@ -374,6 +396,9 @@ export default class ProductDetail extends Component {
     const services = extJson.service
       ? extJson.service.split(' ')
       : null
+
+    // 是否为预订
+    const isReserve = tags && tags.includes('预订')
 
     return (
       <View className="container">
@@ -474,7 +499,7 @@ export default class ProductDetail extends Component {
                   className="button button-buynow"
                   full type="primary"
                   onClick={this.showSelectSku.bind(this, 1)}
-                >立即购买</Button>
+                >{isReserve ? '立即预订' : '立即购买'}</Button>
               </View>
             </View>
           </View>
@@ -485,7 +510,7 @@ export default class ProductDetail extends Component {
           <View className="sku-wrapper">
             <ScrollView scrollY className="select-content">
               <View className="select_product-info">
-                <Image mode="widthFix" src={pic} class="product-image" />
+                <Image mode="aspectFill" src={pic} class="product-image" />
                 <View>
                   <View className="price">￥{selectSku.price}</View>
                   {selectSku.originalPrice !== selectSku.price && <View className="original-price">￥{selectSku.originalPrice}</View>}
@@ -506,7 +531,7 @@ export default class ProductDetail extends Component {
                             size="mini"
                             className={classNames('attribute-button', child.checked ? 'primary' : 'secondary')}
                             onClick={this.onAttributeClick.bind(this, index, child)}
-                          >{child.name}</Button>
+                          >{child.name}{isReserve && this.getReserveDate(child.name) ? `(${this.getReserveDate(child.name)})` : ''}</Button>
                         </View>)
                       }
                     </View>
@@ -532,7 +557,11 @@ export default class ProductDetail extends Component {
                 type="primary"
                 disabled={stores === 0}
                 onClick={this.handleSubmit}
-              >{stores === 0 ? '已售罄' : (buttonType === 1 ? '立即购买' : '加入购物车')}</Button>
+              >{stores === 0
+                ? (isReserve ? '已订满' : '已售罄')
+                : (buttonType === 1
+                  ? (isReserve ? '立即预订' : '立即购买')
+                  : '加入购物车')}</Button>
             </BottomBar>
           </View>
         </AtFloatLayout>

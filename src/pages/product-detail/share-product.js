@@ -143,7 +143,7 @@ export default class ShareProduct extends Component {
     let amountMsg = `￥${minPrice}`
     // 积分
     if (minScore > 0) {
-      if (amountReal === 0) {
+      if (minPrice === 0) {
         amountMsg = `${minScore}积分`
       } else {
         amountMsg += ` + ${minScore}积分`
