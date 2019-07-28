@@ -14,7 +14,7 @@ import { wxpay, addWxFormId } from '@/services/wechat'
 import { store } from '@/redux/store'
 import { getUserAmount } from '@/redux/actions/user'
 import { cError } from '@/utils'
-import { orderPay } from '@/services/order'
+import { orderPay, billPay } from '@/services/order'
 
 export default function pay({
   score = 0,
@@ -36,17 +36,16 @@ export default function pay({
 
     const { score: userScore, balance } = userAmount
 
-    if (userScore < score) {
-      Taro.showToast({
-        title: '您的积分不足，无法支付',
-        icon: 'none',
-      })
-      return reject()
-    }
-
-
     // 订单支付
     if (type === 'order') {
+      if (userScore < score) {
+        Taro.showToast({
+          title: '您的积分不足，无法支付',
+          icon: 'none',
+        })
+        return reject()
+      }
+
       const moneyReal = (money * 100 - balance * 100) / 100 // 浮点数bug
       let msg = '订单金额: ' + money + ' 元'
       if (balance > 0) {
@@ -120,18 +119,19 @@ export default function pay({
       const { billDiscountsRule } = data
       let msg = '您本次消费 ' + money + ' 元'
       let needPayAmount = +money
+      // 有买单优惠
       if (billDiscountsRule) {
         needPayAmount -= billDiscountsRule.discounts
-        msg += '，优惠 ' + billDiscountsRule.discounts + ' 元'
+        msg += `，优惠 ${billDiscountsRule.discounts} 元，优惠后金额 ${needPayAmount} 元`
       }
+      // 有余额
       if (+balance > 0) {
         msg += '，当前账户可用余额 ' + balance + ' 元'
       }
       needPayAmount = needPayAmount.toFixed(2) // 需要买单支付的金额
       const moneyReal = (needPayAmount - balance).toFixed(2) // 需要额外微信支付的金额
-      console.log(needPayAmount)
-      console.log(moneyReal)
 
+      // 需要微信支付
       if (moneyReal > 0) {
         msg += '，仍需微信支付 ' + moneyReal + ' 元'
       }
@@ -144,13 +144,32 @@ export default function pay({
           if (!res.confirm) {
             return reject()
           }
-          const [err] = await cError(wxPay({
-            type,
-            money: moneyReal,
-            orderId,
-          }))
-          if (err) {
-            return reject(err)
+
+          // 直接支付 余额
+          if (moneyReal <= 0) {
+            const [err] = await cError(billPay({ money }))
+            if (err) {
+              Taro.showModal({
+                title: '买单失败！',
+                content: err.msg,
+                showCancel: false,
+              })
+              return reject()
+            }
+            // 提示支付成功
+            Taro.showToast({
+              title: '买单成功！',
+            })
+          } else {
+            // 微信支付
+            const [err] = await cError(wxPay({
+              type,
+              money: moneyReal,
+              orderId,
+            }))
+            if (err) {
+              return reject(err)
+            }
           }
           resolve()
         },

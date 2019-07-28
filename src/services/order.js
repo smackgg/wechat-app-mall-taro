@@ -24,6 +24,13 @@ export const orderPay = data => request({
   data,
 })
 
+// 在线买单
+export const billPay = data => request({
+  url: '/payBill/pay',
+  method: 'post',
+  data,
+})
+
 // 查询订单统计
 export const orderStatistics = () => request({
   url: '/order/statistics',
