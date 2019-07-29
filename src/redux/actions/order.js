@@ -32,20 +32,12 @@ export const getOrderList = data => async dispatch => {
   const { status = 'all' } = data
   const [error, res] = await cError(orderList(data))
 
-  if (error) {
-    return error
-  }
-
-  const { goodsMap, logisticsMap } = res.data
-
-
-
   return dispatch({
     type: GET_ORDER_LIST_SUCCESS,
-    data: (res.data.orderList || []).map(order => ({
+    data: error ? [] : (res.data.orderList || []).map(order => ({
       ...order,
-      goodsMap: goodsMap[order.id],
-      logisticsMap: logisticsMap[order.id],
+      goodsMap: res.data.goodsMap[order.id],
+      logisticsMap: res.data.logisticsMap[order.id],
     })),
     status,
   })
