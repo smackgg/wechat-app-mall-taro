@@ -18,8 +18,12 @@ const SWIPER_ITEM_MARGIN = '45rpx'
 @connect(
   ({
     user,
+    order: {
+      orderStatistics,
+    },
   }) => ({
     user,
+    orderStatistics,
   }),
   dispatch => ({
     getLevelList: () => dispatch(getLevelList()),
@@ -43,21 +47,25 @@ export default class Account extends Component {
       icon: '/assets/icon/payment.jpg',
       name: '待支付',
       status: 0,
+      key: 'count_id_no_pay',
     },
     {
       icon: '/assets/icon/shipped.jpg',
       name: '待发货',
       status: 1,
+      key: 'count_id_no_transfer',
     },
     {
       icon: '/assets/icon/receive.jpg',
       name: '待收货',
       status: 2,
+      key: 'count_id_no_confirm',
     },
     {
       icon: '/assets/icon/comment.jpg',
       name: '待评价',
       status: 3,
+      key: 'count_id_no_reputation',
     },
     {
       icon: '/assets/icon/aftersale.jpg',
@@ -122,6 +130,7 @@ export default class Account extends Component {
         totleConsumed,
       },
     } = this.props.user
+    const { orderStatistics } = this.props
 
     // 用户滑动到的等级
     const swiperLv = levelList[swiperIndex] || {}
@@ -270,6 +279,10 @@ export default class Account extends Component {
                   mode="aspectFill"
                 />
                 <Text>{item.name}</Text>
+                {orderStatistics[item.key] && orderStatistics[item.key] > 0 && <View className="dot">
+                  {/* {orderStatistics[item.key] > 99 ? '99+' : orderStatistics[item.key]} */}
+                  99+
+                </View>}
               </View>)
             }
           </View>

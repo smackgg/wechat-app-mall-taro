@@ -264,6 +264,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        position: relative;
+
         font-size: 24rpx;
         line-height: 36rpx;
         color: $text-color-gray-light;
@@ -272,6 +274,20 @@
           width: 48rpx;
           height: 48rpx;
           margin-bottom: 10rpx;
+        }
+
+        .dot {
+          position: absolute;
+          right: 0rpx;
+          top: 0rpx;
+          width: 32rpx;
+          height: 32rpx;
+          line-height: 28rpx;
+          font-size: 18rpx;
+          border-radius: 50%;
+          background: $text-color-red;
+          color: $color-white;
+          text-align: center;
         }
       }
     }

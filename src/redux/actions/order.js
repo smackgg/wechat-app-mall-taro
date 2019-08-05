@@ -19,7 +19,7 @@ export const getOrderDetail = (data = {}) => async dispatch => {
 }
 
 // 查询订单统计
-export const getOrderStatistics= () => async dispatch => {
+export const getOrderStatistics = () => async dispatch => {
   const res = await orderStatistics()
   return dispatch({
     type: GET_ORDER_STATISTICS_SUCCESS,

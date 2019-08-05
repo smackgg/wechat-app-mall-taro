@@ -50,3 +50,9 @@ export const orderClose = data => request({
   data,
 })
 
+// 确认收货
+export const orderDelivery = data => request({
+  url: '/order/delivery',
+  method: 'post',
+  data,
+})
