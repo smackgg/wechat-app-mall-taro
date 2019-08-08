@@ -280,8 +280,7 @@ export default class Account extends Component {
                 />
                 <Text>{item.name}</Text>
                 {orderStatistics[item.key] && orderStatistics[item.key] > 0 && <View className="dot">
-                  {/* {orderStatistics[item.key] > 99 ? '99+' : orderStatistics[item.key]} */}
-                  99+
+                  {orderStatistics[item.key] > 99 ? '99+' : orderStatistics[item.key]}
                 </View>}
               </View>)
             }

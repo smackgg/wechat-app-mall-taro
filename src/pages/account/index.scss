@@ -278,13 +278,14 @@
 
         .dot {
           position: absolute;
-          right: 0rpx;
-          top: 0rpx;
-          width: 32rpx;
+          right: -8rpx;
+          top: -8rpx;
+          min-width: 32rpx;
           height: 32rpx;
-          line-height: 28rpx;
+          padding: 0 7rpx;
+          line-height: 32rpx;
           font-size: 18rpx;
-          border-radius: 50%;
+          border-radius: 32rpx;
           background: $text-color-red;
           color: $color-white;
           text-align: center;
