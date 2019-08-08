@@ -4,11 +4,11 @@ import { connect } from '@tarojs/redux'
 
 import { getOrderDetail } from '@/redux/actions/order'
 import { getUserAmount } from '@/redux/actions/user'
-import { addWxFormId } from '@/services/wechat'
+import { addWxFormId, sendTempleMsg } from '@/services/wechat'
 
 import { cError } from '@/utils'
 import pay from '@/utils/pay'
-import { orderClose } from '@/services/order'
+import { orderClose, orderDelivery } from '@/services/order'
 import { ProductList, Address, PriceInfo, BottomBar } from '@/components'
 
 import './index.scss'
@@ -143,6 +143,52 @@ export default class OrderDetail extends Component {
     })
   }
 
+  //
+
+  onConfirm = () => {
+    const { id, orderNumber } = this.state.orderInfo
+
+    Taro.showModal({
+      title: '提示',
+      content: '确认您已收到商品？',
+      success: async res => {
+        if (res.confirm) {
+          const [error] = await cError(orderDelivery({
+            orderId: id,
+          }))
+          console.log(error)
+          if (error) {
+            Taro.showModal({
+              title: '确认收货失败',
+              content: error.msg,
+              showCancel: false,
+            })
+            return
+          }
+          this.init()
+          const color = '#173177'
+          sendTempleMsg({
+            module: 'immediately',
+            postJsonString: JSON.stringify({
+              keyword1: {
+                value: '确认收货',
+                color,
+              },
+              keyword2: { value: orderNumber, color },
+              keyword3: {
+                value: '您已确认收货，期待您的再次光临！点击进行评价~',
+                color,
+              },
+            }),
+            template_id: 'o-kpENsK0_ocB8xm-FhGtO2fhwCkSDxpjhmdcfHkSuE',
+            type: 0,
+            url: '/pages/order-detail/index?id=' + id,
+          })
+        }
+      },
+    })
+  }
+
   render () {
     const {
       productList = [],
@@ -223,6 +269,15 @@ export default class OrderDetail extends Component {
                   size="mini"
                   onClick={this.onPay}
                 >立即支付</Button>
+              }
+              {
+                status === 2 && <Button
+                  form-type="submit"
+                  className="button"
+                  hoverClass="none"
+                  size="mini"
+                  onClick={this.onConfirm}
+                >确认收货</Button>
               }
             </View>
           </Form>
