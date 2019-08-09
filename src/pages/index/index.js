@@ -6,7 +6,7 @@ import { getBanners } from '@/redux/actions/config'
 import { getProducts } from '@/redux/actions/goods'
 import classNames from 'classnames'
 import { Price } from '@/components'
-import { setCartBadge } from '@/utils'
+import { setCartBadge, requireEntryPage } from '@/utils'
 import { AtIcon } from 'taro-ui'
 
 import './index.scss'
@@ -126,7 +126,7 @@ class Index extends Component {
     const videoUrl2 = systemConfig.index_video_2
     return (
       <View className="index">
-        <View
+        {requireEntryPage && <View
           className="go-home"
           style={{
             paddingTop: `${statusBarHeight * 2}rpx`,
@@ -135,7 +135,7 @@ class Index extends Component {
         >
           <AtIcon value="chevron-left" size="20" color="#fff"></AtIcon>
           <Text>首页</Text>
-        </View>
+        </View>}
         {/* banner */}
         <Swiper
           className="swiper"
