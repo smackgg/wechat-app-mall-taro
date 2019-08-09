@@ -17,6 +17,7 @@
         margin-right: 20rpx;
       }
       .product-info {
+        height: 120rpx;
         font-size: 28rpx;
         display: flex;
         flex-direction: column;
@@ -32,7 +33,7 @@
       .count {
         position: absolute;
         right: 20rpx;
-        bottom: 0;
+        bottom: -10rpx;
         font-size: 24rpx;
       }
     }
