@@ -144,6 +144,7 @@ class App extends Component {
         'recharge_amount_min',
         'ALLOW_SELF_COLLECTION',
         'concat_phone_number',
+        'mall_name',
       ].join(','),
     }))
 

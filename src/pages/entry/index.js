@@ -8,17 +8,18 @@ import { getBanners } from '@/redux/actions/config'
 import './index.scss'
 
 
-
+const BANNER_KEY = 'entry'
 @connect(({ config }) => ({
-  banners: config.banners['entry'] || [],
+  banners: config.banners[BANNER_KEY] || [],
   concatPhoneNumber: config.systemConfig.concat_phone_number,
+  mallName: config.systemConfig.mall_name,
 }), dispatch => ({
   getBanners: type => dispatch(getBanners(type)),
 }))
 
 export default class Entry extends Component {
   config = {
-    navigationBarTitleText: '首页',
+    navigationBarTitleText: '',
   }
 
   state = {
@@ -26,8 +27,22 @@ export default class Entry extends Component {
   }
 
   componentDidShow() {
-    this.props.getBanners('entry')
+    this.props.getBanners(BANNER_KEY)
+    this.this.setTitle(this.props.mallName)
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.mallName !== this.props.mallName) {
+      this.setTitle(nextProps.mallName)
+    }
+  }
+
+  setTitle = title => {
+    Taro.setNavigationBarTitle({
+      title: title || '首页',
+    })
+  }
+
 
   // 跳转 url
   goPage = (url, tabBar = false) => {
