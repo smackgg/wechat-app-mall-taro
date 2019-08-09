@@ -4,6 +4,18 @@ page {
 
 .index {
   position: relative;
+
+  .go-home {
+    position: absolute;
+    z-index: 2;
+    left: 20rpx;
+    top: 0;
+    color: $color-white;
+    display: flex;
+    align-items: center;
+    opacity: .8;
+  }
+
   .swiper {
     height: 628rpx;
   }

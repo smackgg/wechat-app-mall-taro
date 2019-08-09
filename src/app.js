@@ -38,12 +38,13 @@ class App extends Component {
       'pages/score-shop/index',
       'pages/reputation/index',
       'pages/shop-cart/index',
-      'pages/recharge/index',
+      // 'pages/recharge/index',
+      'pages/entry/index',
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
+      navigationBarTitleText: '',
       navigationBarTextStyle: 'black',
     },
     tabBar: {
@@ -56,7 +57,7 @@ class App extends Component {
           pagePath: 'pages/index/index',
           iconPath: 'assets/icon/home.jpg',
           selectedIconPath: 'assets/icon/home-selected.jpg',
-          text: '首页',
+          text: '商城首页',
         },
         {
           pagePath: 'pages/category/index',
@@ -137,7 +138,13 @@ class App extends Component {
 
     // 获取系统参数（店铺信息等
     store.dispatch(getSystemConfig({
-      keys: ['index_video_1', 'index_video_2', 'recharge_amount_min', 'ALLOW_SELF_COLLECTION'].join(','),
+      keys: [
+        'index_video_1',
+        'index_video_2',
+        'recharge_amount_min',
+        'ALLOW_SELF_COLLECTION',
+        'concat_phone_number',
+      ].join(','),
     }))
 
     // 积分赠送规则

@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Video, Swiper, SwiperItem } from '@tarojs/components'
+import { View, Image, Video, Swiper, SwiperItem, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { getBanners } from '@/redux/actions/config'
@@ -7,6 +7,7 @@ import { getProducts } from '@/redux/actions/goods'
 import classNames from 'classnames'
 import { Price } from '@/components'
 import { setCartBadge } from '@/utils'
+import { AtIcon } from 'taro-ui'
 
 import './index.scss'
 
@@ -30,10 +31,15 @@ class Index extends Component {
   state = {
     swiperIndex: 0,
     playVideo: false,
+    statusBarHeight: 0,
   }
 
   componentWillMount() {
     setCartBadge()
+    const { statusBarHeight } = Taro.getSystemInfoSync()
+    this.setState({
+      statusBarHeight,
+    })
   }
 
   componentDidShow () {
@@ -105,14 +111,31 @@ class Index extends Component {
     }
   }
 
+  // 返回首页
+  goHome = () => {
+    Taro.redirectTo({
+      url: '/pages/entry/index',
+    })
+  }
+
   render () {
     const { banners = [], recommendProducts, allProducts, systemConfig } = this.props
-    const { swiperIndex, playVideo } = this.state
+    const { swiperIndex, playVideo, statusBarHeight } = this.state
 
     const videoUrl = systemConfig.index_video_1
     const videoUrl2 = systemConfig.index_video_2
     return (
       <View className="index">
+        <View
+          className="go-home"
+          style={{
+            paddingTop: `${statusBarHeight * 2}rpx`,
+          }}
+          onClick={this.goHome}
+        >
+          <AtIcon value="chevron-left" size="20" color="#fff"></AtIcon>
+          <Text>首页</Text>
+        </View>
         {/* banner */}
         <Swiper
           className="swiper"
