@@ -1,9 +1,9 @@
 import Taro from '@tarojs/taro'
 import PropTypes from 'prop-types'
 import { View, Image, Text } from '@tarojs/components'
+import { AtInputNumber } from 'taro-ui'
 import MyCheckbox from '../Checkbox'
 import Price from '../Price'
-import { AtInputNumber } from 'taro-ui'
 
 import './index.scss'
 
