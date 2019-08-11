@@ -30,7 +30,7 @@ import './index.scss'
 export default class Coupons extends Component {
 
   config = {
-    navigationBarTitleText: '我的钱包',
+    navigationBarTitleText: '我的优惠券',
   }
 
   state = {
