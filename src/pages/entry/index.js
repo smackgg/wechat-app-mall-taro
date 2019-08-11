@@ -28,7 +28,7 @@ export default class Entry extends Component {
 
   componentDidShow() {
     this.props.getBanners(BANNER_KEY)
-    this.this.setTitle(this.props.mallName)
+    this.setTitle(this.props.mallName)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,6 +37,7 @@ export default class Entry extends Component {
     }
   }
 
+  // 设置页面标题
   setTitle = title => {
     Taro.setNavigationBarTitle({
       title: title || '首页',
@@ -73,7 +74,7 @@ export default class Entry extends Component {
     },
     {
       title: '会员中心',
-      onClick: () => this.goPage('/pages/index/index'),
+      onClick: () => this.goPage('/pages/vip-center/index'),
     },
     {
       title: '专属顾问',
