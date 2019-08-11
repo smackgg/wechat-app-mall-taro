@@ -194,7 +194,7 @@ export default class Account extends Component {
                     {/* 已经是当前会员 */}
                     {
                       (lv >= level.lv) && <View className="level-consumed">
-                        您已经成为本店{level.name}会员
+                        您已经成为本店{level.name}
                     </View>
                     }
                     {

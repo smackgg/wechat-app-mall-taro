@@ -42,6 +42,7 @@ class App extends Component {
       'pages/entry/index',
       'pages/vip-center/index',
       'pages/vip-center/my',
+      'pages/vip-center/potences',
     ],
     window: {
       backgroundTextStyle: 'light',

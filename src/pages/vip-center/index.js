@@ -87,9 +87,9 @@ export default class VipCenter extends Component {
       onClick: () => this.goPage('/pages/coupons/index'),
     },
     {
-      title: '我的权益',
+      title: '会员权益',
       image: '/assets/icon/vip_potence.jpg',
-      onClick: () => this.goPage('/pages/vip-center/potence'),
+      onClick: () => this.goPage('/pages/vip-center/potences'),
     },
     {
       title: '我的信息',

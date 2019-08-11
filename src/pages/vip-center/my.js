@@ -1,18 +1,16 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtIcon, AtActionSheet, AtActionSheetItem } from 'taro-ui'
-import { getLevelList, getUserAmount, getUserDetail, getLevelDetail } from '@/redux/actions/user'
-import { theme, priceToFloat, setCartBadge } from '@/utils'
+import { getLevelList, getUserAmount, getLevelDetail } from '@/redux/actions/user'
+import { theme } from '@/utils'
 import classNames from 'classnames'
 
-import './index.scss'
+import './my.scss'
 
 const SWIPER_ITEM_MARGIN = '45rpx'
-@connect(({ user, config }) => ({
+@connect(({ user }) => ({
   user,
 }), dispatch => ({
-  getUserDetail: () => dispatch(getUserDetail()),
   getLevelList: () => dispatch(getLevelList()),
   getLevelDetail: id => dispatch(getLevelDetail(id)),
   getUserAmount: () => dispatch(getUserAmount()),
@@ -31,12 +29,8 @@ export default class MyVip extends Component {
     // 获取用户资产
     this.props.getUserAmount()
 
-    // 获取用户详情
     // 获取vip等级列表
-    await Promise.all([
-      this.props.getUserDetail(),
-      this.props.getLevelList(),
-    ])
+    await this.props.getLevelList()
     this.setState({
       loading: false,
     })
@@ -140,7 +134,7 @@ export default class MyVip extends Component {
                         {/* 已经是当前会员 */}
                         {
                           (lv >= level.lv) && <View className="level-consumed">
-                            您已经成为本店{level.name}会员
+                            您已经成为本店{level.name}
                     </View>
                         }
                         {
@@ -179,7 +173,7 @@ export default class MyVip extends Component {
             {
               potences && <View className="potences">
                 <View className="title">
-                  <View>您好，尊贵的{name}会员。</View>
+                  <View>您好，尊贵的{name}。</View>
                   <View>您将尊享本店以下会员权益：</View>
                 </View>
                 <View>
