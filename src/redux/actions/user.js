@@ -10,11 +10,13 @@ import {
   userScoreLog,
   rechargeSendRules,
   payBillDiscounts,
+  levelDetail,
 } from '@/services/user'
 import { cError } from '@/utils'
 
 export const GET_USER_DETAIL_SUCCESS = 'config/GET_USER_DETAIL_SUCCESS'
 export const GET_LEVEL_LIST_SUCCESS = 'config/GET_LEVEL_LIST_SUCCESS'
+export const GET_LEVEL_DETAIL_SUCCESS = 'config/GET_LEVEL_DETAIL_SUCCESS'
 export const GET_ADDRESS_LIST_SUCCESS = 'config/GET_ADDRESS_LIST_SUCCESS'
 export const GET_DEFAULT_ADDRESS_SUCCESS = 'config/GET_DEFAULT_ADDRESS_SUCCESS'
 export const GET_USER_AMOUNT_SUCCESS = 'config/GET_USER_AMOUNT_SUCCESS'
@@ -50,6 +52,19 @@ export const getLevelList = () => async dispatch => {
   })
   return res.data
 }
+
+// 获取会员详情
+export const getLevelDetail = id => async dispatch => {
+  const res = await levelDetail(id)
+  console.log(res.data)
+  dispatch({
+    type: GET_LEVEL_DETAIL_SUCCESS,
+    data: res.data,
+    id,
+  })
+  return res.data
+}
+
 
 export const getAddressList = () => async dispatch => {
   const [error, res] = await cError(addressList())

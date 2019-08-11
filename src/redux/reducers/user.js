@@ -16,6 +16,7 @@ import {
   GET_USER_SCORELOG_SUCCESS,
   GET_RECHARGE_RULES_SUCCESS,
   GET_BILL_RULES_SUCCESS,
+  GET_LEVEL_DETAIL_SUCCESS,
 } from '../actions/user'
 
 const shopCartInfo = Taro.getStorageSync('shopCartInfo') || {}
@@ -51,6 +52,22 @@ export default function user(state = INITIAL_STATE, action) {
       }
     case GET_LEVEL_LIST_SUCCESS: {
       const levelList = (action.data || []).map((level, index) => ({ ...level, lv: index + 1 }))
+      return {
+        ...state,
+        levelList,
+        userLevel: levelList.filter(item => item.id === state.userDetail.levelId)[0] || {},
+      }
+    }
+    case GET_LEVEL_DETAIL_SUCCESS: {
+      const levelList = state.levelList.map(level => {
+        if (level.id === action.id) {
+          return {
+            ...level,
+            potences: action.data.extJson['会员权益'].split('；').filter(i => i),
+          }
+        }
+        return level
+      })
       return {
         ...state,
         levelList,

@@ -7,7 +7,6 @@ import {
   getOrderStatistics,
 } from '@/redux/actions/order'
 
-
 import { theme, priceToFloat, setCartBadge } from '@/utils'
 import classNames from 'classnames'
 
@@ -26,6 +25,7 @@ const SWIPER_ITEM_MARGIN = '45rpx'
     orderStatistics,
   }),
   dispatch => ({
+    getUserDetail: () => dispatch(getUserDetail()),
     getLevelList: () => dispatch(getLevelList()),
     getUserAmount: () => dispatch(getUserAmount()),
     getOrderStatistics: () => dispatch(getOrderStatistics()),
@@ -83,8 +83,8 @@ export default class Account extends Component {
   }
 
   componentDidShow() {
-    //
-    this.props.dispatch(getUserDetail())
+    // 获取用户详情
+    this.props.getUserDetail()
     // 获取用户资产
     this.props.getUserAmount()
     // 获取订单统计

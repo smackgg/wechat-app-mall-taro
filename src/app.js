@@ -41,6 +41,7 @@ class App extends Component {
       'pages/recharge/index',
       'pages/entry/index',
       'pages/vip-center/index',
+      'pages/vip-center/my',
     ],
     window: {
       backgroundTextStyle: 'light',

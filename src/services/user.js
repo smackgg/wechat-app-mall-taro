@@ -46,6 +46,14 @@ export const levelList = () => request({
   method: 'post',
 })
 
+// 获取会员等级详情
+export const levelDetail = id => request({
+  url: '/user/level/info',
+  data: {
+    id,
+  },
+})
+
 // 获取地址列表
 export const addressList = () => request({
   url: '/user/shipping-address/list',
