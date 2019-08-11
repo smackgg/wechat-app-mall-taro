@@ -40,6 +40,7 @@ class App extends Component {
       'pages/shop-cart/index',
       'pages/recharge/index',
       'pages/entry/index',
+      'pages/vip-center/index',
     ],
     window: {
       backgroundTextStyle: 'light',
