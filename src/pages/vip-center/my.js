@@ -151,13 +151,15 @@ export default class MyVip extends Component {
                         <View className="vip-level-steps">
                           <View className={classNames({
                             'step-gray': level.lv - 1 > lv,
-                          })}>
+                          })}
+                          >
                             <Text className="step">Lv.{level.lv - 1}</Text>
                             {level.lv - 1 === lv && <Text>(当前等级)</Text>}
                           </View>
                           <View className={classNames({
                             'step-gray': level.lv > lv,
-                          })}>
+                          })}
+                          >
                             <Text className="step">Lv.{level.lv}</Text>
                             {level.lv === lv && <Text>(当前等级)</Text>}
                           </View>

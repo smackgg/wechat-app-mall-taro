@@ -211,13 +211,15 @@ export default class Account extends Component {
                     <View className="vip-level-steps">
                       <View className={classNames({
                         'step-gray': level.lv - 1 > lv,
-                      })}>
+                      })}
+                      >
                         <Text className="step">Lv.{level.lv - 1}</Text>
                         {level.lv - 1 === lv && <Text>(当前等级)</Text>}
                       </View>
                       <View className={classNames({
                         'step-gray': level.lv > lv,
-                      })}>
+                      })}
+                      >
                         <Text className="step">Lv.{level.lv}</Text>
                         {level.lv === lv && <Text>(当前等级)</Text>}
                       </View>
@@ -247,7 +249,8 @@ export default class Account extends Component {
             </View>
             <View className={classNames('interest', {
               disabled: swiperLv.lv > lv || swiperLv.rebate === 10,
-            })}>
+            })}
+            >
               <Image
                 className="interest-image"
                 src={`/assets/icon/vip${swiperLv.lv || 1}_discount.png`}

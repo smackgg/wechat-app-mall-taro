@@ -453,7 +453,8 @@ export default class Checkout extends Component {
               gray: noCoupon,
               red: !noCoupon && !selectedCoupon,
               selected: selectedCoupon,
-            })}>
+            })}
+            >
               {noCoupon
                 ? '暂无优惠券'
                 : (selectedCoupon

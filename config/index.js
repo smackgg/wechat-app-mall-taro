@@ -47,7 +47,7 @@ var config = {
         autoprefixer: {
           enable: true,
           config: {
-            browsers: ['last 3 versions', 'Android >= 4.1', 'ios >= 8']
+            browsers: ['last 3 versions', 'Android >= 4.1', 'ios >= 8'],
           },
         },
         pxtransform: {
