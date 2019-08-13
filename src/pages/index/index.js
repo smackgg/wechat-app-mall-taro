@@ -13,6 +13,7 @@ import './index.scss'
 
 // 首页多加滤镜
 @connect(({ config, goods: { products } }) => ({
+  products,
   banners: config.banners['index'],
   systemConfig: config.systemConfig,
   recommendProducts: products.homeRecommendProducts,
@@ -57,6 +58,15 @@ class Index extends Component {
       key: 'allProducts',
       page: 1,
       pageSize: 10,
+    })
+
+    console.log(this.props.systemConfig.home_order_category_id)
+
+    this.orderCategoryId = this.props.systemConfig.home_order_category_id
+    // 加载在线定位数据
+    this.props.getProducts({
+      key: `category_${this.orderCategoryId}`,
+      categoryId: this.orderCategoryId,
     })
   }
 
@@ -119,11 +129,21 @@ class Index extends Component {
   }
 
   render () {
-    const { banners = [], recommendProducts, allProducts, systemConfig } = this.props
+    const {
+      banners = [],
+      recommendProducts,
+      allProducts,
+      products,
+      systemConfig: {
+        index_video_1: videoUrl,
+        index_video_2: videoUrl2,
+        home_order_category_id: orderCategoryId,
+      },
+    } = this.props
     const { swiperIndex, playVideo, statusBarHeight } = this.state
 
-    const videoUrl = systemConfig.index_video_1
-    const videoUrl2 = systemConfig.index_video_2
+    const orderCategoryProducts = products[`category_${orderCategoryId}`] || []
+
     return (
       <View className="index">
         {requireEntryPage && <View
@@ -156,23 +176,27 @@ class Index extends Component {
           ></View>)}
         </View>
 
-        {/* 精品推荐商品块 */}
         {
-          recommendProducts && recommendProducts.length > 0 && <View className="recommend-products">
-            <View className="title title-line">精品推荐</View>
-            <View className="list">
-              {
-                recommendProducts.map(product => {
-                  const { id, pic, name, characteristic, minPrice, minScore } = product
-                  return <View key={id} onClick={this.goToProductDetail.bind(this, id)}>
-                    <Image className="product-image" src={pic} mode="aspectFill"></Image>
-                    <View className="name clamp">{name}</View>
-                    <View className="characteristic clamp">{characteristic}</View>
-                    <Price price={minPrice} score={minScore}></Price>
-                  </View>
-                })
-              }
-            </View>
+          <View className="recommend-products">
+          {/* 精品推荐商品块 */}
+            {
+              recommendProducts && recommendProducts.length > 0 && <View>
+                <View className="title title-line">精品推荐</View>
+                <View className="list">
+                  {
+                    recommendProducts.map(product => {
+                      const { id, pic, name, characteristic, minPrice, minScore } = product
+                      return <View key={id} onClick={this.goToProductDetail.bind(this, id)}>
+                        <Image className="product-image" src={pic} mode="aspectFill"></Image>
+                        <View className="name clamp">{name}</View>
+                        <View className="characteristic clamp">{characteristic}</View>
+                        <Price price={minPrice} score={minScore}></Price>
+                      </View>
+                    })
+                  }
+                </View>
+              </View>
+            }
             {/* 店内环境 */}
             {
               videoUrl && <View onClick={this.playVideo}>
@@ -200,6 +224,25 @@ class Index extends Component {
                   onFullScreenChange={this.onFullScreenChange}
                 >
                 </Video>}
+              </View>
+            }
+            {/* 在线定位 */}
+            {
+              orderCategoryProducts && orderCategoryProducts.length > 0 && <View>
+                <View className="title title-line">在线定位</View>
+                <View className="list">
+                  {
+                    orderCategoryProducts.map(product => {
+                      const { id, pic, name, characteristic, minPrice, minScore } = product
+                      return <View key={id} onClick={this.goToProductDetail.bind(this, id)}>
+                        <Image className="product-image" src={pic} mode="aspectFill"></Image>
+                        <View className="name clamp">{name}</View>
+                        <View className="characteristic clamp">{characteristic}</View>
+                        <Price price={minPrice} score={minScore}></Price>
+                      </View>
+                    })
+                  }
+                </View>
               </View>
             }
           </View>

@@ -149,6 +149,7 @@ class App extends Component {
         'ALLOW_SELF_COLLECTION',
         'concat_phone_number',
         'mall_name',
+        'home_order_category_id',
       ].join(','),
     }))
 
