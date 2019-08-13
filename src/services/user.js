@@ -28,6 +28,13 @@ export const register = data => request({
   data,
 })
 
+// 修改用户信息
+export const modifyUserInfo = data => request({
+  url: '/user/modify',
+  method: 'post',
+  data,
+})
+
 // 获取用户详情信息
 export const userDetail = () => request({
   url: '/user/detail',

@@ -36,9 +36,13 @@ export const UPDATE_SHOP_CART = 'config/UPDATE_SHOP_CART'
 // 用户详情
 export const getUserDetail = () => async dispatch => {
   const res = await userDetail()
+  const { base, ext = {} } = res.data
   dispatch({
     type: GET_USER_DETAIL_SUCCESS,
-    data: res.data.base,
+    data: {
+      ...base,
+      ext,
+    },
   })
   return res.data.base
 }

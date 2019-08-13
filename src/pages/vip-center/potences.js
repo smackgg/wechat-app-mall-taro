@@ -1,12 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { getLevelList, getLevelDetail } from '@/redux/actions/user'
-import classNames from 'classnames'
 
 import './potences.scss'
 
-const SWIPER_ITEM_MARGIN = '45rpx'
 @connect(({ user }) => ({
   user,
 }), dispatch => ({
@@ -18,17 +16,10 @@ export default class Potences extends Component {
     navigationBarTitleText: '会员权益',
   }
 
-  state = {
-    swiperIndex: 0,
-    loading: true,
-  }
-
   async componentDidShow() {
     // 获取vip等级列表
     await this.props.getLevelList()
     const { levelList } = this.props.user
-    // this.props.getLevelDetail(levelId)
-    console.log(levelList)
     levelList.forEach(level => {
       this.props.getLevelDetail(level.id)
     })

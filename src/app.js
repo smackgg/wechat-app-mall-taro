@@ -25,6 +25,7 @@ class App extends Component {
       'pages/index/index',
       'pages/authorize/index',
       'pages/account/index',
+      'pages/account/extinfo',
       'pages/product-detail/index',
       'pages/checkout/index',
       'pages/edit-address/index',

@@ -6,7 +6,7 @@ export * from '../shopConfig.js'
 
 // 重写 toast 的 complete 方法
 export const showToast = options => {
-  const { complete, duration } = options
+  const { complete, duration = 1500 } = options
 
   delete options.complete
 
