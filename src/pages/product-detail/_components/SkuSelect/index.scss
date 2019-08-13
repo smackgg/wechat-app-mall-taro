@@ -1,0 +1,60 @@
+
+// 选配弹窗
+.sku-wrapper {
+  height: 730rpx;
+}
+.select-content {
+  height: 600rpx;
+}
+.layout-body {
+  padding: 0 !important;
+}
+
+.select_product-info {
+  display: flex;
+  padding: 30rpx;
+  .product-image {
+    width: 120rpx;
+    height: 120rpx;
+    margin-right: 40rpx;
+  }
+}
+
+.properties {
+  padding-bottom: 40rpx;
+  margin: 0 40rpx;
+  border-bottom: 1rpx solid $border-color;
+  color: $color-black;
+  .propertie-name {
+    padding: 10rpx 0;
+  }
+  .attributes {
+    display: flex;
+    flex-wrap: wrap;
+    .attribute {
+      margin-right: 40rpx;
+      margin-bottom: 10rpx;
+    }
+
+    .attribute-button {
+      &.primary {
+        color: $color-white;
+        background: $color-brand;
+        border: 1rpx solid $color-brand;
+      }
+      &.secondary {
+        border: 1rpx solid $color-brand;
+        color: $color-brand;
+      }
+    }
+  }
+}
+
+// 数量
+.amount {
+  display: flex;
+  justify-content: space-between;
+  padding: 40rpx;
+  color: $color-black;
+  font-size: 30rpx;
+}

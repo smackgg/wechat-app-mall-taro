@@ -13,59 +13,6 @@
     }
   }
 
-  // 商品信息
-  .product-info {
-    width: 100%;
-    background: $color-white;
-    padding: 20rpx 30rpx;
-    .base {
-      display: flex;
-      justify-content: space-between;
-
-      .info {
-        display: flex;
-        flex-direction: column;
-      }
-      .name {
-        font-size: 32rpx;
-      }
-
-      .characteristic {
-        color: $text-color-gray;
-        font-size: 24rpx;
-      }
-
-      .share {
-        font-size: 24rpx;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        color: #5d5d5d;
-        &::before {
-          position: absolute;
-          left: -30rpx;
-          content: '';
-          display: block;
-          width: 0;
-          height: 60%;
-          border-left: 2rpx dotted $border-color;
-        }
-      }
-    }
-
-    .other {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 24rpx;
-      margin-top: 20rpx;
-      color: rgba(0, 0, 0, .7);
-      font-weight: 200;
-    }
-  }
-
   .price-wrapper {
     display: flex;
     align-items: baseline;
@@ -75,9 +22,6 @@
     font-size: 40rpx;
     margin-right: 30rpx;
     font-weight: bolder;
-  }
-  .original-price {
-    text-decoration: line-through;
   }
 
   .service {
@@ -181,73 +125,21 @@
       }
       .button-buynow {
         background-color: $color-brand;
+
+        &.is-reserve {
+          width: 500rpx;
+        }
       }
     }
   }
 
-  // 选配弹窗
+  .at-float-layout .layout-body {
+    padding: 0;
+  }
+
   .sku-select {
     box-sizing: border-box;
     color: $text-color-gray;
-
-    .sku-wrapper {
-      height: 730rpx;
-    }
-    .select-content {
-      height: 600rpx;
-    }
-    .layout-body {
-      padding: 0 !important;
-    }
-
-    .select_product-info {
-      display: flex;
-      padding: 30rpx;
-      .product-image {
-        width: 120rpx;
-        height: 120rpx;
-        margin-right: 40rpx;
-      }
-    }
-
-    .properties {
-      padding-bottom: 40rpx;
-      margin: 0 40rpx;
-      border-bottom: 1rpx solid $border-color;
-      color: $color-black;
-      .propertie-name {
-        padding: 10rpx 0;
-      }
-      .attributes {
-        display: flex;
-        flex-wrap: wrap;
-        .attribute {
-          margin-right: 40rpx;
-          margin-bottom: 10rpx;
-        }
-
-        .attribute-button {
-          &.primary {
-            color: $color-white;
-            background: $color-brand;
-            border: 1rpx solid $color-brand;
-          }
-          &.secondary {
-            border: 1rpx solid $color-brand;
-            color: $color-brand;
-          }
-        }
-      }
-    }
-
-    // 数量
-    .amount {
-      display: flex;
-      justify-content: space-between;
-      padding: 40rpx;
-      color: $color-black;
-      font-size: 30rpx;
-    }
 
     .submit-button {
       position: absolute;
@@ -258,11 +150,12 @@
       border-radius: 0;
       font-size: 34rpx;
       line-height: 100rpx;
-
     }
     .submit-button[disabled] {
       opacity: .6;
+      background: $color-brand;
     }
+
   }
 
   .share-button {

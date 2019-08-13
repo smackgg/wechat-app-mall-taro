@@ -144,13 +144,11 @@ export const getGetableCoupons = data => async dispatch => {
 export const addCart = ({
   type = 'cart',
   productInfo,
-}) => async dispatch => {
-  return dispatch({
-    type: ADD_SHOP_CART,
-    data: productInfo,
-    actionType: type,
-  })
-}
+}) => async dispatch => dispatch({
+  type: ADD_SHOP_CART,
+  data: productInfo,
+  actionType: type,
+})
 
 // 更新购物车信息
 export const updateCart = ({
