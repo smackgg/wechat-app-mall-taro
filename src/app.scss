@@ -17,6 +17,15 @@ button {
     word-break: break-all;
 }
 
+.clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    word-break: break-all;
+}
+
 .clamp {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -51,6 +60,7 @@ button {
   line-height: 54rpx;
   padding-left: 26rpx;
   font-family: 'PingFangSC-Semibold';
+  color: $color-black;
 
   &::before {
     position: absolute;

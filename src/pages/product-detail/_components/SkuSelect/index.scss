@@ -58,3 +58,20 @@
   color: $color-black;
   font-size: 30rpx;
 }
+
+
+.reserve-attribute-button {
+  text-align: center;
+  padding: 10rpx 0;
+  width: 160rpx;
+  height: 70rpx;
+  &.checked {
+    background: $color-brand;
+    color: $color-white;
+    font-size: 20rpx;
+  }
+
+  .reserve-time-tip {
+    font-size: 16rpx;
+  }
+}

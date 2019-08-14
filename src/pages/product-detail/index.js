@@ -1,24 +1,26 @@
 import Taro, { Component } from '@tarojs/taro'
 import { connect } from '@tarojs/redux'
-import { View, Image, Text, Swiper, SwiperItem, Button, ScrollView } from '@tarojs/components'
-import { AtFloatLayout, AtInputNumber } from 'taro-ui'
-import { getProductDetail } from '@/redux/actions/goods'
+import { View, Image, Text, Swiper, SwiperItem, Button } from '@tarojs/components'
+import { AtFloatLayout } from 'taro-ui'
+import { getProductDetail, getReputation } from '@/redux/actions/goods'
 import WxParse from '@/third-utils/wxParse/wxParse'
 import { productPrice } from '@/services/goods'
 import { BottomBar } from '@/components'
 import classNames from 'classnames'
 import { addCart } from '@/redux/actions/user'
-import { ProductPrice, SkuSelect } from './_components'
+import { ProductPrice, SkuSelect, ReputationCard } from './_components'
 
 import './index.scss'
 
 @connect(
   ({ goods, user: { shopCartInfo } }) => ({
     productDetail: goods.productDetail,
+    reputations: goods.reputations,
     shopCartInfo,
   }),
   dispatch => ({
     getProductDetail: data => dispatch(getProductDetail(data)),
+    getReputation: data => dispatch(getReputation(data)),
     addCart: data => dispatch(addCart(data)),
     // updateCart: data => dispatch(updateCart(data)),
   }),
@@ -45,11 +47,9 @@ export default class ProductDetail extends Component {
     // 处理扫码进商品详情页面的逻辑
     if (scene) {
       scene = decodeURIComponent(scene)
-      if (scene) {
-        const [productId, referrer] = scene.split(',')
-        this.productId = productId
-        Taro.setStorageSync('referrer', referrer)
-      }
+      const [productId, referrer] = scene.split(',')
+      this.productId = productId
+      Taro.setStorageSync('referrer', referrer)
     }
   }
 
@@ -70,6 +70,10 @@ export default class ProductDetail extends Component {
     // 设置页面标题
     Taro.setNavigationBarTitle({
       title: productInfo.basicInfo.name,
+    })
+
+    this.props.getReputation({
+      goodsId: this.productId,
     })
   }
 
@@ -180,7 +184,7 @@ export default class ProductDetail extends Component {
   }
 
   render () {
-    const { shopCartInfo } = this.props
+    let { shopCartInfo, reputations } = this.props
     const {
       productInfo,
       isSkuFloatLayoutOpened,
@@ -210,6 +214,9 @@ export default class ProductDetail extends Component {
     // 是否为预订
     const isReserve = tags && tags.includes('预订')
 
+    reputations = reputations[this.productId] || []
+    const reputationList = reputations.slice(0, 3)
+    const reputationLength = reputations.length
     return (
       <View className="container">
         {/* 轮播图 */}
@@ -235,10 +242,21 @@ export default class ProductDetail extends Component {
           </View>
         </View>}
 
+        {/* 评价列表 */}
+        {
+          (reputationList && reputationLength > 0) && <View className="reputations">
+            <View className="title-line">商品评价({reputationLength}条)</View>
+            {
+              reputationList.map(reputation => <ReputationCard key={reputation.id} reputation={reputation} />)
+            }
+            {reputationLength > 3 && <View className="more-reputations" onClick={() => this.goPage(`/pages/product-detail/reputations?id=${this.productId}`)}>查看更多</View>}
+          </View>
+        }
+
         {/* 商品详情 */}
         <import src="../../third-utils/wxParse/wxParse.wxml" />
         <View className="product-content">
-          <View className="title">商品详情</View>
+          <View className="title-line">商品详情</View>
           <template is="wxParse" data="{{wxParseData:article.nodes}}" />
         </View>
 
@@ -299,13 +317,14 @@ export default class ProductDetail extends Component {
         {/* 选配框 */}
         <AtFloatLayout className="sku-select" isOpened={isSkuFloatLayoutOpened} onClose={this.handleClose}>
           <SkuSelect
-            productInfo={productInfo}
+            productInfoProps={productInfo}
             selectSkuProps={selectSku}
             productId={this.productId}
             onNumberChange={this.onNumberChange}
             handleClose={this.handleClose}
             buttonType={buttonType}
             addCart={this.props.addCart}
+            isReserve={isReserve}
           />
         </AtFloatLayout>
       </View>

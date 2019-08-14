@@ -33,3 +33,9 @@ export const products = data => request({
 export const category = () => request({
   url: '/shop/goods/category/all',
 })
+
+// 获取商品评价列表
+export const reputation = data => request({
+  url: '/shop/goods/reputation',
+  data,
+})

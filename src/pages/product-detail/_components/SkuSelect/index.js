@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import { productPrice } from '@/services/goods'
 import dateFormat from '@/utils/dateFormat'
+import { valueEqual } from '@/utils'
 
 import './index.scss'
 
@@ -15,30 +16,95 @@ export default class SkuSelect extends Component {
   }
 
   static propTypes = {
-    productInfo: PropTypes.object,
+    productInfoProps: PropTypes.object,
     handleSubmit: PropTypes.func,
     handleClose: PropTypes.func,
-    buttonType: PropTypes.string,
+    buttonType: PropTypes.number,
+    isReserve: PropTypes.bool,
   }
 
   static defaultProps = {
     basicInfo: {},
+    isReserve: false,
   }
 
   constructor(props) {
     this.state = {
       selectSku: props.selectSkuProps || {},
+      productInfo: props.productInfoProps || {},
       amount: 1, // 商品数量
+      reserveAttrs: {
+        start: 0,
+        end: 1,
+      },
     }
+  }
 
+  componentDidMount() {
+    this.initReserveData()
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.selectSkuProps !== this.props.selectSkuProps) {
+    if (valueEqual(nextProps.selectSkuProps, this.props.selectSkuProps)) {
       this.setState({
         selectSku: nextProps.selectSkuProps,
       })
     }
+    if (valueEqual(nextProps.productInfoProps, this.props.productInfoProps)) {
+      this.setState({
+        productInfo: nextProps.productInfoProps,
+      }, () => this.initReserveData())
+    }
+  }
+
+  // 处理预约数据
+  initReserveData = () => {
+    const { productId, isReserve } = this.props
+    if (!isReserve) {
+      return
+    }
+
+    let {
+      productInfo: { properties },
+    } = this.state
+
+    const { promiseList } = properties.reduce((pre, propertie, index) => {
+      // 非时间段
+      if (index !== properties.length - 1) {
+        pre.attrs += propertie.childsCurGoods.find(item => item.checked).id + ','
+      } else {
+        pre.skus = propertie.childsCurGoods.map(item => {
+          const propertyChildIds = pre.attrs + item.id
+          pre.promiseList.push(productPrice({
+            propertyChildIds,
+            goodsId: productId,
+          }))
+        })
+      }
+
+      return pre
+    }, {
+      skus: [],
+      attrs: '',
+      promiseList: [],
+    })
+
+    Promise.all(promiseList).then(results => {
+      properties[properties.length - 1].childsCurGoods = properties[properties.length - 1].childsCurGoods.map((item, index) => {
+        console.log(results[index].data)
+        return ({
+          ...item,
+          ...results[index].data,
+        })
+      })
+      console.log(properties, 222)
+      this.setState({
+        productInfo: {
+          ...this.state.productInfo,
+          properties,
+        },
+      })
+    })
   }
 
   // 处理数量变更
@@ -86,6 +152,31 @@ export default class SkuSelect extends Component {
     })
   }
 
+  // 预约时间点击处理
+  onReserveAttributeClick = async (index, attribute) => {
+    console.log(index, attribute)
+    const { reserveAttrs: { start, end } } = this.state
+    console.log(this.state.reserveAttrs)
+    // 重新选择开始时间
+    if (start >= 0 && end >= 0) {
+      this.setState({
+        reserveAttrs: {
+          start: index,
+          end: -1,
+        },
+      })
+    }
+    // 选择结束时间
+    if (start >= 0 && end < 0) {
+      this.setState({
+        reserveAttrs: {
+          start,
+          end: index,
+        },
+      })
+    }
+  }
+
   // 获取预约对应时间
   getReserveDate = attr => {
     const now = Date.now()
@@ -105,6 +196,22 @@ export default class SkuSelect extends Component {
     }
     return date && dateFormat(date, 'MM月dd日')
   }
+
+  // 获取预约对应时间段
+  getReserveTimes = childsCurGoods => {
+    console.log(childsCurGoods)
+    return childsCurGoods.reduce((times, child) => {
+      const [start, end] = child.name.split('~')
+      times.push({
+        start,
+        end,
+        child,
+      })
+      return times
+    }, [])
+    // return date && dateFormat(date, 'MM月dd日')
+  }
+
 
   // 处理用户点击提交按钮逻辑
   handleSubmit = () => {
@@ -204,31 +311,31 @@ export default class SkuSelect extends Component {
   }
 
   render() {
-    const { productInfo, buttonType } = this.props
-
+    const { buttonType, isReserve } = this.props
     const {
       selectSku: {
         stores,
       },
       selectSku,
       amount,
+      reserveAttrs: {
+        start,
+        end,
+      },
+      productInfo,
     } = this.state
 
     // 商品详情页数据未拉取
-    if (!productInfo) {
+    if (!productInfo || !productInfo.basicInfo) {
       return null
     }
 
     const {
       basicInfo: {
         pic,
-        tags,
       },
       properties,
     } = productInfo
-
-    // 是否为预订
-    const isReserve = tags && tags.includes('预订')
 
     return <View className="sku-wrapper">
         <ScrollView scrollY className="select-content">
@@ -237,28 +344,62 @@ export default class SkuSelect extends Component {
             <View>
               <View className="price">￥{selectSku.price}</View>
               {selectSku.originalPrice !== selectSku.price && <View className="original-price">￥{selectSku.originalPrice}</View>}
-              <View>库存：{stores}</View>
+              {!isReserve && <View>库存：{stores}</View>}
             </View>
           </View>
           {/* 规格参数 */}
           {properties && <View className="properties">
             {
-              properties.map((propertie, index) => <View key={propertie.id}>
-                <View className="propertie-name">
-                  {propertie.name}
-                </View>
-                <View className="attributes">
+              properties.map((propertie, index) => {
+                let reserveTimes
+                const isReserveTime = isReserve && /时间/.test(propertie.name)
+                if (isReserveTime) {
+                  reserveTimes = this.getReserveTimes(propertie.childsCurGoods)
+                  console.log(propertie.childsCurGoods, '----------')
+                }
+                return <View key={propertie.id}>
+                  <View className="propertie-name">
+                    {propertie.name}
+                  </View>
+                  {/* 非预约 */}
                   {
-                    propertie.childsCurGoods.map(child => <View key={child.id} className="attribute">
-                      <Button
-                        size="mini"
-                        className={classNames('attribute-button', child.checked ? 'primary' : 'secondary')}
-                        onClick={this.onAttributeClick.bind(this, index, child)}
-                      >{child.name}{isReserve && this.getReserveDate(child.name) ? `(${this.getReserveDate(child.name)})` : ''}</Button>
-                    </View>)
+                    !isReserveTime && <View className="attributes">
+                      {
+                        propertie.childsCurGoods.map(child => <View key={child.id} className="attribute">
+                          <Button
+                            size="mini"
+                            className={classNames('attribute-button', child.checked ? 'primary' : 'secondary')}
+                            onClick={this.onAttributeClick.bind(this, index, child)}
+                          >{child.name}{isReserve && this.getReserveDate(child.name) ? `(${this.getReserveDate(child.name)})` : ''}</Button>
+                        </View>)
+                      }
+                    </View>
+                  }
+                  {/* 预约 */}
+                  {
+                    isReserveTime && <View className="attributes">
+                      {
+                        reserveTimes.map((child, i) => <View key={child.id} className="reserve-attribute">
+                          <View
+                            className={classNames('reserve-attribute-button', {
+                              'checked': start === i || end === i,
+                            })}
+                            onClick={this.onReserveAttributeClick.bind(this, i, child)}
+                          >
+                            <View>{child.start}</View>
+                            {
+                              start === i && <View className="reserve-time-tip">开始时间</View>
+                            }
+                            {
+                              end === i && <View className="reserve-time-tip">结束时间</View>
+                            }
+                          </View>
+                        </View>)
+                      }
+                    </View>
                   }
                 </View>
-              </View>)
+              })
             }
           </View>}
 

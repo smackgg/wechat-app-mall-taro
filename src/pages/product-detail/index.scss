@@ -44,6 +44,23 @@
     }
   }
 
+  .reputations {
+    margin-top: 26px;
+    background: $color-white;
+    padding: 30rpx 0 20rpx;
+
+    .more-reputations {
+      text-align: center;
+      padding-top: 20rpx;
+      color: $text-color-gray;
+      border-top: 1rpx solid $border-color;
+      margin-top: 20rpx;
+    }
+  }
+
+  .title-line {
+    margin: 0 30rpx 30rpx;
+  }
   // 商品详情
   .product-content {
     margin-top: 20rpx;
@@ -51,20 +68,7 @@
     font-size: 28rpx;
     color: $text-color-gray-light;
     line-height: 56rpx;
-    .title {
-      text-align: center;
-      font-size: 32rpx;
-      padding: 10rpx 0;
-
-      &::before {
-        content: '·';
-        margin-right: 20rpx;
-      }
-      &::after {
-        content: '·';
-        margin-left: 20rpx;
-      }
-    }
+    padding: 30rpx 0 20rpx;
 
     image {
       width: 100% !important;

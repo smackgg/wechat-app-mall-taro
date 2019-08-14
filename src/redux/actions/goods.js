@@ -2,11 +2,14 @@ import {
   productDetail,
   products,
   category,
+  reputation,
 } from '@/services/goods'
 
 export const GET_PRODUCT_DETAIL_SUCCESS = 'config/GET_PRODUCT_DETAIL_SUCCESS'
 export const GET_PRODUCTS_SUCCESS = 'config/GET_PRODUCTS_SUCCESS'
 export const GET_CATEGORY_SUCCESS = 'config/GET_CATEGORY_SUCCESS'
+export const GET_REPUTATION_SUCCESS = 'config/GET_REPUTATION_SUCCESS'
+
 
 // 商品详情
 export const getProductDetail = (data = {}) => async dispatch => {
@@ -38,5 +41,15 @@ export const getCategory = () => async dispatch => {
   dispatch({
     type: GET_CATEGORY_SUCCESS,
     data: res.data,
+  })
+}
+
+// 获取商品评价列表
+export const getReputation = data => async dispatch => {
+  const res = await reputation(data)
+  dispatch({
+    type: GET_REPUTATION_SUCCESS,
+    data: res.data,
+    goodsId: data.goodsId,
   })
 }
