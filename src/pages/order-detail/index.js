@@ -143,8 +143,6 @@ export default class OrderDetail extends Component {
     })
   }
 
-  //
-
   onConfirm = () => {
     const { id, orderNumber } = this.state.orderInfo
 
@@ -188,6 +186,10 @@ export default class OrderDetail extends Component {
       },
     })
   }
+
+
+  // 跳转 url
+  goPage = url => Taro.navigateTo({ url })
 
   render () {
     const {
@@ -278,6 +280,15 @@ export default class OrderDetail extends Component {
                   size="mini"
                   onClick={this.onConfirm}
                 >确认收货</Button>
+              }
+              {
+                status === 3 && <Button
+                  form-type="submit"
+                  className="button"
+                  hoverClass="none"
+                  size="mini"
+                  onClick={() => this.goPage(`/pages/reputation/index?id=${this.orderId}`)}
+                >去评价</Button>
               }
             </View>
           </Form>

@@ -30,6 +30,14 @@ export default class CouponList extends Component {
     })
   }
 
+  // 跳转 url
+  goPage = (url, e) => {
+    if (e) {
+      e.stopPropagation()
+    }
+    Taro.navigateTo({ url })
+  }
+
   // 去支付
   onPay = async (order, e) => {
     e.stopPropagation()
@@ -109,6 +117,20 @@ export default class CouponList extends Component {
                       size="mini"
                       onClick={this.onPayClick}
                     >立即支付</Button>
+                  </Form>
+                </View>
+              }
+              {
+                status === 3 && <View className="button-wrapper">
+                  <Form reportSubmit>
+                    <Button
+                      form-type="submit"
+                      className="button"
+                      type="secondary"
+                      hoverClass="none"
+                      size="mini"
+                      onClick={() => this.goPage(`/pages/reputation/index?id=${id}`)}
+                    >去评价</Button>
                   </Form>
                 </View>
               }
