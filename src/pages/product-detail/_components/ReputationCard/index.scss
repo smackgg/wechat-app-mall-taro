@@ -35,11 +35,13 @@
     .date {
       font-size: 26rpx;
       color: $text-color-gray;
+      width: 160rpx;
     }
   }
 
   .reputation__remark {
     margin-left: 150rpx;
-    padding: 10rpx 20rpx 0 10rpx;
+    padding: 0 20rpx 0 10rpx;
+    color: $text-color-gray;
   }
 }

@@ -34,7 +34,7 @@ export default class ReputationCard extends Component {
         </View>
 
         <View className="rate-block">
-          <AtRate max={3} size="26" value={goodReputation + 1} />
+          <AtRate max={3} size="24" value={goodReputation + 1} />
           <View className="str">{goodReputationStr}</View>
           <View className="date">
             {dateReputation.split(' ')[0]}
