@@ -52,7 +52,8 @@ export const addCart = ({ type = 'cart', productInfo }) => {
     return shopCartInfo
   } else if (type === 'buynow') {
     // 立即购买逻辑
-    shopCartInfo.shopList = [productInfo]
+    shopCartInfo.shopList = Array.isArray(productInfo) ? productInfo : [productInfo]
+
     shopCartInfo.number = +number
     // 写入本地存储
     Taro.setStorage({

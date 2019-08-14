@@ -117,7 +117,7 @@ export default class ProductDetail extends Component {
       })
 
       propertyChildIds = propertyChildIds.join(',')
-      console.log(propertyChildIds)
+
       const res = await productPrice({
         propertyChildIds,
         goodsId: id,
@@ -212,7 +212,7 @@ export default class ProductDetail extends Component {
       : null
 
     // 是否为预订
-    const isReserve = tags && tags.includes('预订')
+    const isReserve = tags && tags.includes('在线定位')
 
     reputations = reputations[this.productId] || []
     const reputationList = reputations.slice(0, 3)

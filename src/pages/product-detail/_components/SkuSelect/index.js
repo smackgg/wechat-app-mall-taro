@@ -227,19 +227,15 @@ export default class SkuSelect extends Component {
   getReserveDate = attr => {
     const now = Date.now()
     let date = ''
-    switch (attr) {
-      case '今天':
-        date = now
-        break
-      case '明天':
-        date = now + 24 * 60 * 60 * 1000
-        break
-      case '后天':
-        date = now + 24 * 60 * 60 * 1000 * 2
-        break
-      default:
-        break
+
+    if (attr.includes('今天')) {
+      date = now
+    } else if (attr.includes('明天')) {
+      date = now + 24 * 60 * 60 * 1000
+    } else if (attr.includes('后天')) {
+      date = now + 24 * 60 * 60 * 1000 * 2
     }
+
     return date && dateFormat(date, 'MM月dd日')
   }
 
@@ -260,7 +256,8 @@ export default class SkuSelect extends Component {
       childsMap[start].data = child
       childsMap[end].endClickable = child.stores > 0
     })
-    console.log(childsMap, 'childsMap')
+
+    // 初始化时间 map 表
     return (new Array(25)).fill(0).reduce((times, item, index) => {
       let startClickable = false
       let endClickable = false
@@ -279,20 +276,10 @@ export default class SkuSelect extends Component {
       })
       return times
     }, [])
-    // return childsCurGoods.reduce((times, child) => {
-    //   const [start, end] = child.name.split('~')
-    //   times.push({
-    //     start,
-    //     end,
-    //     child,
-    //   })
-    //   return times
-    // }, [])
-    // return date && dateFormat(date, 'MM月dd日')
   }
 
   handleReserveSubmit = () => {
-    const { reserveData: { start, end } } = this.state
+    const { reserveData: { start, end }, productInfo: { properties }, selectSku: { propertyChildNames } } = this.state
     if (start < 0) {
       Taro.showModal({
         title: '提示',
@@ -310,6 +297,27 @@ export default class SkuSelect extends Component {
       })
       return
     }
+
+    // 组建立即购买信息
+    const productList = properties[properties.length - 1]
+      .reserveTimes
+      .slice(start, end)
+      .map(item => this.buildCartInfo(item.data, 1))
+
+    const reserveDate = this.getReserveDate(propertyChildNames)
+    console.log(reserveDate)
+    console.log(111)
+    this.props.addCart({
+      type: 'buynow',
+      productInfo: productList,
+    })
+
+    // 关闭弹窗
+    this.props.handleClose()
+    // 跳转到结算页
+    Taro.navigateTo({
+      url: `/pages/checkout/index?orderType=buyNow&reserveDate=${reserveDate}`,
+    })
   }
 
   // 处理用户点击提交按钮逻辑
@@ -373,16 +381,15 @@ export default class SkuSelect extends Component {
   }
 
   // 组建购物车信息 type=0 立即购买 type=1 购物车
-  buildCartInfo = () => {
+  buildCartInfo = (selectSku = this.state.selectSku, amount = this.state.amount) => {
+
     const {
-      selectSku: {
-        propertyChildIds,
-        propertyChildNames,
-        price,
-        score,
-      },
-      amount,
-    } = this.state
+      propertyChildIds,
+      propertyChildNames,
+      price,
+      score,
+    } = selectSku
+
     const {
       basicInfo: {
         id,
@@ -402,7 +409,6 @@ export default class SkuSelect extends Component {
       propertyChildIds,
       price,
       label: propertyChildNames,
-      price,
       score,
       left: '',
       active: true,
@@ -448,7 +454,7 @@ export default class SkuSelect extends Component {
             <Image mode="aspectFill" src={pic} class="product-image" />
             <View>
               <View className="price">￥{selectSku.price}</View>
-              {selectSku.originalPrice !== selectSku.price && <View className="original-price">￥{selectSku.originalPrice}</View>}
+              {!isReserve && selectSku.originalPrice !== selectSku.price && <View className="original-price">￥{selectSku.originalPrice}</View>}
               {!isReserve && <View>库存：{stores}</View>}
             </View>
           </View>
@@ -467,7 +473,7 @@ export default class SkuSelect extends Component {
                       取消
                     </View>
                   }
-                  {/* 非预约 */}
+                  {/* 非预约时间 */}
                   {
                     !isReserveTime && <View className="attributes">
                       {
