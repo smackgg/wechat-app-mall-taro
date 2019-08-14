@@ -63,6 +63,16 @@ button {
   }
 }
 
+// 多行文本
+.remark {
+  margin-top: 26rpx;
+  border: none !important;
+  padding: 20rpx 40rpx;
+  textarea {
+    font-size: 28rpx !important;
+  }
+}
+
 button {
   margin: 0;
   padding: 0;
