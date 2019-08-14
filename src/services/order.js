@@ -56,3 +56,10 @@ export const orderDelivery = data => request({
   method: 'post',
   data,
 })
+
+// 订单评价
+export const orderReputation = data => request({
+  url: '/order/reputation',
+  method: 'post',
+  data,
+})
