@@ -160,7 +160,6 @@ export default class ExtInfo extends Component {
       icon: 'none',
       mask: true,
       complete: () => {
-        console.log(1)
         // 跳转回之前的页面
         Taro.navigateBack()
       },
