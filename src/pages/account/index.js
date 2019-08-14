@@ -67,11 +67,11 @@ export default class Account extends Component {
       status: 3,
       key: 'count_id_no_reputation',
     },
-    {
-      icon: '/assets/icon/aftersale.jpg',
-      name: '退货/售后',
-      status: 99,
-    },
+    // {
+    //   icon: '/assets/icon/aftersale.jpg',
+    //   name: '退货/售后',
+    //   status: 99,
+    // },
   ]
 
   componentWillMount() {
@@ -247,7 +247,15 @@ export default class Account extends Component {
               />
               <Text>领券中心</Text>
             </View>
-            <View className={classNames('interest', {
+            <View className="interest" onClick={this.goPage.bind(this, '/pages/vip-center/index')}>
+              <Image
+                className="interest-image"
+                src={`/assets/icon/vip${swiperLv.lv || 1}_more.png`}
+                mode="aspectFill"
+              />
+              <Text>查看权益</Text>
+            </View>
+            {/* <View className={classNames('interest', {
               disabled: swiperLv.lv > lv || swiperLv.rebate === 10,
             })}
             >
@@ -257,7 +265,7 @@ export default class Account extends Component {
                 mode="aspectFill"
               />
               <Text>{(swiperLv.rebate && swiperLv.rebate < 10) ? `${swiperLv.rebate}折优惠` : '暂无优惠'}</Text>
-            </View>
+            </View> */}
           </View>
         </View>
 
