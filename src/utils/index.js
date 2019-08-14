@@ -11,7 +11,8 @@ export const showToast = options => {
   delete options.complete
 
   Taro.showToast(options)
-  setTimeout(complete, duration)
+
+  complete && setTimeout(complete, duration)
 }
 
 // catch promise error

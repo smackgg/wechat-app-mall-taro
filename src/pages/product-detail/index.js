@@ -34,7 +34,7 @@ export default class ProductDetail extends Component {
 
   state = {
     productInfo: null,
-    isSkuFloatLayoutOpened: false,
+    isSkuFloatLayoutOpened: true,
     selectSku: {},
     buttonType: 1, // 1: 立即购买 2: 加入购物车
   }
@@ -106,7 +106,7 @@ export default class ProductDetail extends Component {
       // 配置属性值
       // 默认取第一个sku
       let { propertyChildIds, propertiesN } = properties.reduce((pre, propertie) => {
-        pre.propertyChildIds.push(propertie.childsCurGoods[0].id)
+        pre.propertyChildIds.push(propertie.id + ':' + propertie.childsCurGoods[0].id)
         // 选中状态
         propertie.childsCurGoods[0].checked = true
         pre.propertiesN.push(propertie)
@@ -117,7 +117,7 @@ export default class ProductDetail extends Component {
       })
 
       propertyChildIds = propertyChildIds.join(',')
-
+      console.log(propertyChildIds)
       const res = await productPrice({
         propertyChildIds,
         goodsId: id,
