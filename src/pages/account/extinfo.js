@@ -57,7 +57,7 @@ export default class ExtInfo extends Component {
   handleJobChange = (index, e) => {
     let { form: { job }, form, jobCategory: jobs } = this.state
     // 从接口拉下来得数据，直接清空
-    if (typeof job === 'string') {
+    if (typeof job === 'string' || !job) {
       job = []
     }
 
@@ -100,6 +100,7 @@ export default class ExtInfo extends Component {
       name,
       job,
     } = this.state.form
+    const { jobs } = this.state
 
     if (!birthday) {
       Taro.showToast({
@@ -125,7 +126,7 @@ export default class ExtInfo extends Component {
       return
     }
 
-    if (!job || job.length < 2) {
+    if (!job || job.length < jobs.length) {
       Taro.showToast({
         title: '请选择职业岗位',
         icon: 'none',
