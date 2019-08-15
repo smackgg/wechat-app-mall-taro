@@ -34,7 +34,7 @@ export default class ProductDetail extends Component {
 
   state = {
     productInfo: null,
-    isSkuFloatLayoutOpened: true,
+    isSkuFloatLayoutOpened: false,
     selectSku: {},
     buttonType: 1, // 1: 立即购买 2: 加入购物车
   }
