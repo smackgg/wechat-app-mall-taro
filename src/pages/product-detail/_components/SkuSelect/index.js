@@ -305,8 +305,7 @@ export default class SkuSelect extends Component {
       .map(item => this.buildCartInfo(item.data, 1))
 
     const reserveDate = this.getReserveDate(propertyChildNames)
-    console.log(reserveDate)
-    console.log(111)
+
     this.props.addCart({
       type: 'buynow',
       productInfo: productList,
