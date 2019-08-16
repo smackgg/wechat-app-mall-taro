@@ -313,7 +313,9 @@ export default class Checkout extends Component {
           color,
         },
         keyword4: {
-          value: defaultAddress.provinceStr + defaultAddress.cityStr + (defaultAddress.areaStr === '-' ? '' : defaultAddress.areaStr) + defaultAddress.address,
+          value: (needLogistics && peisongType === 'kd')
+            ? defaultAddress.provinceStr + defaultAddress.cityStr + (defaultAddress.areaStr === '-' ? '' : defaultAddress.areaStr) + defaultAddress.address
+            : '不需要邮寄地址',
           color,
         },
       }),
