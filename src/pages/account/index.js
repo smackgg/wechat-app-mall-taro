@@ -187,23 +187,24 @@ export default class Account extends Component {
                   </View>
                   <View className="price-info">
                     <View className="user-consumed">
-                      当前消费
-                    <Text className="price">{totleConsumed}</Text>
-                      元
-                  </View>
+                      累计充值{level.upgradeAmount}可升级为该会员
+                      {/* 当前消费
+                      <Text className="price">{totleConsumed}</Text>
+                      元 */}
+                    </View>
                     {/* 已经是当前会员 */}
                     {
-                      (lv >= level.lv) && <View className="level-consumed">
+                      (lv === level.lv) && <View className="level-consumed">
                         您已经成为本店{level.name}
                     </View>
                     }
-                    {
+                    {/* {
                       (lv < level.lv && totleConsumed < level.upgradeAmount) && <View className="level-consumed">
                         距离{level.name}还差
                       <Text className="price">{level.upgradeAmount - totleConsumed}</Text>
                         元
                     </View>
-                    }
+                    } */}
                   </View>
                   <View className="vip-progress">
                     <View className="bg"></View>
