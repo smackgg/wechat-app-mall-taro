@@ -52,6 +52,7 @@ export default class Address extends Component {
       },
       logistics,
       productId,
+      isReserve,
     } = this.props
 
     const { showActionSheet } = this.state
@@ -71,6 +72,7 @@ export default class Address extends Component {
           <View className="price-wrapper">
             <Price price={minPrice} score={minScore}></Price>
             {originalPrice !== minPrice && <Text className="original-price">￥{originalPrice}</Text>}
+            {isReserve && <Text className="reserve-tip">[订金/每小时]</Text>}
           </View>
           {logistics && <Text className="name">邮费：{logistics.isFree ? '包邮' : '￥' + logistics.details[0].firstAmount}</Text>}
           <Text>已售：{numberOrders}</Text>

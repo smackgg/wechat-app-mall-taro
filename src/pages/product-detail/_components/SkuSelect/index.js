@@ -453,6 +453,7 @@ export default class SkuSelect extends Component {
             <Image mode="aspectFill" src={pic} class="product-image" />
             <View>
               <View className="price">￥{selectSku.price}</View>
+              {isReserve && <View className="reserve-tip">[订金/每小时]</View>}
               {!isReserve && selectSku.originalPrice !== selectSku.price && <View className="original-price">￥{selectSku.originalPrice}</View>}
               {!isReserve && <View>库存：{stores}</View>}
             </View>

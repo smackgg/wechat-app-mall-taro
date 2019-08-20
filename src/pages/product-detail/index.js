@@ -232,7 +232,7 @@ export default class ProductDetail extends Component {
         </Swiper>
 
         {/* 商品价格块 */}
-        <ProductPrice basicInfo={basicInfo} logistics={logistics} productId={this.productId}></ProductPrice>
+        <ProductPrice basicInfo={basicInfo} logistics={logistics} productId={this.productId} isReserve={isReserve}></ProductPrice>
 
         {/* 额外服务 */}
         {services && <View className="service">
