@@ -63,7 +63,7 @@ export default function user(state = INITIAL_STATE, action) {
         if (level.id === action.id) {
           return {
             ...level,
-            potences: action.data.extJson['会员权益'].split('；').filter(i => i),
+            potences: action.data.extJson['会员权益'].split(' ').filter(i => i),
           }
         }
         return level

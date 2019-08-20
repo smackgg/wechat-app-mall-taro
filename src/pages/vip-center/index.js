@@ -30,7 +30,6 @@ export default class VipCenter extends Component {
     this.props.getBanners(BANNER_KEY)
   }
 
-
   // 跳转 url
   goPage = (url, tabBar = false) => {
     if (!tabBar) {
@@ -116,9 +115,9 @@ export default class VipCenter extends Component {
       <View className="container">
         {/* 会员中心头部 */}
         <View className="header">
-          {banners[2] && <Image
+          {banners[1] && <Image
             className="image"
-            src={banners[2].picUrl}
+            src={banners[1].picUrl}
             mode="aspectFill"
           />}
           <View className="nick-name">
