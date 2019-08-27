@@ -95,11 +95,11 @@ export default class VipCenter extends Component {
       image: '/assets/icon/vip_my.jpg',
       onClick: () => this.goPage('/pages/account/extinfo'),
     },
-    {
-      title: '最近活动',
-      image: '/assets/icon/vip_notice.jpg',
-      onClick: () => this.goPage('/pages/vip-center/activity'),
-    },
+    // {
+    //   title: '最近活动',
+    //   image: '/assets/icon/vip_notice.jpg',
+    //   onClick: () => this.goPage('/pages/vip-center/activity'),
+    // },
     {
       title: '专属顾问',
       image: '/assets/icon/vip_contact.jpg',
