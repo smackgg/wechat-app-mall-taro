@@ -108,6 +108,10 @@ export default class CouponList extends Component {
           if (money) {
             moneyMin = moneyMax = money
           }
+
+          // 会员核销券
+          const isVipHeXiao = name === '会员核销券'
+
           return <View key={id} className={classNames('coupon', { disabled: status !== 0})}>
             <View className="title-wrapper">
               <View className="title">
@@ -137,24 +141,26 @@ export default class CouponList extends Component {
               </View>}
             </View>
             <View className="content">
-              {moneyMin === moneyMax
-                ? <View className="price-wrapper">
+              {
+                !isVipHeXiao && (moneyMin === moneyMax
+                  ? <View className="price-wrapper">
                     <Price price={moneyMin} className="coupon-price" />
                   </View>
-                : <View className="price-wrapper">
+                  : <View className="price-wrapper">
                     <Price price={moneyMin} className="coupon-price" />
                     <Text>-</Text>
                     <Price price={moneyMax} className="coupon-price" />
-                  </View>}
-                <View className="coupon-info">
-                  <View className="hreshold">
-                    满{moneyHreshold}元可用
-                  </View>
-                  <View className="date">
-                    {(!isGetCoupon || dateEndType === 0) ? `有效期：${dateFormat(dateEnd, 'yyyy/MM/dd')}` : ''}
-                    {(isGetCoupon && dateEndType === 1) ? `有效期：领取 ${dateEndDays} 天内有效` : ''}
-                  </View>
+                  </View>)
+              }
+              <View className="coupon-info">
+                <View className="hreshold">
+                  {isVipHeXiao ? '会员核销券，请在店内消费时向店员展示使用' : `满${moneyHreshold}元可用`}
                 </View>
+                <View className="date">
+                  {(!isGetCoupon || dateEndType === 0) ? `有效期：${dateFormat(dateEnd, 'yyyy/MM/dd')}` : ''}
+                  {(isGetCoupon && dateEndType === 1) ? `有效期：领取 ${dateEndDays} 天内有效` : ''}
+                </View>
+              </View>
             </View>
           </View>
         })

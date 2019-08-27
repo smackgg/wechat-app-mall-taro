@@ -18,7 +18,7 @@ import './index.scss'
     },
   }) => ({
     coupons: coupons.filter(coupon => coupon.status === 0),
-    getableCoupons,
+    getableCoupons: getableCoupons.filter(coupon => coupon.name !== '会员核销券'),
     invalidCoupons: coupons.filter(coupon => coupon.status !== 0),
   }),
   dispatch => ({

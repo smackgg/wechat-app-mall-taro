@@ -12,9 +12,10 @@
   .coupon {
     width: 100%;
     padding: 0 40rpx;
-    height: 250rpx;
+    min-height: 250rpx;
     background: $color-white;
     margin-bottom: 26rpx;
+    padding-bottom: 40rpx;
     position: relative;
     &.disabled {
       opacity: .6;
