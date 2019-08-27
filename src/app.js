@@ -137,7 +137,9 @@ class App extends Component {
         Taro.hideToast()
       }
     })
+  }
 
+  async componentDidShow () {
     // 获取 vipLevel
     store.dispatch(getVipLevel())
 
@@ -154,57 +156,68 @@ class App extends Component {
       ].join(','),
     }))
 
-    // 积分赠送规则
-
-    // 获取用户详情
-    const userDetail = await store.dispatch(getUserDetail())
-
-    // 强制用户绑定手机号
-    if (requireBindMobile && !userDetail.mobile) {
-      showToast({
-        title: '需要授权并绑定手机号~',
-        icon: 'none',
-        duration: 2000,
-        complete: () => {
-          this.goToLoginPage()
-        },
-      })
-    }
+    this.checkLogin().catch(() => {
+      // 未登录
+      this.goToLoginPage()
+    })
   }
 
-  componentDidShow () {
-    // 获取 token
-    const token = Taro.getStorageSync('token')
-    // 跳转啊授权登录页面
-    if (!token) {
-      this.goToLoginPage()
-      return
-    }
+  checkLogin = () => new Promise(async (resolve, reject) => {
+    try {
+      const token = Taro.getStorageSync('token')
+      // 本地没有登录 token
+      if (!token) {
+        return reject()
+      }
 
-    // 校验 token 是否有效
-    checkToken().then((res) => {
-      if (res.code != 0) {
-        // token 失效，清除本地 token 重新授权
+      await this.checkSession()
+
+      // 校验 token 是否有效
+      const res = await checkToken()
+      // token 失效，清除本地 token 重新授权
+      if (res.code !== 0) {
         Taro.removeStorageSync('token')
-        showToast({
+        await this.showToastP({
           title: '登录失效，请重新授权~',
           icon: 'loading',
           duration: 1000,
-          complete: () => {
-            this.goToLoginPage()
-          },
         })
+        return reject()
       }
-    })
 
+      // 获取用户详情
+      const userDetail = await store.dispatch(getUserDetail())
+
+      // 强制用户绑定手机号
+      if (requireBindMobile && !userDetail.mobile) {
+        await this.showToastP({
+          title: '需要授权并绑定手机号~',
+          icon: 'none',
+          duration: 2000,
+        })
+        return reject()
+      }
+
+      resolve()
+    } catch (e) {
+      reject(e)
+    }
+  })
+
+  // 检查用户授权的 session
+  checkSession = () => new Promise((resolve, reject) => {
     Taro.checkSession({
-      fail: () => {
-        // 微信 session 失效，清除本地 token 重新授权
-        Taro.removeStorageSync('token')
-        this.goToLoginPage()
-      },
+      success: resolve,
+      fail: reject,
     })
-  }
+  })
+
+  showToastP = options => new Promise(resolve => {
+    showToast({
+      ...options,
+      complete: resolve,
+    })
+  })
 
   componentDidHide () {}
 
