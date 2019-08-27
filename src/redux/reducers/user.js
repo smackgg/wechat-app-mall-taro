@@ -38,6 +38,7 @@ const INITIAL_STATE = {
   cashLog: [], // 资金明细
   scoreLog: [], // 积分明细
   coupons: [],
+  getableCoupons: [],
   shopCartInfo: shopCartInfo || {}, // 购物车信息
   rechargeSendRules: [], // 充值赠送规则
   billDiscountsRules: [], // 买单优惠规则
@@ -61,9 +62,10 @@ export default function user(state = INITIAL_STATE, action) {
     case GET_LEVEL_DETAIL_SUCCESS: {
       const levelList = state.levelList.map(level => {
         if (level.id === action.id) {
+          const extJson = action.data.extJson || {}
           return {
             ...level,
-            potences: action.data.extJson['会员权益'].split(' ').filter(i => i),
+            potences: Object.keys(extJson).filter(key => key.includes('会员权益')).map(key => extJson[key]),
           }
         }
         return level

@@ -60,7 +60,6 @@ export const getLevelList = () => async dispatch => {
 // 获取会员详情
 export const getLevelDetail = id => async dispatch => {
   const res = await levelDetail(id)
-  console.log(res.data)
   dispatch({
     type: GET_LEVEL_DETAIL_SUCCESS,
     data: res.data,
