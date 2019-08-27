@@ -93,9 +93,6 @@ export default class Account extends Component {
     this.props.getLevelList()
   }
 
-  getUserAmount = async () => {
-  }
-
   // 会员卡轮播图变化
   onSwiperChange = e => {
     this.setState({
