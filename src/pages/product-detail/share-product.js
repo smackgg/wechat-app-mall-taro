@@ -190,7 +190,7 @@ export default class ShareProduct extends Component {
     }
 
     // 测试数据
-    res.data = 'https://dcdn.it120.cc/2019/07/28/546eb06c-a878-47ac-a3bc-033d66c8d066.jpg'
+    // res.data = 'https://dcdn.it120.cc/2019/07/28/546eb06c-a878-47ac-a3bc-033d66c8d066.jpg'
     const qrcodeImgInfo = await this.getImageInfo(res.data)
     return qrcodeImgInfo
   }
