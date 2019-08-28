@@ -422,7 +422,7 @@ export default class Checkout extends Component {
   }
 
   render () {
-    const { defaultAddress, coupons } = this.props
+    const { defaultAddress } = this.props
     const {
       productList,
       needLogistics,
@@ -437,9 +437,12 @@ export default class Checkout extends Component {
       selectedCoupon,
     } = this.state
 
-    const noCoupon = coupons.length === 0
 
     const realAmount = selectedCoupon ? totalAmount - couponAmount : totalAmount
+
+    // 过滤价格不符合的优惠券
+    const coupons = this.props.coupons.filter(coupon => realAmount >= coupon.moneyHreshold)
+    const noCoupon = coupons.length === 0
 
     return (
       <View className="container">
