@@ -38,7 +38,7 @@ export default class Potences extends Component {
             const len = potences.length
             return <View key={id} className="level-item">
               <View className="name">{name}</View>
-              <View className="upgrade-amount">(累计消费满{upgradeAmount}元)</View>
+              <View className="upgrade-amount">(累计充值满{upgradeAmount}元)</View>
               {
                 len === 0 && <View className="potence">暂无权益</View>
               }

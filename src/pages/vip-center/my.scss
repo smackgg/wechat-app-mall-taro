@@ -72,12 +72,12 @@ page {
           }
 
           &.vip3 {
+            background:linear-gradient(135deg,rgba(81,81,81,1) 0%,rgba(0,0,0,1) 100%);
+          }
+          &.vip4 {
             background:linear-gradient(135deg,rgba(176,202,225,1) 0%,rgba(82,106,152,1) 100%);
           }
 
-          &.vip4 {
-            background:linear-gradient(135deg,rgba(81,81,81,1) 0%,rgba(0,0,0,1) 100%);
-          }
         }
 
 
@@ -117,14 +117,6 @@ page {
             }
           }
           &.vip3 {
-            background: linear-gradient(135deg,rgba(176,202,225,1) 0%,rgba(82,106,152,1) 100%);
-            box-shadow: 0 10px 20px 0 rgba(0,0,0,.3);
-            .price {
-              color: #365AB3;
-            }
-          }
-
-          &.vip4 {
             background: linear-gradient(135deg,rgba(81,81,81,1) 0%,rgba(0,0,0,1) 100%);
             box-shadow: 0 10px 20px 0 rgba(0,0,0,.3);
             .price {
@@ -136,6 +128,14 @@ page {
               color: #969696;
             }
           }
+          &.vip4 {
+            background: linear-gradient(135deg,rgba(176,202,225,1) 0%,rgba(82,106,152,1) 100%);
+            box-shadow: 0 10px 20px 0 rgba(0,0,0,.3);
+            .price {
+              color: #365AB3;
+            }
+          }
+
 
           .price-info {
             margin-top: 88rpx;
