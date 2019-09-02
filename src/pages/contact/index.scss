@@ -1,0 +1,14 @@
+
+.container {
+  padding: 150rpx 40rpx;
+  .button {
+    width: 100%;
+    height: 100%;
+    line-height: 50rpx;
+    font-size: 32rpx;
+    &.button-hover {
+      background: $color-white;
+    }
+  }
+
+}

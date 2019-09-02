@@ -4,9 +4,9 @@ import { Provider } from '@tarojs/redux'
 import { getVipLevel, getSystemConfig } from '@/redux/actions/config'
 import { checkToken } from '@/services/user'
 import { getUserDetail } from '@/redux/actions/user'
-import { theme, requireBindMobile, showToast } from './utils'
+import { requireBindMobile, showToast } from './utils'
 
-import Index from './pages/index'
+import Index from './pages/entry'
 import { store } from './redux/store'
 import { UPDATE_GLOBAL_DATA } from './redux/actions/global'
 
@@ -45,6 +45,7 @@ class App extends Component {
       'pages/vip-center/index',
       'pages/vip-center/my',
       'pages/vip-center/potences',
+      'pages/contact/index',
     ],
     window: {
       backgroundTextStyle: 'light',
