@@ -92,7 +92,7 @@ export default class VipCenter extends Component {
       },
       complete: (err) => {
         console.log('complete', err)
-      }
+      },
     })
   }
 

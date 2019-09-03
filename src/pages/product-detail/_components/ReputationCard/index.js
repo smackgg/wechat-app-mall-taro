@@ -43,7 +43,8 @@ export default class ReputationCard extends Component {
       </View>
       <View className={classNames('reputation__remark', {
         'clamp-3': !showAllRemark,
-      })}>
+      })}
+      >
         {goodReputationRemark}
         {/* {Array(100).fill(1).map(() => '测试')} */}
       </View>
