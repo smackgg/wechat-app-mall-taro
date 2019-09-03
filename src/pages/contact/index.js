@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
+import { View, Text, Button, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 
@@ -7,8 +7,12 @@ import './index.scss'
 
 
 const BANNER_KEY = 'entry'
-@connect(({ config }) => ({
-  concatPhoneNumber: config.systemConfig.concat_phone_number,
+@connect(({ config: { systemConfig: { concat_phone_number, wifi_password, wifi_ssid, mall_name, mall_avatar } } }) => ({
+  concatPhoneNumber: concat_phone_number,
+  wifiSsid: wifi_ssid,
+  wifiPassword: wifi_password,
+  mallName: mall_name,
+  mallAvatar: mall_avatar,
 }))
 
 export default class VipCenter extends Component {
@@ -18,10 +22,6 @@ export default class VipCenter extends Component {
 
   state = {
     showActionSheet: false,
-  }
-
-  componentDidShow() {
-    this.props.getBanners(BANNER_KEY)
   }
 
   // 切换 action sheet
@@ -39,17 +39,18 @@ export default class VipCenter extends Component {
   }
 
   render() {
-    const { concatPhoneNumber } = this.props
+    const { concatPhoneNumber, mallAvatar, mallName } = this.props
     const { showActionSheet } = this.state
 
     return (
       <View className="container">
+        <Image className="avatar" src={mallAvatar} mode="aspectFill"></Image>
+        <View className="mall-name">{mallName}</View>
         <AtButton
           className="at-button"
           type="primary"
           onClick={this.onToggleActionSheet}
         >点击咨询客服</AtButton>
-
         <AtActionSheet cancelText="取消" isOpened={showActionSheet} onClose={this.onToggleActionSheet}>
           <AtActionSheetItem>
             <Button className="button" onClick={this.makePhoneCall}>拨打电话：<Text className="phone-number">{concatPhoneNumber}</Text></Button>

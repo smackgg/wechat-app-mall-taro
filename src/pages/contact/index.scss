@@ -1,7 +1,10 @@
-
 .container {
-  padding: 150rpx 40rpx;
-  .button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-bottom: 200rpx;
+   .button {
     width: 100%;
     height: 100%;
     line-height: 50rpx;
@@ -11,4 +14,41 @@
     }
   }
 
+  .avatar {
+    width: 180rpx;
+    height: 180rpx;
+    border-radius: 50%;
+    margin-top: 150rpx;
+  }
+
+  .mall-name {
+    font-size: 65rpx;
+    margin-top: 60rpx;
+  }
+
+  .wifi-ssid {
+    font-size: 32rpx;
+    color: $text-color-gray;
+    margin-top: 20rpx;
+    font-weight: 200;
+  }
+
+  .tip {
+    font-size: 20rpx;
+    color: $color-brand;
+    margin-top: 20rpx;
+  }
+
+  .clipboard {
+    color: $link-color;
+    margin-left: 20rpx;
+    font-size: 24rpx;
+  }
+
+  .at-button {
+    margin-top: 200rpx;
+    width: 400rpx;
+    background: $wechat-color-primary;
+    border-color: $wechat-color-primary;
+  }
 }
