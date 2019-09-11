@@ -332,6 +332,12 @@ export default class Account extends Component {
                 title: '收货地址',
                 url: '/pages/select-address/index?type=1',
               }, {
+                title: '店铺位置、导航',
+                url: '/pages/location/index',
+              }, {
+                title: '店内 Wi-Fi',
+                url: '/pages/wifi/index',
+              }, {
                 title: '联系客服',
                 url: '',
                 contact: true,
