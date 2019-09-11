@@ -109,6 +109,12 @@ export default class VipCenter extends Component {
     })
   }
 
+  goApp = () => {
+    Taro.navigateTo({
+      url: '/pages/entry/index',
+    })
+  }
+
   render() {
     const {
       wifiSsid,
@@ -129,6 +135,7 @@ export default class VipCenter extends Component {
           type="primary"
           onClick={this.onClick}
         >立即连接</AtButton>
+        <View className="go-app" onClick={this.goApp}>点击进入后生家小程序</View>
       </View>
     )
   }
