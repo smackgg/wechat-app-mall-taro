@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import { subDomain } from '@/utils'
+import { subDomain, getCurrentPageUrl } from '@/utils'
 
 const API_BASE_URL = 'https://api.it120.cc'
 
@@ -29,10 +29,11 @@ export default option => new Promise((resolve, reject) => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     success: res => {
+      // console.log(getCurrentPages())
       // token 失效
       if (res && res.statusCode === 200 && res.data.code === 2000 && interceptTokenError) {
-        Taro.navigateTo({
-          url: '/pages/authorize/index',
+        Taro.redirectTo({
+          url: `/pages/authorize/index?from=${encodeURIComponent(getCurrentPageUrl())}`,
         })
         return
       }

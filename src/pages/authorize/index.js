@@ -34,9 +34,11 @@ export default class Auth extends Component {
   }
 
   componentWillMount() {
+    this.fromPage = decodeURIComponent(this.$router.params.from || '/pages/entry/index')
+
     Taro.removeStorageSync('token')
     Taro.setNavigationBarColor({
-      backgroundColor: theme['$color-brand2'],
+      backgroundColor: '#1AAD19',
       frontColor: '#ffffff',
     })
   }
@@ -183,6 +185,7 @@ export default class Auth extends Component {
           url: '/pages/index/index',
         }),
       })
+      // Taro.navigateTo()
     }
   }
 
@@ -201,6 +204,12 @@ export default class Auth extends Component {
     // })
   }
 
+  goHome = () => {
+    Taro.navigateTo({
+      url: '/pages/entry/index',
+    })
+  }
+
   render () {
     const { showTelAuthModal } = this.state
     return (
@@ -211,7 +220,9 @@ export default class Auth extends Component {
             <View>应用需要授权获得以下权限</View>
           </View>
           <Checkbox checked disabled className="checkbox"><Text className="checkbox-info">获得你的公开信息（昵称、头像等）</Text></Checkbox>
+          <View className="info2">*未授权无法进行下单、查看会员等操作</View>
           <Button formType="submit" className="button" type="primary" openType="getUserInfo" onGetUserInfo={this.getUserInfo}>允许授权</Button>
+          <View className="info1" onClick={this.goHome}>暂不授权</View>
           <AtModal isOpened={showTelAuthModal}>
             <AtModalHeader>微信授权</AtModalHeader>
             <AtModalContent>

@@ -47,6 +47,7 @@ class App extends Component {
       'pages/vip-center/potences',
       'pages/contact/index',
       'pages/wifi/index',
+      'pages/location/index',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -163,7 +164,7 @@ class App extends Component {
 
     this.checkLogin().catch(() => {
       // 未登录
-      this.goToLoginPage()
+      // this.goToLoginPage()
     })
   }
 
