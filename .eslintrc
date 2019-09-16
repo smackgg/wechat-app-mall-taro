@@ -1,16 +1,25 @@
 {
   "extends": ["taro"],
   "rules": {
-    "no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
+    "no-console": "off",
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
+    "no-param-reassign": "error",
+    "react/no-unused-state": "error",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
-    "semi": ["error", "never"],
+    "semi": "off",
+    "@typescript-eslint/semi": ["error", "never"],
     "comma-dangle": ["error", "always-multiline"],
     "import/prefer-default-export": "off",
-    "jsx-quotes": [
-      "error",
-      "prefer-double"
-    ],
+    "jsx-quotes": ["error", "prefer-double"],
     "taro/this-props-function": 0
   },
-  "parser": "babel-eslint"
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "parser": "@typescript-eslint/parser"
 }

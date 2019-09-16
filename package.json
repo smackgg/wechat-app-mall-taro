@@ -1,8 +1,8 @@
 {
   "name": "wechat-app-mall-taro",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "taro 电商项目",
+  "description": "wechat-app-mall-taro typescript",
   "scripts": {
     "build:weapp": "taro build --type weapp",
     "build:swan": "taro build --type swan",
@@ -16,7 +16,7 @@
     "dev:tt": "npm run build:tt -- --watch",
     "dev:h5": "npm run build:h5 -- --watch",
     "dev:rn": "npm run build:rn -- --watch",
-    "lint": "eslint src config --fix"
+    "lint": "eslint ./ --ext .ts,.tsx --fix"
   },
   "author": "",
   "license": "MIT",
@@ -32,25 +32,23 @@
     "@tarojs/taro-swan": "1.3.0-beta.5",
     "@tarojs/taro-tt": "1.3.0-beta.5",
     "@tarojs/taro-weapp": "1.3.0-beta.5",
-    "classnames": "^2.2.6",
     "nerv-devtools": "^1.4.0-beta.3",
     "nervjs": "^1.4.0-beta.3",
-    "prop-types": "^15.7.2",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0",
-    "taro-ui": "^2.2.1"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@tarojs/plugin-babel": "1.3.0-beta.5",
     "@tarojs/plugin-csso": "1.3.0-beta.5",
     "@tarojs/plugin-less": "1.3.0-beta.5",
-    "@tarojs/plugin-sass": "^1.3.3",
     "@tarojs/plugin-uglifyjs": "1.3.0-beta.5",
     "@tarojs/webpack-runner": "1.3.0-beta.5",
     "@types/react": "^16.4.8",
     "@types/webpack-env": "^1.13.6",
-    "babel-eslint": "^8.2.3",
+    "@typescript-eslint/eslint-plugin": "^2.2.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "babel-eslint": "^10.0.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-jsx-stylesheet": "^0.6.5",
@@ -60,8 +58,10 @@
     "eslint-config-taro": "1.3.0-beta.5",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-react": "^7.8.2",
+    "eslint-plugin-taro": "1.3.0-beta.5",
     "stylelint": "9.3.0",
     "stylelint-config-taro-rn": "1.3.0-beta.5",
-    "stylelint-taro-rn": "1.3.0-beta.5"
+    "stylelint-taro-rn": "1.3.0-beta.5",
+    "typescript": "^3.0.1"
   }
 }

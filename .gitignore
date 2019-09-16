@@ -1,3 +1,5 @@
+# Referenced from https://github.com/github/gitignore/blob/master/Node.gitignore
+
 # Logs
 logs
 *.log
@@ -54,6 +56,12 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
+# dotenv environment variables file
+.env
+
+# next.js build output
+.next
+
 # other stuff
 .DS_Store
 Thumbs.db
@@ -66,9 +74,3 @@ Thumbs.db
 /output
 /dist
 /dll
-
-# mock
-mock/mock
-
-# module cache
-.module-cache
