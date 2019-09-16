@@ -1,11 +1,11 @@
 /**
  * 添加购物车
  *
- * @param {String} type // order 支付订单 recharge 充值 paybill 优惠买单
- * @param {Number} score // 积分
+ * @param {?String} type // order 支付订单 recharge 充值 paybill 优惠买单
+ * @param {?Number} score // 积分
  * @param {Number} money // 金额
  * @param {orderId} money // 订单 id
- * @param {Object} data //  扩展 数据
+ * @param {?Object} data //  扩展 数据
  */
 import Taro from '@tarojs/taro'
 
