@@ -4,7 +4,8 @@
   "private": true,
   "description": "wechat-app-mall-taro typescript",
   "scripts": {
-    "build:weapp": "taro build --type weapp",
+    "copy-config": "cp -rf shopConfig.js src/shopConfig.js",
+    "build:weapp": "npm run copy-config && taro build --type weapp",
     "build:swan": "taro build --type swan",
     "build:alipay": "taro build --type alipay",
     "build:tt": "taro build --type tt",

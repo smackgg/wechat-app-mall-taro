@@ -7,8 +7,9 @@
       "single"
     ],
     "no-unused-vars": "off",
+    "no-restricted-globals": "off",
     "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
-    "no-param-reassign": "error",
+    // "no-param-reassign": "error",
     "react/no-unused-state": "error",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
     "semi": "off",
