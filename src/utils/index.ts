@@ -49,7 +49,7 @@ export const setCartBadge = () => {
 // valueEqual from https://www.npmjs.com/package/value-equal
 const valueOf = (obj: any) => obj.valueOf ? obj.valueOf() : Object.prototype.valueOf.call(obj)
 
-export const valueEqual = (a: any, b: any): Boolean => {
+export const valueEqual = (a: any, b: any): boolean => {
   // Test for strict equality first.
   if (a === b) return true
 
@@ -80,8 +80,7 @@ export const valueEqual = (a: any, b: any): Boolean => {
   return false
 }
 
-/* eslint-disable */
-export const getCurrentPageUrl = () => {
+export const getCurrentPageUrl = (): string => {
   var pages = Taro.getCurrentPages()    //获取加载的页面
   var currentPage = pages[pages.length - 1]    //获取当前页面的对象
   var url = currentPage.route    //当前页面url
