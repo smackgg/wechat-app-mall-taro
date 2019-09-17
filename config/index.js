@@ -1,3 +1,5 @@
+/* eslint-disable import/no-commonjs */
+
 'use strict'
 const path = require('path')
 const { theme } = require('../shopConfig')
@@ -95,7 +97,7 @@ var config = {
 
 module.exports = function (merge) {
     {
-        return merge({}, config, require("./dev.js"))
+        return merge({}, config, require('./dev.js'))
     }
-    return merge({}, config, require("./prod.js"))
+    return merge({}, config, require('./prod.js'))
 }
