@@ -13,7 +13,7 @@ import {
   levelDetail,
 } from '@/services/user'
 import { cError } from '@/utils'
-import { ThunkResult, ThunkAction, ThunkDispatch } from 'redux-thunk'
+import { Dispatch } from 'redux'
 
 export const GET_USER_DETAIL_SUCCESS = 'config/GET_USER_DETAIL_SUCCESS'
 export const GET_LEVEL_LIST_SUCCESS = 'config/GET_LEVEL_LIST_SUCCESS'
@@ -35,7 +35,7 @@ export const ADD_SHOP_CART = 'config/ADD_SHOP_CART'
 export const UPDATE_SHOP_CART = 'config/UPDATE_SHOP_CART'
 
 // 用户详情
-export const getUserDetail = (): ThunkResult => async (dispatch: ThunkDispatch) => {
+export const getUserDetail = () => async (dispatch: Dispatch) => {
   const res = await userDetail()
   const { base, ext = {} } = res.data
   dispatch({
@@ -49,7 +49,7 @@ export const getUserDetail = (): ThunkResult => async (dispatch: ThunkDispatch) 
 }
 
 // vip list
-export const getLevelList = () => async dispatch => {
+export const getLevelList = () => async (dispatch: Dispatch) => {
   const res = await levelList()
   dispatch({
     type: GET_LEVEL_LIST_SUCCESS,
@@ -59,7 +59,7 @@ export const getLevelList = () => async dispatch => {
 }
 
 // 获取会员详情
-export const getLevelDetail = id => async dispatch => {
+export const getLevelDetail = id => async (dispatch: Dispatch) => {
   const res = await levelDetail(id)
   dispatch({
     type: GET_LEVEL_DETAIL_SUCCESS,
@@ -70,7 +70,7 @@ export const getLevelDetail = id => async dispatch => {
 }
 
 
-export const getAddressList = () => async dispatch => {
+export const getAddressList = () => async (dispatch: Dispatch) => {
   const [error, res] = await cError(addressList())
   dispatch({
     type: GET_ADDRESS_LIST_SUCCESS,
@@ -79,7 +79,7 @@ export const getAddressList = () => async dispatch => {
   return res.data
 }
 
-export const getDefaultAddress = () => async dispatch => {
+export const getDefaultAddress = () => async (dispatch: Dispatch) => {
   const [error, res] = await cError(defaultAddress())
   dispatch({
     type: GET_DEFAULT_ADDRESS_SUCCESS,
@@ -89,7 +89,7 @@ export const getDefaultAddress = () => async dispatch => {
 }
 
 // 获取用户资产
-export const getUserAmount = (): ThunkResult => async dispatch => {
+export const getUserAmount = async (dispatch: Dispatch) => {
   const [error, res] = await cError(userAmount())
   dispatch({
     type: GET_USER_AMOUNT_SUCCESS,
@@ -99,7 +99,7 @@ export const getUserAmount = (): ThunkResult => async dispatch => {
 }
 
 // 获取用户明细
-export const getUserCashLog = () => async dispatch => {
+export const getUserCashLog = () => async (dispatch: Dispatch) => {
   const [error, res] = await cError(userCashLog())
   dispatch({
     type: GET_USER_CASHLOG_SUCCESS,
@@ -109,7 +109,7 @@ export const getUserCashLog = () => async dispatch => {
 }
 
 // 获取积分明细
-export const getUserScoreLog = () => async dispatch => {
+export const getUserScoreLog = () => async (dispatch: Dispatch) => {
   const [error, res] = await cError(userScoreLog())
   dispatch({
     type: GET_USER_SCORELOG_SUCCESS,
@@ -123,7 +123,7 @@ export const getUserScoreLog = () => async dispatch => {
 
 
 // 获取优惠券列表
-export const getCoupons = (data = {}) => async dispatch => {
+export const getCoupons = (data = {}) => async (dispatch: Dispatch) => {
   const [error, res] = await cError(coupons(data))
   return dispatch({
     type: GET_COUPONS_SUCCESS,
@@ -132,7 +132,7 @@ export const getCoupons = (data = {}) => async dispatch => {
 }
 
 // 获取可领取优惠券
-export const getGetableCoupons = data => async dispatch => {
+export const getGetableCoupons = data => async (dispatch: Dispatch) => {
   const [error, res] = await cError(getableCoupons(data))
   return dispatch({
     type: GET_GETABLE_COUPONS_SUCCESS,
@@ -144,7 +144,7 @@ export const getGetableCoupons = data => async dispatch => {
 export const addCart = ({
   type = 'cart',
   productInfo,
-}) => async dispatch => dispatch({
+}) => async (dispatch: Dispatch) => dispatch({
   type: ADD_SHOP_CART,
   data: productInfo,
   actionType: type,
@@ -154,7 +154,7 @@ export const addCart = ({
 export const updateCart = ({
   type = 'update',
   products,
-}) => async dispatch => {
+}) => async (dispatch: Dispatch) => {
   return dispatch({
     type: UPDATE_SHOP_CART,
     products,
@@ -163,7 +163,7 @@ export const updateCart = ({
 }
 
 // 获取用户充值赠送规则
-export const getRechargeSendRules = () => async dispatch => {
+export const getRechargeSendRules = () => async (dispatch: Dispatch) => {
   const res = await rechargeSendRules()
   return dispatch({
     type: GET_RECHARGE_RULES_SUCCESS,
@@ -172,7 +172,7 @@ export const getRechargeSendRules = () => async dispatch => {
 }
 
 // 获取用户在线买单优惠规则
-export const getPayBillDiscounts = () => async dispatch => {
+export const getPayBillDiscounts = () => async (dispatch: Dispatch) => {
   const res = await payBillDiscounts()
   return dispatch({
     type: GET_BILL_RULES_SUCCESS,

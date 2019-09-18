@@ -221,7 +221,7 @@ export function wxPay({
       remark,
       payName: remark,
       nextAction: nextAction && JSON.stringify(nextAction),
-    }).then((res: requestResult) => {
+    }).then((res: Request.requestResult) => {
       const {
         timeStamp,
         nonceStr,
@@ -261,7 +261,7 @@ export function wxPay({
           resolve()
         },
       })
-    }).catch((error: requestError) => {
+    }).catch((error: Request.requestError) => {
       const { code, msg } = error
       Taro.showModal({
         title: '出错了',

@@ -1,8 +1,10 @@
-interface requestResult {
-  data: any
-}
+declare namespace Request {
+  interface requestResult {
+    data: any
+  }
 
-interface requestError {
-  msg: string
-  code: string
+  interface requestError {
+    msg: string
+    code: string
+  }
 }

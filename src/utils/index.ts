@@ -10,8 +10,19 @@ export {
   theme,
 } from '../shopConfig'
 
+export type ShowToastParam = {
+  title: string
+  icon?: string
+  image?: string
+  duration?: number
+  mask?: boolean
+  success?: (res: any) => any
+  fail?: (err: any) => any
+  complete?: () => any
+}
+
 // 重写 toast 的 complete 方法
-export const showToast = ({ complete, duration = 1500, ...args }: { complete?: Function | any, duration?: number, title: string }) => {
+export const showToast = ({ complete, duration = 1500, ...args }: ShowToastParam) => {
 
   Taro.showToast({ ...args })
 

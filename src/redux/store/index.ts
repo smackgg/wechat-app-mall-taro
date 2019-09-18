@@ -24,7 +24,7 @@ const enhancer = composeEnhancers(
 )
 
 export default function configStore () {
-    const store = createStore(rootReducer, enhancer)
+  const store = createStore<any, any, any, any>(rootReducer, enhancer)
     return store
 }
 
