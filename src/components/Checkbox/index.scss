@@ -1,0 +1,16 @@
+.check-box {
+  border: 2rpx solid $color-brand;
+  border-radius: 50%;
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &.checked {
+    // background: $color-brand-dark;
+    background: $color-brand;
+  }
+  text {
+    display: block;
+  }
+}
