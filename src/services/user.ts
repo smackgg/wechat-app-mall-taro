@@ -11,9 +11,9 @@ export const checkToken = () => request({
 })
 
 // 登录
-export const login = data => request({
+export const login = (data: { code: string, type?: number }) => request({
   url: '/user/wxapp/login',
-  method: 'post',
+  method: 'POST',
   data: {
     ...data,
     type: 2,
@@ -22,16 +22,19 @@ export const login = data => request({
 })
 
 // 注册
-export const register = data => request({
+export const register = (data: { code: string }) => request({
   url: '/user/wxapp/register/complex',
-  method: 'post',
+  method: 'POST',
   data,
 })
 
 // 修改用户信息
-export const modifyUserInfo = data => request({
+export const modifyUserInfo = (data: {
+  nick: string,
+  extJsonStr: string,
+}) => request({
   url: '/user/modify',
-  method: 'post',
+  method: 'POST',
   data,
 })
 
@@ -41,24 +44,25 @@ export const userDetail = () => request({
 })
 
 // 绑定手机号
-export const bindMobile = data => request({
+export const bindMobile = (data: {
+  encryptedData: string,
+  iv: string,
+}) => request({
   url: '/user/wxapp/bindMobile',
-  method: 'post',
+  method: 'POST',
   data,
 })
 
 // 获取所有的会员等级列表
 export const levelList = () => request({
   url: '/user/level/list',
-  method: 'post',
+  method: 'POST',
 })
 
 // 获取会员等级详情
-export const levelDetail = id => request({
+export const levelDetail = (data: { id: string }) => request({
   url: '/user/level/info',
-  data: {
-    id,
-  },
+  data,
 })
 
 // 获取地址列表
@@ -67,24 +71,33 @@ export const addressList = () => request({
 })
 
 
+interface AddressInfo {
+  linkMan: string,
+  mobile: string,
+  address: string,
+  code: number,
+}
+interface ModifyAddressInfo extends AddressInfo {
+  id: string
+}
 // 添加地址
-export const addAddress = data => request({
+export const addAddress = (data: AddressInfo) => request({
   url: '/user/shipping-address/add',
-  method: 'post',
+  method: 'POST',
   data,
 })
 
 // 编辑地址
-export const updateAddress = data => request({
+export const updateAddress = (data: ModifyAddressInfo) => request({
   url: '/user/shipping-address/update',
-  method: 'post',
+  method: 'POST',
   data,
 })
 
 // 删除地址
-export const deleteAddress = data => request({
+export const deleteAddress = (data: ModifyAddressInfo) => request({
   url: '/user/shipping-address/delete',
-  method: 'post',
+  method: 'POST',
   data,
 })
 
@@ -109,21 +122,20 @@ export const userScoreLog = () => request({
 })
 
 // 查询用户优惠券
-export const coupons = data => request({
+export const coupons = (data: { status: number }) => request({
   url: '/discounts/my',
   data,
 })
 
 // 查询可领取优惠券
-export const getableCoupons = data => request({
+export const getableCoupons = () => request({
   url: '/discounts/coupons',
-  data,
 })
 
 // 领取优惠券
 export const getCoupon = data => request({
   url: '/discounts/fetch',
-  method: 'post',
+  method: 'POST',
   data,
 })
 

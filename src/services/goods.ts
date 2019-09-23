@@ -2,16 +2,21 @@
   商品模块 api
 */
 import request from '@/utils/request'
+
+
 // 商品详情
-export const productDetail = data => request({
+export const productDetail = (data: { id: string }) => request({
   url: '/shop/goods/detail',
   data,
 })
 
 // 获取sku库存、价格
-export const productPrice = data => request({
+export const productPrice = (data: {
+  propertyChildIds: string,
+  goodsId: string,
+}) => request({
   url: '/shop/goods/price',
-  method: 'post',
+  method: 'POST',
   data,
 })
 
@@ -23,9 +28,15 @@ export const productPrice = data => request({
 * recommendStatus
 */
 // 获取sku库存、价格
-export const products = data => request({
+export const products = (data: {
+  key: string,
+  categoryId: string,
+  recommendStatus?: number,
+  page?: number,
+  pageSize?: number,
+}) => request({
   url: '/shop/goods/list',
-  method: 'post',
+  method: 'POST',
   data,
 })
 
@@ -35,7 +46,9 @@ export const category = () => request({
 })
 
 // 获取商品评价列表
-export const reputation = data => request({
+export const reputation = (data: {
+  goodsId: string,
+}) => request({
   url: '/shop/goods/reputation',
   data,
 })
