@@ -192,7 +192,7 @@ export function wxPay({
   type: string,
   money: number,
   orderId?: string,
-}): Promise<any> {
+}): Promise<void> {
   return new Promise((resolve, reject) => {
     let remark = '在线充值'
     let nextAction
