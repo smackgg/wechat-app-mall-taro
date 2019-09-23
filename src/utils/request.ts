@@ -4,7 +4,7 @@ import { subDomain, getCurrentPageUrl } from '@/utils'
 
 const API_BASE_URL = 'https://api.it120.cc'
 
-export default (option: RequestParams): Promise<any> => new Promise((resolve, reject) => {
+export default (option: RequestParams): Promise<Request.requestResult> => new Promise((resolve, reject) => {
   const { url, needSubDomain = true, interceptTokenError = true, data = {} } = option
   let reqUrl = API_BASE_URL + (needSubDomain ? '/' + subDomain : '') + url
 
