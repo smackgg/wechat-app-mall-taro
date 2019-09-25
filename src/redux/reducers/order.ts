@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux'
 import {
   GET_ORDER_DETAIL_SUCCESS,
   GET_ORDER_STATISTICS_SUCCESS,
@@ -17,7 +18,7 @@ const INITIAL_STATE = {
   },
 }
 
-export default function user(state = INITIAL_STATE, action) {
+export default function user(state = INITIAL_STATE, action: AnyAction) {
   switch (action.type) {
     case GET_ORDER_DETAIL_SUCCESS:
       return {

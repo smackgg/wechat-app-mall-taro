@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux'
 import { UPDATE_GLOBAL_DATA } from '../actions/global'
 
 const INITIAL_STATE = {
@@ -5,7 +6,7 @@ const INITIAL_STATE = {
   launchOption: undefined, // app 启动参数
 }
 
-export default function global(state = INITIAL_STATE, action) {
+export default function global(state = INITIAL_STATE, action: AnyAction) {
   switch (action.type) {
     case UPDATE_GLOBAL_DATA:
       return {

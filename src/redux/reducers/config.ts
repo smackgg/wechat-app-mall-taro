@@ -1,5 +1,6 @@
 
 import Taro from '@tarojs/taro'
+import { AnyAction } from 'redux'
 
 import {
   GET_VIP_LEVEL_SUCCESS,
@@ -11,7 +12,23 @@ import {
 const rechargeAmountMin = Taro.getStorageSync('recharge_amount_min') || 0
 const allowSelfCollection = !!Taro.getStorageSync('ALLOW_SELF_COLLECTION')
 
-const INITIAL_STATE = {
+interface InitialState {
+  vipLevel: number,
+  systemConfig: { [key: string]: string },
+  index_video_1: string, // 首页封面视频（短）
+  index_video_2: string, // 首页封面视频 (长)
+  mallName: string, // 商城名称
+  rechargeAmountMin: number, // 充值最小金额
+  // recharge_amount_min
+  // ALLOW_SELF_COLLECTION
+  allowSelfCollection: boolean, // 是否允许到店自提
+  banners: { [key: string]: any }, // banner
+  provinces: any[],
+  citys: any[],
+  districts: any[],
+}
+
+const INITIAL_STATE: InitialState = {
   vipLevel: 0,
   systemConfig: {},
   index_video_1: '', // 首页封面视频（短）
@@ -29,7 +46,7 @@ const INITIAL_STATE = {
 
 const REMOVE_PROVINCE = ['澳门特别行政区', '台湾省', '香港特别行政区']
 
-export default function config(state = INITIAL_STATE, action) {
+export default function config(state = INITIAL_STATE, action: AnyAction): InitialState {
   switch (action.type) {
     case GET_VIP_LEVEL_SUCCESS:
       return {
@@ -39,7 +56,11 @@ export default function config(state = INITIAL_STATE, action) {
     case GET_SYSTEM_CONFIG_SUCCESS:
       return {
         ...state,
-        systemConfig: (action.data || []).reduce((pre, item) => {
+        systemConfig: (action.data || []).reduce((pre: { [key: string]: string }, item: {
+          value: string,
+          remark: string,
+          key: string,
+        }) => {
           const { key } = item
           pre[key] = item.value
           if (key === 'ALLOW_SELF_COLLECTION' || key === 'recharge_amount_min') {
@@ -63,7 +84,7 @@ export default function config(state = INITIAL_STATE, action) {
       return {
         ...state,
         // 处理字母索引选择器数据
-        [key]: Object.values(data.reduce((pre, item) => {
+        [key]: Object.values(data.reduce((pre: typeof data, item: { name: string, firstLetter: string }) => {
           if (REMOVE_PROVINCE.includes(item.name)) {
             return pre
           }
@@ -82,7 +103,7 @@ export default function config(state = INITIAL_STATE, action) {
             pre[firstLetter].items.push(nItem)
           }
           return pre
-        }, {})).sort((a, b) => a.title > b.title ? 1 : -1),
+        }, {})).sort((a: any, b: any) => a.title > b.title ? 1 : -1),
       }
     }
     default:

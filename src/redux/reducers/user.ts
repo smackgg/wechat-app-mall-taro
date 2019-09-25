@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro'
+import { AnyAction } from 'redux';
 import { addCart, updateCart } from '@/utils/shopCart'
 import { setCartBadge } from '@/utils'
 
@@ -24,7 +25,27 @@ const shopCartInfo = Taro.getStorageSync('shopCartInfo') || {}
 setCartBadge()
 
 
-const INITIAL_STATE = {
+type INITIAL_STATE = {
+  userDetail: { levelId?: string }, // 用户信息
+  levelList: any[], // 所有 vip 等级列表
+  userLevel: {}, // 用户 vip 等级
+  addressList: any[], // 地址列表
+  defaultAddress: null, // 默认地址
+  userAmount: {
+    balance: 0,
+    freeze: 0,
+    score: 0,
+  }, // 用户资产信息
+  cashLog: any[], // 资金明细
+  scoreLog: any[], // 积分明细
+  coupons: any[],
+  getableCoupons: [],
+  shopCartInfo: {}, // 购物车信息
+  rechargeSendRules: any[], // 充值赠送规则
+  billDiscountsRules: any[], // 买单优惠规则
+}
+
+const INITIAL_STATE: INITIAL_STATE = {
   userDetail: {}, // 用户信息
   levelList: [], // 所有 vip 等级列表
   userLevel: {}, // 用户 vip 等级
@@ -44,7 +65,7 @@ const INITIAL_STATE = {
   billDiscountsRules: [], // 买单优惠规则
 }
 
-export default function user(state = INITIAL_STATE, action) {
+export default function user(state = INITIAL_STATE, action: AnyAction): INITIAL_STATE {
   switch (action.type) {
     case GET_USER_DETAIL_SUCCESS:
       return {
@@ -52,11 +73,11 @@ export default function user(state = INITIAL_STATE, action) {
         userDetail: action.data,
       }
     case GET_LEVEL_LIST_SUCCESS: {
-      const levelList = (action.data || []).map((level, index) => ({ ...level, lv: index + 1 }))
+      const levelList = (action.data || []).map((level: any, index: number) => ({ ...level, lv: index + 1 }))
       return {
         ...state,
         levelList,
-        userLevel: levelList.filter(item => item.id === state.userDetail.levelId)[0] || {},
+        userLevel: levelList.filter((item: any) => item.id === state.userDetail.levelId)[0] || {},
       }
     }
     case GET_LEVEL_DETAIL_SUCCESS: {
