@@ -19,7 +19,7 @@ export const createOrder = (data: {
 })
 
 // 获取订单详情
-export const orderDetail = (data: { orderId: string }) => request({
+export const orderDetail = (data: { id: string }) => request({
   url: '/order/detail',
   data,
 })
@@ -44,7 +44,7 @@ export const orderStatistics = () => request({
 })
 
 // 订单列表
-export const orderList = (data: { status: number }) => request({
+export const orderList = (data: { status: string }) => request({
   url: '/order/list',
   method: 'POST',
   data,
