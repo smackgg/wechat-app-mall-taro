@@ -59,12 +59,12 @@ export const getLevelList = () => async (dispatch: Dispatch) => {
 }
 
 // 获取会员详情
-export const getLevelDetail = id => async (dispatch: Dispatch) => {
-  const res = await levelDetail(id)
+export const getLevelDetail = (data: { id: string }) => async (dispatch: Dispatch) => {
+  const res = await levelDetail(data)
   dispatch({
     type: GET_LEVEL_DETAIL_SUCCESS,
     data: res.data,
-    id,
+    id: data.id,
   })
   return res.data
 }
@@ -89,7 +89,7 @@ export const getDefaultAddress = () => async (dispatch: Dispatch) => {
 }
 
 // 获取用户资产
-export const getUserAmount = async (dispatch: Dispatch) => {
+export const getUserAmount = () => async (dispatch: Dispatch) => {
   const [error, res] = await cError(userAmount())
   dispatch({
     type: GET_USER_AMOUNT_SUCCESS,
@@ -113,7 +113,7 @@ export const getUserScoreLog = () => async (dispatch: Dispatch) => {
   const [error, res] = await cError(userScoreLog())
   dispatch({
     type: GET_USER_SCORELOG_SUCCESS,
-    data: (error ? [] : res.data.result).map(item => ({
+    data: (error ? [] : res.data.result).map((item: any) => ({
       ...item,
       amount: Math.abs(item.score),
     })),
@@ -123,7 +123,7 @@ export const getUserScoreLog = () => async (dispatch: Dispatch) => {
 
 
 // 获取优惠券列表
-export const getCoupons = (data = {}) => async (dispatch: Dispatch) => {
+export const getCoupons = (data: { status: number }) => async (dispatch: Dispatch) => {
   const [error, res] = await cError(coupons(data))
   return dispatch({
     type: GET_COUPONS_SUCCESS,
@@ -132,8 +132,8 @@ export const getCoupons = (data = {}) => async (dispatch: Dispatch) => {
 }
 
 // 获取可领取优惠券
-export const getGetableCoupons = data => async (dispatch: Dispatch) => {
-  const [error, res] = await cError(getableCoupons(data))
+export const getGetableCoupons = () => async (dispatch: Dispatch) => {
+  const [error, res] = await cError(getableCoupons())
   return dispatch({
     type: GET_GETABLE_COUPONS_SUCCESS,
     data: error ? [] : res.data,
@@ -144,6 +144,14 @@ export const getGetableCoupons = data => async (dispatch: Dispatch) => {
 export const addCart = ({
   type = 'cart',
   productInfo,
+}: {
+  type: string,
+  productInfo: {
+    number: number | string
+    goodsId: string
+    propertyChildIds: string
+    active ?: boolean
+  }
 }) => async (dispatch: Dispatch) => dispatch({
   type: ADD_SHOP_CART,
   data: productInfo,

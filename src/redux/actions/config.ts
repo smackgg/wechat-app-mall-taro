@@ -25,13 +25,13 @@ export const getSystemConfig = (data: SystemConfigParams) => async (dispatch: Di
 }
 
 // banner
-export const getBanners = type => async (dispatch: Dispatch) => {
-  const res = await banners(type)
+export const getBanners = (data: { type: string }) => async (dispatch: Dispatch) => {
+  const res = await banners(data)
 
   dispatch({
     type: GET_BANNERS_SUCCESS,
     data: res.data,
-    key: type,
+    key: data.type,
   })
 }
 
@@ -47,7 +47,7 @@ export const getProvince = () => async (dispatch: Dispatch) => {
 }
 
 // nextRegion
-export const getNextRegion = ({ key, pid }) => async (dispatch: Dispatch) => {
+export const getNextRegion = ({ key, pid }: { key: string, pid: string }) => async (dispatch: Dispatch) => {
   const res = await nextRegion({ pid })
 
   dispatch({
