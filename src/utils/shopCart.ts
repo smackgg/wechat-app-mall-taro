@@ -97,7 +97,7 @@ export const updateCart = ({ type = 'update', products = [] }: { type: string, p
 
 
   // 如果历史购物车中有该商品，就直接更新数量和信息
-  const { shopNum, shopList }: { shopNum: number, shopList: [ProductInfo] } = shopCartInfo.shopList.reduce((result: { shopNum: number, shopList: [any] }, item: ProductInfo) => {
+  const { shopNum, shopList }: { shopNum: number, shopList: [ProductInfo] } = shopCartInfo.shopList.reduce((result: { shopNum: number, shopList: any[] }, item: ProductInfo) => {
     let updated = false
 
     products.forEach(product => {
