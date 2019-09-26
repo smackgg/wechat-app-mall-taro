@@ -2,7 +2,6 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { connect } from '@tarojs/redux'
 import { View, Image, Video, Swiper, SwiperItem, Text } from '@tarojs/components'
-
 import { getBanners } from '@/redux/actions/config'
 import { getProducts } from '@/redux/actions/goods'
 import classNames from 'classnames'
@@ -23,14 +22,23 @@ import './index.scss'
 // #endregion
 
 type PageStateProps = {
-  counter: {
-    num: number
-  }
+  banners: any[]
+  systemConfig: { [key: string]: string }
+  recommendProducts: []
+  allProducts: []
+  products: { [key: string]: any }
 }
 
+type GetProductsParams = {
+  key: string,
+  categoryId?: string,
+  recommendStatus?: number,
+  page?: number,
+  pageSize?: number,
+}
 type PageDispatchProps = {
-  getBanners: (type: string) => void
-  getProducts: () => void
+  getBanners: (data: { type: string }) => void
+  getProducts: (data: GetProductsParams) => void
 }
 
 type PageOwnProps = {}
@@ -53,12 +61,13 @@ interface Index {
   systemConfig: config.systemConfig,
   recommendProducts: products.homeRecommendProducts,
   allProducts: products.allProducts,
-}), dispatch => ({
-  getBanners: type => dispatch(getBanners(type)),
-  getProducts: data => dispatch(getProducts(data)),
+}), (dispatch: any) => ({
+    getBanners: (data: { type: string }) => dispatch(getBanners(data)),
+    getProducts: (data: GetProductsParams) => dispatch(getProducts(data)),
 }))
 
 class Index extends Component {
+  orderCategoryId: string
 
   /**
  * 指定config的类型声明为: Taro.Config
@@ -88,7 +97,9 @@ class Index extends Component {
 
   componentDidShow() {
     // 展示启动页
-    this.props.getBanners('index')
+    this.props.getBanners({
+      type: 'index',
+    })
 
     // 加载首页推荐商品
     this.props.getProducts({
@@ -103,8 +114,6 @@ class Index extends Component {
       pageSize: 10,
     })
 
-    console.log(this.props.systemConfig.home_order_category_id)
-
     this.orderCategoryId = this.props.systemConfig.home_order_category_id
     // 加载在线定位数据
     this.props.getProducts({
@@ -114,14 +123,14 @@ class Index extends Component {
   }
 
   // 跳转商品详情页
-  goToProductDetail = id => {
+  goToProductDetail = (id: string) => {
     Taro.navigateTo({
       url: `/pages/product-detail/index?id=${id}`,
     })
   }
 
   // 监听轮播图变化
-  onSwiperChange = e => {
+  onSwiperChange = (e: TaroBaseEventOrig) => {
     this.setState({
       swiperIndex: e.detail.current,
     })
@@ -133,12 +142,12 @@ class Index extends Component {
       playVideo: true,
     }, () => {
       const videoContext = Taro.createVideoContext('playVideo')
-      videoContext.requestFullScreen()
+        videoContext.requestFullScreen({ direction: 0 })
     })
   }
 
   // 视频全屏事件
-  onFullScreenChange = e => {
+  onFullScreenChange = (e: TaroBaseEventOrig) => {
     if (!e.detail.fullScreen) {
       this.setState({
         playVideo: false,
@@ -147,7 +156,7 @@ class Index extends Component {
   }
 
   // banner 点击
-  onBannerClick = item => {
+  onBannerClick = (item: { linkUrl: string }) => {
     const { linkUrl } = item
 
     // 项目内跳转
@@ -253,8 +262,8 @@ class Index extends Component {
                     controls={false}
                     object-fit="fill"
                   >
-                    <View class="mask">
-                      <View class="play-button"></View>
+                    <View className="mask">
+                      <View className="play-button"></View>
                     </View>
                   </Video>
                 </View>
@@ -262,9 +271,9 @@ class Index extends Component {
                   src={videoUrl2}
                   loop
                   autoplay
-                  object-fit="fill"
+                  objectFit="fill"
                   id="playVideo"
-                  onFullScreenChange={this.onFullScreenChange}
+                  onFullscreenChange={this.onFullScreenChange}
                 >
                 </Video>}
               </View>
@@ -275,7 +284,7 @@ class Index extends Component {
                 <View className="title title-line">在线定位</View>
                 <View className="list">
                   {
-                    orderCategoryProducts.map(product => {
+                    orderCategoryProducts.map((product: any) => {
                       const { id, pic, name, characteristic, minPrice, minScore } = product
                       return <View key={id} onClick={this.goToProductDetail.bind(this, id)}>
                         <Image className="product-image" src={pic} mode="aspectFill"></Image>
