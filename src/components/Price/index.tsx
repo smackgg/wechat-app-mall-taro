@@ -1,12 +1,28 @@
+import { ComponentClass } from 'react';
 import Taro, { Component } from '@tarojs/taro'
 import PropTypes from 'prop-types'
 import { View, Text } from '@tarojs/components'
 import { priceToFloat } from '@/utils'
 import './index.scss'
 
-export default class Price extends Component {
+
+type PageOwnProps = {
+  price?: number,
+  className?: string,
+  score?: number,
+}
+
+type PageState = {
+}
+
+interface Price {
+  props: PageOwnProps
+}
+
+class Price extends Component {
   static propTypes = {
     price: PropTypes.number,
+    score: PropTypes.number,
     className: PropTypes.string,
   }
 
@@ -49,3 +65,5 @@ export default class Price extends Component {
     }
   }
 }
+
+export default Price as ComponentClass<PageOwnProps, PageState>

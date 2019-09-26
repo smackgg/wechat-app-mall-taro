@@ -1,3 +1,4 @@
+import { ComponentClass } from 'react'
 import Taro, { Component } from '@tarojs/taro'
 import PropTypes from 'prop-types'
 import { View, Text, Image } from '@tarojs/components'
@@ -6,10 +7,32 @@ import { AtIcon } from 'taro-ui'
 import addressIcon from '@/assets/icon/address.png'
 import './index.scss'
 
-export default class Address extends Component {
+
+type PageOwnProps = {
+  needLogistics?: boolean,
+  address: {
+    id: string,
+    linkMan: string,
+    mobile: string,
+    provinceStr: string,
+    cityStr: string,
+    areaStr: string,
+    address: string,
+  },
+  type?: number, // 0: 结算页过来的，可以跳转地址列表；2: 订单的地址，不可以
+}
+
+type PageState = {
+}
+
+interface Address {
+  props: PageOwnProps
+}
+
+class Address extends Component {
   static propTypes = {
     needLogistics: PropTypes.bool,
-    address: PropTypes.object,
+    address: PropTypes.object.isRequired,
     type: PropTypes.number, // 0: 结算页过来的，可以跳转地址列表；2: 订单的地址，不可以
   }
 
@@ -21,7 +44,7 @@ export default class Address extends Component {
   // 添加地址
   addAddress = () => {
     Taro.navigateTo({
-      url: "/pages/edit-address/index",
+      url: '/pages/edit-address/index',
     })
   }
 
@@ -32,7 +55,7 @@ export default class Address extends Component {
       return
     }
     Taro.navigateTo({
-      url: "/pages/select-address/index",
+      url: '/pages/select-address/index',
     })
   }
 
@@ -68,3 +91,5 @@ export default class Address extends Component {
     </View>
   }
 }
+
+export default Address as ComponentClass<PageOwnProps, PageState>

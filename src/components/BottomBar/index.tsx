@@ -1,12 +1,26 @@
+import { ComponentClass, ReactNode } from 'react'
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import PropTypes from 'prop-types'
 
 import './index.scss'
 
-export default class BottomBar extends Component {
+type PageOwnProps = {
+  children: ReactNode
+}
+
+type PageState = {
+  isIphoneX: boolean
+}
+
+interface BottomBar {
+  props: PageOwnProps
+}
+
+
+class BottomBar extends Component {
   static propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.node,
   }
 
   state = {
@@ -15,7 +29,7 @@ export default class BottomBar extends Component {
 
   componentWillMount() {
     Taro.getSystemInfo({
-      success: res => {
+      success: (res: any) => {
         // console.log('手机信息res'+res.model)
         let modelmes = res.model
         if (modelmes.search('iPhone X') != -1) {
@@ -41,3 +55,5 @@ export default class BottomBar extends Component {
     </View>
   }
 }
+
+export default BottomBar as ComponentClass<PageOwnProps, PageState>

@@ -7,22 +7,42 @@ import Price from '../Price'
 
 import './index.scss'
 
-export default function ProductList(props) {
+type Product = {
+  id: string,
+  pic: string,
+  name: string,
+  goodsName: string,
+  number: number,
+  property: string,
+  score: number,
+  amount: number,
+  active: boolean,
+  price: number,
+  label: string,
+}
+
+type Props = {
+  list: Product[],
+  edit?: boolean,
+  onChange?: (product: Product) => void
+}
+
+export default function ProductList(props: Props) {
   const { list = [], edit = false, onChange } = props
   if (list.length === 0) {
     return null
   }
 
   // checkbox change
-  const onCheckboxChange = product => {
-    onChange({
+  const onCheckboxChange = (product: Product) => {
+    onChange && onChange({
       ...product,
       active: !product.active,
     })
   }
 
-  const onNumberChange = (product, value) => {
-    onChange({
+  const onNumberChange = (product: Product, value: string) => {
+    onChange && onChange({
       ...product,
       number: +value,
     })
@@ -46,6 +66,7 @@ export default function ProductList(props) {
             edit
               ? <View className="count">
                 <AtInputNumber
+                  type="number"
                   min={1}
                   max={99999}
                   step={1}

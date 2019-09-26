@@ -1,3 +1,4 @@
+import { ComponentClass } from 'react'
 import Taro, { Component } from '@tarojs/taro'
 import { View, Form, Text, Button } from '@tarojs/components'
 import PropTypes from 'prop-types'
@@ -9,7 +10,38 @@ import classNames from 'classnames'
 import './index.scss'
 
 
-export default class CouponList extends Component {
+type Coupon = {
+  needScore: number,
+  id: string,
+  name: string,
+  moneyMin: number,
+  moneyMax: number,
+  dateEnd: string,
+  dateEndDays: string,
+  dateEndType: number,
+  moneyHreshold: number,
+  money: number,
+  status: number,
+  statusStr: string,
+}
+
+type PageOwnProps = {
+  list: Coupon[],
+  isGetCoupon?: boolean, // 是否是领取优惠券
+  atMessage: Function,
+  isUseCoupon?: boolean, // 是否是使用优惠券
+  selectedCoupon?: Coupon, // 已经选中的优惠券
+  onSelectCoupon?: (coupon: Coupon) => void,
+}
+
+type PageState = {
+}
+
+interface CouponList {
+  props: PageOwnProps
+}
+
+class CouponList extends Component {
   static propTypes = {
     list: PropTypes.array,
     isGetCoupon: PropTypes.bool, // 是否是领取优惠券
@@ -23,12 +55,10 @@ export default class CouponList extends Component {
     list: [],
     isGetCoupon: false,
     isUseCoupon: false,
-    selectedCoupon: {},
-    onSelectCoupon: () => {},
   }
 
   // 领取优惠券
-  onGetCoupon = async (coupon, e, confirm) => {
+  onGetCoupon = async (coupon: Coupon, e: TaroBaseEventOrig, confirm: boolean) => {
     const { needScore, id } = coupon
 
     addWxFormId({
@@ -50,7 +80,7 @@ export default class CouponList extends Component {
       return
     }
 
-    const [error, res] =  await cError(getCoupon({ id }))
+    const [error] =  await cError(getCoupon({ id }))
     const { atMessage } = this.props
 
     if (!error) {
@@ -61,28 +91,28 @@ export default class CouponList extends Component {
       return
     }
 
-    if (error.code == 20001 || error.code == 20002) {
+    if (error.code === 20001 || error.code === 20002) {
       atMessage({
         message: '领取失败, 来晚了呀~',
         type: 'error',
       })
       return
     }
-    if (error.code == 20003) {
+    if (error.code === 20003) {
       atMessage({
         message: '您已经领过了，别贪心哦~',
         type: 'error',
       })
       return
     }
-    if (error.code == 30001) {
+    if (error.code === 30001) {
       atMessage({
         message: '您的积分不足',
         type: 'error',
       })
       return
     }
-    if (error.code == 20004) {
+    if (error.code === 20004) {
       atMessage({
         message: '领取失败, 优惠券已过期~',
         type: 'error',
@@ -96,7 +126,7 @@ export default class CouponList extends Component {
   }
 
   render () {
-    const { list, isGetCoupon = false, isUseCoupon, selectedCoupon } = this.props
+    const { list, isGetCoupon = false, isUseCoupon, selectedCoupon, onSelectCoupon } = this.props
 
     return <View className="container">
       {
@@ -115,7 +145,7 @@ export default class CouponList extends Component {
           return <View key={id} className={classNames('coupon', { disabled: status !== 0})}>
             <View className="title-wrapper">
               <View className="title">
-                {isUseCoupon && selectedCoupon.id === id ? <Text className="selected">[使用中]</Text> : ''}
+                {isUseCoupon && selectedCoupon && selectedCoupon.id === id ? <Text className="selected">[使用中]</Text> : ''}
                 {status !== 0 && <Text className="selected">[{statusStr}]</Text>}
                 {name}
               </View>
@@ -125,18 +155,18 @@ export default class CouponList extends Component {
                   <Button
                     form-type="submit"
                     className="button"
-                    type="secondary"
+                    // type="secondary"
                     hoverClass="none"
                   >{needScore > 0 ? '立即兑换' : '立即领取'}</Button>
                 </Form>
               </View>}
-              {isUseCoupon && selectedCoupon.id !== id && <View className="button-wrapper">
+              {isUseCoupon && selectedCoupon && selectedCoupon.id !== id && <View className="button-wrapper">
                   <Button
                     form-type="submit"
                     className="button"
-                    type="secondary"
+                    // type="secondary"
                     hoverClass="none"
-                    onClick={this.props.onSelectCoupon.bind(this, item)}
+                    onClick={onSelectCoupon ? onSelectCoupon.bind(this, item) : (() => {})}
                   >立即使用</Button>
               </View>}
             </View>
@@ -168,3 +198,5 @@ export default class CouponList extends Component {
     </View>
   }
 }
+
+export default CouponList as ComponentClass<PageOwnProps, PageState>
