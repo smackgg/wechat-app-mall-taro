@@ -30,7 +30,7 @@ export const showToast = ({ complete, duration = 1500, ...args }: ShowToastParam
 }
 
 // catch promise error
-export const cError = async (fn: Promise<any>): Promise<[null | { msg: string }, any]> => {
+export const cError = async (fn: Promise<any>): Promise<[null | { msg: string, code: number | string }, any]> => {
   try {
     const result = await fn
     return [null, result]
