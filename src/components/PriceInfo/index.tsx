@@ -46,15 +46,16 @@ type Key = keyof DisplayPrice
 
 export default function PriceInfo(props: Props) {
   const { realAmount, score } = props
-  const list = Object.keys(PRICE_MAP).filter((key: Key) => props[key] !== undefined && (props[key] || -1) >= 0)
+  const list = Object.keys(PRICE_MAP).filter((key: Key) => {
+    const price = props[key]
+    return price && price >= 0
+  })
 
   return <View className="price-info">
     <View className="list">
       {list.map((key: Key) => {
-        const price = props[key] || -1
-        if (price <= 0) {
-          return <View></View>
-        }
+        const price = props[key]
+
         const { title, symbol } = PRICE_MAP[key]
 
         return <View key={key} className="price-item">
