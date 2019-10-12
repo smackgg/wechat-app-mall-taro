@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import { AnyAction } from 'redux';
+import { AnyAction } from 'redux'
 import { addCart, updateCart } from '@/utils/shopCart'
 import { setCartBadge } from '@/utils'
 
@@ -25,7 +25,7 @@ const shopCartInfo = Taro.getStorageSync('shopCartInfo') || {}
 setCartBadge()
 
 
-export type USER_DETAIL = {
+export type UserDetail = {
   avatarUrl: string
   city?: string
   dateAdd?: string
@@ -46,8 +46,23 @@ export type USER_DETAIL = {
   statusStr?: string
 }
 
+export type CashScoreLog = {
+  id: string
+  amount: number
+  dateAdd: string,
+  typeStr: string,
+  behavior: number,
+}[]
+
+export type UserAmount = {
+  balance: number,
+  freeze: number,
+  score: number,
+  totleConsumed: number
+}
+
 export type INITIAL_STATE = {
-  userDetail: USER_DETAIL, // 用户信息
+  userDetail: UserDetail, // 用户信息
   levelList: any[], // 所有 vip 等级列表
   userLevel: {
     lv?: number,
@@ -55,14 +70,9 @@ export type INITIAL_STATE = {
   }, // 用户 vip 等级
   addressList: any[], // 地址列表
   defaultAddress: null, // 默认地址
-  userAmount: {
-    balance: number,
-    freeze: number,
-    score: number,
-    totleConsumed: number
-  }, // 用户资产信息
-  cashLog: any[], // 资金明细
-  scoreLog: any[], // 积分明细
+  userAmount: UserAmount, // 用户资产信息
+  cashLog: CashScoreLog[], // 资金明细
+  scoreLog: CashScoreLog[], // 积分明细
   coupons: any[],
   getableCoupons: [],
   shopCartInfo: {}, // 购物车信息

@@ -31,7 +31,9 @@ class App extends Component {
   config: Config = {
     pages: [
       'pages/index/index',
+      'pages/authorize/index',
       'pages/account/index',
+      'pages/asset/index',
     ],
     window: {
       backgroundTextStyle: 'light',
