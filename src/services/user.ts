@@ -22,7 +22,12 @@ export const login = (data: { code: string, type?: number }) => request({
 })
 
 // 注册
-export const register = (data: { code: string }) => request({
+export const register = (data: {
+  code: string,
+  encryptedData: string,
+  iv: string,
+  referrer: string,
+}) => request({
   url: '/user/wxapp/register/complex',
   method: 'POST',
   data,

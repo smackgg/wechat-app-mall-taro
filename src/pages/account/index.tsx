@@ -1,5 +1,5 @@
 import { ComponentClass } from 'react'
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Swiper, SwiperItem, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
@@ -8,6 +8,7 @@ import {
   getOrderStatistics,
 } from '@/redux/actions/order'
 import { INITIAL_STATE as USER_TYPE } from '@/redux/reducers/user'
+import { ORDER_STATISTICS } from '@/redux/reducers/order'
 
 import { priceToFloat, setCartBadge } from '@/utils'
 import classNames from 'classnames'
@@ -17,7 +18,7 @@ import './index.scss'
 const SWIPER_ITEM_MARGIN = '45rpx'
 type PageStateProps = {
   user: USER_TYPE
-  orderStatistics: any
+  orderStatistics: ORDER_STATISTICS
 }
 
 type PageDispatchProps = {
@@ -39,6 +40,13 @@ interface Account {
   props: IProps
 }
 
+type OrderStatus = {
+  icon: string
+  name: string,
+  status: number,
+  key: keyof ORDER_STATISTICS,
+}[]
+
 @connect(
   ({
     user,
@@ -59,17 +67,17 @@ interface Account {
 
 class Account extends Component {
 
-  config = {
+  config: Config = {
     navigationBarTitleText: '个人中心',
-    backgroundColor: '#181923',
-    frontColor: '#ffffff',
+    navigationBarBackgroundColor: '#181923',
+    navigationBarTextStyle: 'white',
   }
 
   state = {
     swiperIndex: 0,
   }
 
-  orderStatus = [
+  orderStatus: OrderStatus = [
     {
       icon: '/assets/icon/payment.jpg',
       name: '待支付',

@@ -5,6 +5,28 @@ import {
   GET_ORDER_LIST_SUCCESS,
 } from '../actions/order'
 
+export type ORDER_STATISTICS = {
+  count_id_close: number
+  count_id_no_confirm: number
+  count_id_no_pay: number
+  count_id_no_reputation: number
+  count_id_no_transfer: number
+  count_id_success: number
+}
+
+type INITIAL_STATE = {
+  orders: {},
+  orderStatistics: ORDER_STATISTICS,
+  orderList: {
+    '-1': [], // 已关闭
+    0: [], // 待支付
+    1: [], // 待发货
+    2: [], // 待收货
+    3: [], // 待评价
+    4: [], // 已完成
+  },
+}
+
 const INITIAL_STATE = {
   orders: {},
   orderStatistics: {},
