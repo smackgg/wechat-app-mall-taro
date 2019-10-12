@@ -5,7 +5,7 @@ import {
   GET_ORDER_LIST_SUCCESS,
 } from '../actions/order'
 
-export type ORDER_STATISTICS = {
+export type OrderStatistics = {
   count_id_close: number
   count_id_no_confirm: number
   count_id_no_pay: number
@@ -16,7 +16,7 @@ export type ORDER_STATISTICS = {
 
 type INITIAL_STATE = {
   orders: {},
-  orderStatistics: ORDER_STATISTICS,
+  orderStatistics: OrderStatistics,
   orderList: {
     '-1': [], // 已关闭
     0: [], // 待支付
