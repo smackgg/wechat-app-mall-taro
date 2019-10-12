@@ -8,7 +8,7 @@ import {
   getOrderStatistics,
 } from '@/redux/actions/order'
 import { INITIAL_STATE as USER_TYPE } from '@/redux/reducers/user'
-import { ORDER_STATISTICS } from '@/redux/reducers/order'
+import { OrderStatistics } from '@/redux/reducers/order'
 
 import { priceToFloat, setCartBadge } from '@/utils'
 import classNames from 'classnames'
@@ -18,7 +18,7 @@ import './index.scss'
 const SWIPER_ITEM_MARGIN = '45rpx'
 type PageStateProps = {
   user: USER_TYPE
-  orderStatistics: ORDER_STATISTICS
+  orderStatistics: OrderStatistics
 }
 
 type PageDispatchProps = {
@@ -44,7 +44,7 @@ type OrderStatus = {
   icon: string
   name: string,
   status: number,
-  key: keyof ORDER_STATISTICS,
+  key: keyof OrderStatistics,
 }[]
 
 @connect(
