@@ -25,16 +25,41 @@ const shopCartInfo = Taro.getStorageSync('shopCartInfo') || {}
 setCartBadge()
 
 
-type INITIAL_STATE = {
-  userDetail: { levelId?: string }, // 用户信息
+export type USER_DETAIL = {
+  avatarUrl: string
+  city?: string
+  dateAdd?: string
+  dateLogin?: string
+  id?: number
+  ipAdd?: string
+  ipLogin?: string
+  isIdcardCheck?: boolean
+  isSeller?: boolean
+  levelId?: number,
+  levelRenew?: false
+  mobile?: string
+  nick?: string
+  province?: string
+  source?: number
+  sourceStr?: string
+  status?: 0
+  statusStr?: string
+}
+
+export type INITIAL_STATE = {
+  userDetail: USER_DETAIL, // 用户信息
   levelList: any[], // 所有 vip 等级列表
-  userLevel: {}, // 用户 vip 等级
+  userLevel: {
+    lv?: number,
+    name?: string,
+  }, // 用户 vip 等级
   addressList: any[], // 地址列表
   defaultAddress: null, // 默认地址
   userAmount: {
-    balance: 0,
-    freeze: 0,
-    score: 0,
+    balance: number,
+    freeze: number,
+    score: number,
+    totleConsumed: number
   }, // 用户资产信息
   cashLog: any[], // 资金明细
   scoreLog: any[], // 积分明细
@@ -46,7 +71,9 @@ type INITIAL_STATE = {
 }
 
 const INITIAL_STATE: INITIAL_STATE = {
-  userDetail: {}, // 用户信息
+  userDetail: {
+    avatarUrl: '',
+  }, // 用户信息
   levelList: [], // 所有 vip 等级列表
   userLevel: {}, // 用户 vip 等级
   addressList: [], // 地址列表
@@ -55,6 +82,7 @@ const INITIAL_STATE: INITIAL_STATE = {
     balance: 0,
     freeze: 0,
     score: 0,
+    totleConsumed: 0,
   }, // 用户资产信息
   cashLog: [], // 资金明细
   scoreLog: [], // 积分明细
