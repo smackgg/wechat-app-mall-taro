@@ -44,16 +44,20 @@ export const priceToFloat = (price?: number): string => price ? price.toFixed(2)
 
 // 设置购物车小红点
 export const setCartBadge = () => {
-  const { shopNum } = Taro.getStorageSync('shopCartInfo') || {}
-  if (shopNum && shopNum > 0) {
-    Taro.setTabBarBadge({
-      index: 2,
-      text: String(shopNum),
-    })
-  } else {
-    Taro.removeTabBarBadge({
-      index: 2,
-    })
+  try {
+    const { shopNum } = Taro.getStorageSync('shopCartInfo') || {}
+    if (shopNum && shopNum > 0) {
+      Taro.setTabBarBadge({
+        index: 2,
+        text: String(shopNum),
+      })
+    } else {
+      Taro.removeTabBarBadge({
+        index: 2,
+      })
+    }
+  } catch (error) {
+
   }
 }
 

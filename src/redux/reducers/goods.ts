@@ -7,8 +7,40 @@ import {
   GET_REPUTATION_SUCCESS,
 } from '../actions/goods'
 
+export type Product = {
+  id: number,
+  pic: string,
+  name: string,
+  goodsName: string,
+  number: number,
+  property: string,
+  score: number,
+  amount: number,
+  active: boolean,
+  price: number,
+  label: string,
+  minPrice: number,
+  minScore: number,
+  characteristic: string,
+}
 
-const INITIAL_STATE = {
+export type CategoryItem = {
+  icon: string
+  id: number
+  isUse: boolean
+  level: number
+  name: string
+  paixu: number
+}
+
+type INITIAL_STATE = {
+  productDetail: {},
+  category: CategoryItem[],
+  products: { [key: string]: Product },
+  reputations: {},
+}
+
+const INITIAL_STATE: INITIAL_STATE = {
   productDetail: {},
   category: [],
   products: {},

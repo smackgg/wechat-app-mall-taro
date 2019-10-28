@@ -52,7 +52,7 @@ class Auth extends Component {
   config: Config = {
     navigationBarTitleText: '授权',
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: 'white',
+    navigationBarBackgroundColor: '#fff',
     navigationBarTextStyle: 'white',
   }
 

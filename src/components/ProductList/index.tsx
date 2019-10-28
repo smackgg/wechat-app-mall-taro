@@ -1,25 +1,26 @@
 import Taro from '@tarojs/taro'
 import PropTypes from 'prop-types'
 import { View, Image, Text } from '@tarojs/components'
+import { Product } from '@/redux/reducers/goods'
 import { AtInputNumber } from 'taro-ui'
 import MyCheckbox from '../Checkbox'
 import Price from '../Price'
 
 import './index.scss'
 
-type Product = {
-  id: string,
-  pic: string,
-  name: string,
-  goodsName: string,
-  number: number,
-  property: string,
-  score: number,
-  amount: number,
-  active: boolean,
-  price: number,
-  label: string,
-}
+// type Product = {
+//   id: number,
+//   pic: string,
+//   name: string,
+//   goodsName: string,
+//   number: number,
+//   property: string,
+//   score: number,
+//   amount: number,
+//   active: boolean,
+//   price: number,
+//   label: string,
+// }
 
 type Props = {
   list: Product[],

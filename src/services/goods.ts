@@ -29,7 +29,7 @@ export const productPrice = (data: {
 */
 // 获取sku库存、价格
 export const products = (data: {
-  categoryId?: string,
+  categoryId?: number,
   recommendStatus?: number,
   page?: number,
   pageSize?: number,

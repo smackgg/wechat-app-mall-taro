@@ -1,0 +1,73 @@
+.container {
+  background: $color-gray;
+  display: flex;
+  padding-top: 1rpx;
+
+  .category-nav {
+    width: 240rpx;
+    height: 100vh;
+    box-shadow: 0 2rpx 20rpx rgba(0, 0, 0, .1);
+    margin-right: 12rpx;
+    .category-item {
+      height: 100rpx;
+      display: flex;
+      justify-content: center;
+      padding: 30rpx 0;
+      position: relative;
+      font-family: 'PingFangSC-Regular';
+      &.active {
+        background: $color-white;
+        &::before {
+          position: absolute;
+          content: "";
+          width: 6rpx;
+          height: 40rpx;
+          background: $color-brand;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+    }
+  }
+
+  .products {
+    width: 510rpx;
+    height: 100vh;
+    padding: 30rpx 0 30rpx 18rpx;
+    .product-item {
+      display: flex;
+      padding-right: 60rpx;
+      // align-items: center;
+      // justify-content: flex-start;
+      margin-bottom: 40rpx;
+      .product-image {
+        width: 130rpx;
+        height: 130rpx;
+
+        image {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .product-info {
+        font-family: 'PingFangSC-Semibold';
+        width: 276rpx;
+        font-size: 24rpx;
+        line-height: 36rpx;
+        margin-left: 14rpx;
+
+        .price {
+          margin-top: 16rpx;
+          font-size: 32rpx;
+          line-height: 42rpx;
+          color: $text-color-red;
+        }
+        .small-text {
+          font-size: 20rpx;
+        }
+      }
+    }
+  }
+}

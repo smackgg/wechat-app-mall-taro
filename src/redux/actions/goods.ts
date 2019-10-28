@@ -27,7 +27,7 @@ export const getProductDetail = (data: { id: string }) => async (dispatch: Dispa
 // 商品详情
 export const getProducts = (data: {
   key: string,
-  categoryId?: string,
+  categoryId?: number,
   recommendStatus?: number,
   page?: number,
   pageSize?: number,
