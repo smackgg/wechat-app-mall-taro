@@ -147,7 +147,7 @@ type ProductInfo = {
   active?: boolean
 }
 type AddCartParams = {
-  type: string
+  type?: string
   productInfo: ProductInfo
 }
 
@@ -166,7 +166,7 @@ export const updateCart = ({
   type = 'update',
   products,
 }: {
-  type: string,
+  type?: string,
   products: ProductInfo[]
 }) => async (dispatch: Dispatch) => {
   return dispatch({
