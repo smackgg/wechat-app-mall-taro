@@ -1,4 +1,4 @@
-import { Product } from './goods';
+import { Product } from './goods'
 import { AnyAction } from 'redux'
 import { UserDetail } from './user'
 
