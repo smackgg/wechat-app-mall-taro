@@ -1,4 +1,6 @@
+import { Product } from './goods';
 import { AnyAction } from 'redux'
+import { UserDetail } from './user'
 
 import {
   GET_PRODUCT_DETAIL_SUCCESS,
@@ -8,20 +10,50 @@ import {
 } from '../actions/goods'
 
 export type Product = {
-  id: number,
-  pic: string,
-  name: string,
-  goodsName: string,
-  number: number,
-  property: string,
-  score: number,
-  amount: number,
-  active: boolean,
-  price: number,
-  label: string,
-  minPrice: number,
-  minScore: number,
-  characteristic: string,
+  id: number
+  pic: string
+  name: string
+  goodsName?: string
+  number: number
+  property: string
+  score: number
+  amount: number
+  amountReal: number
+  active: boolean
+  price: number
+  label: string
+  minPrice: number
+  minScore: number
+  characteristic: string
+  propertyIds: string
+  originalPrice: number
+  stores: number
+  categoryId: number
+  // commission: 0
+  // commissionType: 0
+  gotScore: number
+  gotScoreType: number
+  kanjia: false
+  kanjiaPrice: number
+  limitation: false
+  logisticsId: number
+  miaosha: false
+  numberFav: number
+  numberGoodReputation: number
+  numberOrders: number
+  numberSells: number
+  paixu: number
+  pingtuan: false
+  pingtuanPrice: number
+  recommendStatus: number
+  recommendStatusStr: string
+  shopId: number
+  status: number
+  statusStr: string
+  tags: string
+  // userId: 15672
+  // vetStatus: 1
+  views: number
 }
 
 export type CategoryItem = {
@@ -33,15 +65,46 @@ export type CategoryItem = {
   paixu: number
 }
 
+export type Properties = {
+  childsCurGoods: { id: number, name: string, propertyId: number, checked?: boolean }[]
+  dateAdd: string
+  id: number
+  name: string
+}
+
+export type ProductDetail = {
+  basicInfo: Product
+  extJson: any
+  properties: Properties[]
+  pics: {
+    goodsId: number
+    id: number
+    pic: string
+  }[],
+  logistics: any
+  content: string
+}
+
+interface ReputationGoods extends Product {
+  dateReputation: string
+  goodReputation: number
+  goodReputationStr: string
+  goodReputationRemark: string
+}
+export type Reputation = {
+  goods: ReputationGoods
+  user: UserDetail
+}
+
 type INITIAL_STATE = {
-  productDetail: {},
-  category: CategoryItem[],
-  products: { [key: string]: Product },
-  reputations: {},
+  productDetail?: { [key: string]: ProductDetail }
+  category: CategoryItem[]
+  products: { [key: string]: Product }
+  reputations: { [key: string]: Reputation[] }
 }
 
 const INITIAL_STATE: INITIAL_STATE = {
-  productDetail: {},
+  productDetail: undefined,
   category: [],
   products: {},
   reputations: {},

@@ -140,19 +140,22 @@ export const getGetableCoupons = () => async (dispatch: Dispatch) => {
   })
 }
 
+type ProductInfo = {
+  number: number | string
+  goodsId: string
+  propertyChildIds: string
+  active?: boolean
+}
+type AddCartParams = {
+  type: string
+  productInfo: ProductInfo
+}
+
 // 添加购物车
 export const addCart = ({
   type = 'cart',
   productInfo,
-}: {
-  type: string,
-  productInfo: {
-    number: number | string
-    goodsId: string
-    propertyChildIds: string
-    active ?: boolean
-  }
-}) => async (dispatch: Dispatch) => dispatch({
+}: AddCartParams) => async (dispatch: Dispatch) => dispatch({
   type: ADD_SHOP_CART,
   data: productInfo,
   actionType: type,
@@ -162,6 +165,9 @@ export const addCart = ({
 export const updateCart = ({
   type = 'update',
   products,
+}: {
+  type: string,
+  products: ProductInfo[]
 }) => async (dispatch: Dispatch) => {
   return dispatch({
     type: UPDATE_SHOP_CART,

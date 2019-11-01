@@ -52,9 +52,7 @@ export const getCategory = () => async (dispatch: Dispatch) => {
 }
 
 // 获取商品评价列表
-export const getReputation = (data: {
-  goodsId: string,
-}) => async (dispatch: Dispatch) => {
+export const getReputation = (data: { goodsId: string }) => async (dispatch: Dispatch) => {
   const res = await reputation(data)
   dispatch({
     type: GET_REPUTATION_SUCCESS,
