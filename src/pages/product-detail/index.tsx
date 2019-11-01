@@ -173,7 +173,7 @@ class ProductDetail extends Component {
       this.setState({
         selectSku: {
           ...res.data,
-          propertyChildIds,
+          propertyChildIds: propertyChildIdsStr,
         },
         productInfo: {
           ...productInfo,
@@ -266,7 +266,7 @@ class ProductDetail extends Component {
       : null
 
     // 是否为预订
-    const isReserve = tags && tags.includes('在线定位')
+    const isReserve = !!(tags && tags.includes('在线定位'))
 
     // 评价
     const reputations = this.props.reputations[this.productId] || []

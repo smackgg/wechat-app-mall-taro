@@ -12,7 +12,7 @@ import './index.scss'
 type PageOwnProps = {
   basicInfo?: Product
   logistics: any
-  productId?: number
+  productId?: string
   isReserve: boolean
 }
 

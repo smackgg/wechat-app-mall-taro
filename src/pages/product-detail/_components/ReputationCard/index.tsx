@@ -8,7 +8,7 @@ import { Reputation } from '@/redux/reducers/goods'
 import './index.scss'
 
 type PageOwnProps = {
-  showAllRemark: boolean
+  showAllRemark?: boolean
   reputation: Reputation
 }
 

@@ -102,6 +102,7 @@ export const updateCart = ({ type = 'update', products = [] }: { type: string, p
 
     products.forEach(product => {
       const { goodsId, propertyChildIds } = product
+
       if (item.goodsId === goodsId && item.propertyChildIds === propertyChildIds) {
         updated = true
         if (type !== 'delete') {
@@ -116,11 +117,12 @@ export const updateCart = ({ type = 'update', products = [] }: { type: string, p
 
     if (!updated) {
       result.shopList.push(item)
-    }
-
-    if (!updated) {
       result.shopNum += +item.number
     }
+
+    // if (!updated) {
+    //   result.shopNum += +item.number
+    // }
 
 
     return result
