@@ -1,3 +1,5 @@
+import { ComponentClass } from 'react'
+
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Button, ScrollView } from '@tarojs/components'
 import { AtInputNumber } from 'taro-ui'
@@ -6,11 +8,48 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import { productPrice } from '@/services/goods'
 import dateFormat from '@/utils/dateFormat'
+import { ProductDetail as ProductDetailType, Properties } from '@/redux/reducers/goods'
+
 import { cError } from '@/utils'
 
 import './index.scss'
 
-export default class SkuSelect extends Component {
+type ProductInfo = {
+  number: number | string
+  goodsId: string
+  propertyChildIds: string
+  active?: boolean
+}
+type AddCartParams = {
+  type: string
+  productInfo: ProductInfo
+}
+
+type PageOwnProps = {
+  productId: string,
+  productInfoProps: ProductDetailType,
+  selectSkuProps: any,
+  handleSubmit: () => any,
+  handleClose: () => any,
+  buttonType: 1 | 2,
+  isReserve: boolean,
+  addCart: (data: AddCartParams) => any,
+}
+
+type PageState = {
+  selectSku: any
+  productInfo: ProductDetailType
+  amount: number
+  reserveData: {
+    start: number
+    end: number
+  }
+}
+
+interface SkuSelect {
+  props: PageOwnProps
+}
+class SkuSelect extends Component {
   static options = {
     addGlobalClass: true,
   }
@@ -30,16 +69,26 @@ export default class SkuSelect extends Component {
     isReserve: false,
   }
 
-  constructor(props) {
-    this.state = {
-      selectSku: props.selectSkuProps || {},
-      productInfo: props.productInfoProps || {},
-      amount: 1, // 商品数量
-      reserveData: {
-        start: -1,
-        end: -1,
-      },
-    }
+  // constructor(props: PageOwnProps) {
+  //   super(props)
+  //   this.state = {
+  //     selectSku: props.selectSkuProps || {},
+  //     productInfo: props.productInfoProps || {},
+  //     amount: 1, // 商品数量
+  //     reserveData: {
+  //       start: -1,
+  //       end: -1,
+  //     },
+  //   }
+  // }
+  state = {
+    selectSku: this.props.selectSkuProps || {},
+    productInfo: this.props.productInfoProps || {},
+    amount: 1, // 商品数量
+    reserveData: {
+      start: -1,
+      end: -1,
+    },
   }
 
   componentDidMount() {
@@ -47,7 +96,7 @@ export default class SkuSelect extends Component {
   }
 
   // 处理预约数据
-  initReserveData = pps => {
+  initReserveData = (pps?: Properties[]) => {
     const { productId, isReserve } = this.props
     if (!isReserve) {
       return
@@ -55,16 +104,16 @@ export default class SkuSelect extends Component {
 
     let properties = pps || this.state.productInfo.properties
 
-    const { promiseList } = properties.reduce((pre, propertie, index) => {
+    const { promiseList } = properties.reduce((pre: any, propertie: Properties, index: number) => {
       // 非时间段
       if (index !== properties.length - 1) {
-        pre.attrs += propertie.id + ':' + propertie.childsCurGoods.find(item => item.checked).id + ','
+        pre.attrs += propertie.id + ':' + (propertie.childsCurGoods.find(item => item.checked) || {}).id + ','
       } else {
         pre.skus = propertie.childsCurGoods.map(item => {
           const propertyChildIds = pre.attrs + propertie.id + ':' + item.id
           pre.promiseList.push(cError(productPrice({
             propertyChildIds,
-            goodsId: productId,
+            goodsId: +productId,
           })))
         })
       }
@@ -111,14 +160,18 @@ export default class SkuSelect extends Component {
   }
 
   // 处理数量变更
-  onNumberChange = value => {
+  onNumberChange = (value: number) => {
     this.setState({
       amount: +value,
     })
   }
 
   // 用户点击选配属性
-  onAttributeClick = async (index, attribute) => {
+  onAttributeClick = async (index: number, attribute: {
+    id: number,
+    name: string,
+  }) => {
+    console.log(attribute)
     let {
       productInfo: { properties },
       productInfo,
@@ -134,12 +187,11 @@ export default class SkuSelect extends Component {
     // 更新选中 propertyChildIds
     propertyChildIds = propertyChildIds
       .split(',')
-      .map((id, i) => index === i ? `${properties[index].id}:${attribute.id}` : id)
+      .map((id: number, i: number) => index === i ? `${properties[index].id}:${attribute.id}` : id)
       .join(',')
-
     const res = await productPrice({
       propertyChildIds,
-      goodsId: productId,
+      goodsId: +productId,
     })
 
     if (this.props.isReserve) {
@@ -160,7 +212,7 @@ export default class SkuSelect extends Component {
   }
 
   // 预约时间点击处理
-  onReserveAttributeClick = async (index, child, disabled, reserveTimes) => {
+  onReserveAttributeClick = async (index: number, child: any, disabled: boolean, reserveTimes: any) => {
 
     if (disabled) {
       Taro.showToast({
@@ -195,7 +247,7 @@ export default class SkuSelect extends Component {
         }
       } else {
         // 筛选点击的范围内是否有不可购买时间
-        if (reserveTimes.slice(start + 1, index).some(item => !item.endClickable)) {
+        if (reserveTimes.slice(start + 1, index).some((item: any) => !item.endClickable)) {
           Taro.showToast({
             title: '存在不可选时间',
             icon: 'none',
@@ -226,9 +278,10 @@ export default class SkuSelect extends Component {
   }
 
   // 获取预约对应时间
-  getReserveDate = attr => {
+  getReserveDate = (attr: string) => {
     const now = Date.now()
-    let date = ''
+
+    let date: number
 
     if (attr.includes('今天')) {
       date = now
@@ -238,14 +291,14 @@ export default class SkuSelect extends Component {
       date = now + 24 * 60 * 60 * 1000 * 2
     }
 
-    return date && dateFormat(date, 'MM月dd日')
+    return date && dateFormat('' + date, 'MM月dd日')
   }
 
-  padZero = num => (num >= 10 ? num : '0' + num) + ':00'
+  padZero = (num: number) => (num >= 10 ? num : '0' + num) + ':00'
   // 获取预约对应时间段
-  getReserveTimes = childsCurGoods => {
+  getReserveTimes = (childsCurGoods: any) => {
     const childsMap = {}
-    childsCurGoods.forEach(child => {
+    childsCurGoods.forEach((child: any) => {
       const [start, end] = child.name.split('~')
       if (!childsMap[start]) {
         childsMap[start] = {}
@@ -450,118 +503,119 @@ export default class SkuSelect extends Component {
     } = productInfo
 
     return <View className="sku-wrapper">
-        <ScrollView scrollY className="select-content">
-          <View className="select_product-info">
-            <Image mode="aspectFill" src={pic} class="product-image" />
-            <View>
-              <View className="price">￥{selectSku.price}</View>
-              {isReserve && <View className="reserve-tip">[订金/每小时]</View>}
-              {!isReserve && selectSku.originalPrice !== selectSku.price && <View className="original-price">￥{selectSku.originalPrice}</View>}
-              {!isReserve && <View>库存：{stores}</View>}
-            </View>
+      <ScrollView scrollY className="select-content">
+        <View className="select_product-info">
+          <Image mode="aspectFill" src={pic} className="product-image" />
+          <View>
+            <View className="price">￥{selectSku.price}</View>
+            {isReserve && <View className="reserve-tip">[订金/每小时]</View>}
+            {!isReserve && selectSku.originalPrice !== selectSku.price && <View className="original-price">￥{selectSku.originalPrice}</View>}
+            {!isReserve && <View>库存：{stores}</View>}
           </View>
-          {/* 规格参数 */}
-          {properties && <View className="properties">
-            {
-              properties.map((propertie, index) => {
-                const isReserveTime = isReserve && /时间/.test(propertie.name)
-
-                return <View key={propertie.id} className="propertie">
-                  <View className="propertie-name">
-                    {propertie.name}
-                  </View>
-                  {
-                    isReserveTime && start > 0 && <View className="cancel-reservetime text-color-blue" onClick={this.cancelReserveDateSelect}>
-                      取消
-                    </View>
-                  }
-                  {/* 非预约时间 */}
-                  {
-                    !isReserveTime && <View className="attributes">
-                      {
-                        propertie.childsCurGoods.map(child => <View key={child.id} className="attribute">
-                          <Button
-                            size="mini"
-                            className={classNames('attribute-button', child.checked ? 'primary' : 'secondary')}
-                            onClick={this.onAttributeClick.bind(this, index, child)}
-                          >{child.name}{isReserve && this.getReserveDate(child.name) ? `(${this.getReserveDate(child.name)})` : ''}</Button>
-                        </View>)
-                      }
-                    </View>
-                  }
-                  {/* 预约 */}
-                  {
-                    isReserveTime && propertie.reserveTimes && <View className="attributes">
-                      {
-                        propertie.reserveTimes.map((child, i) => {
-                          let disabled = false
-                          // 都没有选择的时候 || 两个都选中的时候
-                          if (
-                              (start < 0 && end < 0)
-                              || (start >= 0 && end >= 0)
-                            ) {
-                            disabled = !child.startClickable
-                          }
-                          // 选择第二个参数的时候
-                          if (start >= 0 && end < 0) {
-                            disabled = !child.endClickable || (i < start)
-                          }
-
-                          return <View key={child.id} className="reserve-attribute">
-                            <View
-                              className={classNames('reserve-attribute-button', {
-                                'checked': start === i || end === i,
-                                'active': i > start && i < end,
-                                'disabled': disabled,
-                              })}
-                              onClick={() => {
-                                this.onReserveAttributeClick(i, child, disabled, propertie.reserveTimes)
-                              }}
-                            >
-                              <View>{child.start}</View>
-                              {
-                                child.data.id && <View className="reserve-price">{child.data.stores > 0 ? `￥${child.data.price}` : '已订满'}</View>
-                              }
-                              {
-                                start === i && <View className="reserve-time-tip">开始时间</View>
-                              }
-                              {
-                                end === i && <View className="reserve-time-tip">结束时间</View>
-                              }
-                            </View>
-                          </View>
-                        })
-                      }
-                    </View>
-                  }
-                </View>
-              })
-            }
-          </View>}
-
-          {/* 数量 */}
+        </View>
+        {/* 规格参数 */}
+        {properties && <View className="properties">
           {
-            !isReserve && <View className="amount">
-              <View>数量</View>
-              <AtInputNumber
-                min={1}
-                max={stores}
-                step={1}
-                value={amount}
-                onChange={this.onNumberChange}
-              />
-            </View>
-          }
-        </ScrollView>
+            properties.map((propertie, index) => {
+              const isReserveTime = isReserve && /时间/.test(propertie.name)
 
-        {/* 预订按钮 */}
-        <BottomBar>
-          <Button
-            className="submit-button"
-            type="primary"
-            disabled={!isReserve && stores === 0}
-            onClick={this.handleSubmit}
-          >{
+              return <View key={propertie.id} className="propertie">
+                <View className="propertie-name">
+                  {propertie.name}
+                </View>
+                {
+                  isReserveTime && start > 0 && <View className="cancel-reservetime text-color-blue" onClick={this.cancelReserveDateSelect}>
+                    取消
+                    </View>
+                }
+                {/* 非预约时间 */}
+                {
+                  !isReserveTime && <View className="attributes">
+                    {
+                      propertie.childsCurGoods.map(child => <View key={child.id} className="attribute">
+                        <Button
+                          size="mini"
+                          className={classNames('attribute-button', child.checked ? 'primary' : 'secondary')}
+                          onClick={this.onAttributeClick.bind(this, index, child)}
+                        >{child.name}{isReserve && this.getReserveDate(child.name) ? `(${this.getReserveDate(child.name)})` : ''}</Button>
+                      </View>)
+                    }
+                  </View>
+                }
+                {/* 预约 */}
+                {
+                  isReserveTime && propertie.reserveTimes && <View className="attributes">
+                    {
+                      propertie.reserveTimes.map((child, i) => {
+                        let disabled = false
+                        // 都没有选择的时候 || 两个都选中的时候
+                        if (
+                          (start < 0 && end < 0)
+                          || (start >= 0 && end >= 0)
+                        ) {
+                          disabled = !child.startClickable
+                        }
+                        // 选择第二个参数的时候
+                        if (start >= 0 && end < 0) {
+                          disabled = !child.endClickable || (i < start)
+                        }
+
+                        return <View key={child.id} className="reserve-attribute">
+                          <View
+                            className={classNames('reserve-attribute-button', {
+                              'checked': start === i || end === i,
+                              'active': i > start && i < end,
+                              'disabled': disabled,
+                            })}
+                            onClick={() => {
+                              this.onReserveAttributeClick(i, child, disabled, propertie.reserveTimes)
+                            }}
+                          >
+                            <View>{child.start}</View>
+                            {
+                              child.data.id && <View className="reserve-price">{child.data.stores > 0 ? `￥${child.data.price}` : '已订满'}</View>
+                            }
+                            {
+                              start === i && <View className="reserve-time-tip">开始时间</View>
+                            }
+                            {
+                              end === i && <View className="reserve-time-tip">结束时间</View>
+                            }
+                          </View>
+                        </View>
+                      })
+                    }
+                  </View>
+                }
+              </View>
+            })
+          }
+        </View>}
+
+        {/* 数量 */}
+        {
+          !isReserve && <View className="amount">
+            <View>数量</View>
+            <AtInputNumber
+              type="number"
+              min={1}
+              max={stores}
+              step={1}
+              value={amount}
+              onChange={this.onNumberChange}
+            />
+          </View>
+        }
+      </ScrollView>
+
+      {/* 预订按钮 */}
+      <BottomBar>
+        <Button
+          className="submit-button"
+          type="primary"
+          disabled={!isReserve && stores === 0}
+          onClick={this.handleSubmit}
+        >{
             isReserve
               ? '立即预订'
               : stores === 0
@@ -569,7 +623,9 @@ export default class SkuSelect extends Component {
                 : (buttonType === 1
                   ? '立即购买'
                   : '加入购物车')}</Button>
-        </BottomBar>
-      </View>
+      </BottomBar>
+    </View>
   }
 }
+
+export default SkuSelect as ComponentClass<PageOwnProps, PageState>

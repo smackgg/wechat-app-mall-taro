@@ -1,5 +1,5 @@
-import { Product } from './goods'
 import { AnyAction } from 'redux'
+import { Product } from './goods'
 import { UserDetail } from './user'
 
 import {
@@ -54,6 +54,7 @@ export type Product = {
   // userId: 15672
   // vetStatus: 1
   views: number
+  weight: number
 }
 
 export type CategoryItem = {
@@ -70,6 +71,7 @@ export type Properties = {
   dateAdd: string
   id: number
   name: string
+  reserveTimes: any
 }
 
 export type ProductDetail = {
