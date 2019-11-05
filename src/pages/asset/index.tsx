@@ -18,9 +18,9 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  getUserCashLog: () => void
-  getUserAmount: () => void
-  getUserScoreLog: () => void
+  getUserCashLog: () => Promise<void>
+  getUserAmount: () => Promise<void>
+  getUserScoreLog: () => Promise<void>
 }
 
 type PageOwnProps = {}

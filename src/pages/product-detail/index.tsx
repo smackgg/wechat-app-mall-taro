@@ -32,9 +32,9 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  getProductDetail: (data: { id: string }) => void
-  getReputation: (data: { goodsId: string }) => void
-  addCart: (data: AddCartParams) => void
+  getProductDetail: (data: { id: string }) => Promise<void>
+  getReputation: (data: { goodsId: string }) => Promise<void>
+  addCart: (data: AddCartParams) => Promise<void>
 }
 
 type PageOwnProps = {}

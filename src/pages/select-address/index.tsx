@@ -18,7 +18,7 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  getAddressList: () => void
+  getAddressList: () => Promise<void>
 }
 
 type PageOwnProps = {}

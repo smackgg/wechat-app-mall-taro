@@ -29,7 +29,7 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  getProductDetail: (data: { id: string }) => void
+  getProductDetail: (data: { id: string }) => Promise<void>
 }
 
 type PageOwnProps = {}

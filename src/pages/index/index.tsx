@@ -37,8 +37,8 @@ type GetProductsParams = {
   pageSize?: number,
 }
 type PageDispatchProps = {
-  getBanners: (data: { type: string }) => void
-  getProducts: (data: GetProductsParams) => void
+  getBanners: (data: { type: string }) => Promise<void>
+  getProducts: (data: GetProductsParams) => Promise<void>
 }
 
 type PageOwnProps = {}

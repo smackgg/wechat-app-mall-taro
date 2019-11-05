@@ -30,7 +30,7 @@ type PageDispatchProps = {
   updateCart: (data: {
     type?: string,
     products: ProductInfo[]
-  }) => void
+  }) => Promise<void>
 }
 
 type PageOwnProps = {}

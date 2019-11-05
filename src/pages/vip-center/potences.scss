@@ -1,0 +1,24 @@
+.container {
+  margin-top: 50rpx;
+  padding-bottom: 50rpx;
+  .level-item {
+    text-align: center;
+    padding: 20rpx 0;
+
+    .name {
+      font-size: 36rpx;
+      color: $color-brand-dark;
+    }
+
+    .upgrade-amount {
+      font-size: 26rpx;
+      color: $text-color-gray;
+      margin: 10rpx 0;
+    }
+
+    .potence {
+      font-size: 26rpx;
+      margin-top: 15rpx;
+    }
+  }
+}

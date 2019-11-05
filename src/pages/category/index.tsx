@@ -26,8 +26,8 @@ type GetProductParam = {
 }
 
 type PageDispatchProps = {
-  getCategory: () => void
-  getProducts: (data: GetProductParam) => void
+  getCategory: () => Promise<void>
+  getProducts: (data: GetProductParam) => Promise<void>
 }
 
 type PageOwnProps = {}

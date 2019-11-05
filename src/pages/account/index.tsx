@@ -22,10 +22,10 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  getUserDetail: () => void
-  getLevelList: () => void
-  getUserAmount: () => void
-  getOrderStatistics: () => void
+  getUserDetail: () => Promise<void>
+  getLevelList: () => Promise<void>
+  getUserAmount: () => Promise<void>
+  getOrderStatistics: () => Promise<void>
 }
 
 type PageOwnProps = {}

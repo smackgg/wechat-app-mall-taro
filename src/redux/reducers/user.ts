@@ -86,6 +86,7 @@ export type INITIAL_STATE = {
   userLevel: {
     lv?: number,
     name?: string,
+    potences?: any,
   }, // 用户 vip 等级
   addressList: Address[], // 地址列表
   defaultAddress?: Address, // 默认地址

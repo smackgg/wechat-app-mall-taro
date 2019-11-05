@@ -23,7 +23,7 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  getUserDetail: () => void
+  getUserDetail: () => Promise<void>
 }
 
 type PageOwnProps = {}
