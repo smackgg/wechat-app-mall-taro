@@ -61,6 +61,25 @@ export type UserAmount = {
   totleConsumed: number
 }
 
+export type Address = {
+  address: string
+  areaStr: string
+  cityId: string
+  cityStr: string
+  code: string
+  dateAdd: string
+  dateUpdate: string
+  districtId: string
+  id: number
+  isDefault: boolean
+  linkMan: string
+  mobile: string
+  provinceId: string
+  provinceStr: string
+  status: number
+  statusStr: string
+}
+
 export type INITIAL_STATE = {
   userDetail: UserDetail, // 用户信息
   levelList: any[], // 所有 vip 等级列表
@@ -68,8 +87,8 @@ export type INITIAL_STATE = {
     lv?: number,
     name?: string,
   }, // 用户 vip 等级
-  addressList: any[], // 地址列表
-  defaultAddress: null, // 默认地址
+  addressList: Address[], // 地址列表
+  defaultAddress?: Address, // 默认地址
   userAmount: UserAmount, // 用户资产信息
   cashLog: CashScoreLog[], // 资金明细
   scoreLog: CashScoreLog[], // 积分明细
@@ -87,7 +106,7 @@ const INITIAL_STATE: INITIAL_STATE = {
   levelList: [], // 所有 vip 等级列表
   userLevel: {}, // 用户 vip 等级
   addressList: [], // 地址列表
-  defaultAddress: null, // 默认地址
+  defaultAddress: undefined, // 默认地址
   userAmount: {
     balance: 0,
     freeze: 0,

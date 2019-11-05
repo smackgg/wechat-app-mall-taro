@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Form, Button, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
@@ -67,7 +67,7 @@ interface ShopCart {
 )
 
 class ShopCart extends Component {
-  config = {
+  config: Config = {
     navigationBarTitleText: '购物车',
   }
 

@@ -82,8 +82,13 @@ interface AddressInfo {
   address: string,
   code: number,
 }
-interface ModifyAddressInfo extends AddressInfo {
-  id: string
+interface ModifyAddressInfo {
+  linkMan?: string,
+  mobile?: string,
+  address?: string,
+  code?: number,
+  id: string | number
+  isDefault?: boolean
 }
 // 添加地址
 export const addAddress = (data: AddressInfo) => request({

@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
@@ -56,7 +56,7 @@ interface Asset {
 
 class Asset extends Component {
 
-  config = {
+  config: Config = {
     navigationBarTitleText: '我的钱包',
   }
 

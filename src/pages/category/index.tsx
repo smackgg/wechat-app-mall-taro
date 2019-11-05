@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, Config } from '@tarojs/taro'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
@@ -52,7 +52,7 @@ interface Category {
 }))
 
 class Category extends Component {
-  config = {
+  config: Config = {
     navigationBarTitleText: '商品分类',
   }
 

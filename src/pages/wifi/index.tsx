@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton } from 'taro-ui'
@@ -41,7 +41,7 @@ interface WiFi {
 class WiFi extends Component {
   startPromise: Promise<any>
 
-  config = {
+  config: Config = {
     navigationBarTitleText: '连接 wifi',
   }
 

@@ -39,7 +39,7 @@ class App extends Component {
       'pages/product-detail/reputations',
       // 'pages/checkout/index',
       // 'pages/edit-address/index',
-      // 'pages/select-address/index',
+      'pages/select-address/index',
       // 'pages/order-list/index',
       // 'pages/order-detail/index',
       'pages/category/index',
@@ -54,7 +54,7 @@ class App extends Component {
       // 'pages/vip-center/my',
       // 'pages/vip-center/potences',
       // 'pages/contact/index',
-      // 'pages/wifi/index',
+      'pages/wifi/index',
       // 'pages/location/index',
     ],
     window: {
