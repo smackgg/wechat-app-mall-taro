@@ -38,7 +38,7 @@ class App extends Component {
       'pages/product-detail/share',
       'pages/product-detail/reputations',
       // 'pages/checkout/index',
-      // 'pages/edit-address/index',
+      'pages/edit-address/index',
       'pages/select-address/index',
       // 'pages/order-list/index',
       // 'pages/order-detail/index',

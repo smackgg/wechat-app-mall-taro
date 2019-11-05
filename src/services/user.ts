@@ -77,18 +77,26 @@ export const addressList = () => request({
 
 
 interface AddressInfo {
-  linkMan: string,
-  mobile: string,
-  address: string,
-  code: number,
+  provinceId: number | string
+  cityId: number | string
+  districtId: number | string
+  linkMan: string
+  address: string
+  mobile: number | string
+  code: number | string
+  isDefault: boolean
 }
+
 interface ModifyAddressInfo {
-  linkMan?: string,
-  mobile?: string,
-  address?: string,
-  code?: number,
-  id: string | number
+  provinceId?: number | string
+  cityId?: number | string
+  districtId?: number | string
+  linkMan?: string
+  address?: string
+  mobile?: number | string
+  code?: number | string
   isDefault?: boolean
+  id: number | string
 }
 // 添加地址
 export const addAddress = (data: AddressInfo) => request({
