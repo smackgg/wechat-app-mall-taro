@@ -1,0 +1,35 @@
+.picker-item {
+  position: relative;
+  display: flex;
+  padding: 24rpx 0;
+  margin-left: 30rpx;
+  color: #333;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: scaleY(.5);
+    border-bottom: 2rpx solid #d6e4ef;
+  }
+
+  .picker {
+    margin-right: 8rpx;
+  }
+
+  .label {
+    display: inline-block;
+    width: 172rpx;
+    margin-right: 16rpx;
+  }
+
+  .text {
+    color: #666;
+  }
+}
+
+.button {
+  margin: 60rpx 30rpx;
+}

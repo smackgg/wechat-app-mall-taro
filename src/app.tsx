@@ -33,7 +33,7 @@ class App extends Component {
       'pages/index/index',
       'pages/authorize/index',
       'pages/account/index',
-      // 'pages/account/extinfo',
+      'pages/account/extinfo',
       'pages/product-detail/index',
       'pages/product-detail/share',
       'pages/product-detail/reputations',
