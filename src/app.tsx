@@ -49,7 +49,7 @@ class App extends Component {
       // 'pages/reputation/index',
       'pages/shop-cart/index',
       // 'pages/recharge/index',
-      // 'pages/entry/index',
+      'pages/entry/index',
       // 'pages/vip-center/index',
       // 'pages/vip-center/my',
       // 'pages/vip-center/potences',

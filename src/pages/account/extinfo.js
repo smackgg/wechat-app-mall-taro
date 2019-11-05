@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Picker, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtInput } from 'taro-ui'
-import jobCategory from '@/utils/jobCategory'
+import jobCategory from '@/third-utils/jobCategory'
 import { modifyUserInfo } from '@/services/user'
 import { showToast, cError } from '@/utils'
 
