@@ -1,24 +1,21 @@
 {
-  "extends": ["taro"],
-  "rules": {
-    "no-console": "off",
-    "quotes": ["error","single"],
-    "no-unused-vars": "off",
-    "no-restricted-globals": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
-    // "no-param-reassign": "error",
-    "react/no-unused-state": "error",
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
-    "semi": "off",
-    "@typescript-eslint/semi": ["error", "never"],
-    "comma-dangle": ["error", "always-multiline"],
-    "import/prefer-default-export": "off",
-    "jsx-quotes": ["error", "prefer-double"],
-    "taro/this-props-function": 0,
-    "react/sort-comp": "off"
-  },
-  "plugins": [
-    "@typescript-eslint"
-  ],
-  "parser": "@typescript-eslint/parser"
+    "extends": ["taro/react"],
+    "plugins": ["@typescript-eslint"],
+    "parser": "@typescript-eslint/parser",
+    "rules": {
+        "no-unused-expressions": "off",
+        "quotes": ["error","single"],
+        "jsx-quotes": ["error", "prefer-double"],
+        "@typescript-eslint/no-unused-expressions": ["error", { "allowShortCircuit": true  }],
+        "semi": "off",
+        "@typescript-eslint/semi": ["error", "never"],
+        "@typescript-eslint/indent": ["error", 2],
+        "no-undef": "error",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "react/no-unused-state": "error"
+    },
+    "globals": {
+        "wx": true,
+        "swan": true
+    }
 }
