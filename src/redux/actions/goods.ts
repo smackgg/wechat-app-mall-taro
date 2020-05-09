@@ -13,7 +13,7 @@ export const GET_REPUTATION_SUCCESS = 'config/GET_REPUTATION_SUCCESS'
 
 
 // 商品详情
-export const getProductDetail = (data: { id: string }) => async (dispatch: Dispatch) => {
+export const getProductDetail = (data: Parameters<typeof productDetail>[0]) => async (dispatch: Dispatch) => {
   const res = await productDetail({
     id: data.id,
   })
@@ -24,14 +24,11 @@ export const getProductDetail = (data: { id: string }) => async (dispatch: Dispa
   })
 }
 
+
 // 商品详情
 export const getProducts = (data: {
   key: string,
-  categoryId?: number,
-  recommendStatus?: number,
-  page?: number,
-  pageSize?: number,
-}) => async (dispatch: Dispatch) => {
+} & Parameters<typeof products>[0]) => async (dispatch: Dispatch) => {
   const { key } = data
   delete data.key
   const res = await products(data)
@@ -52,7 +49,7 @@ export const getCategory = () => async (dispatch: Dispatch) => {
 }
 
 // 获取商品评价列表
-export const getReputation = (data: { goodsId: string }) => async (dispatch: Dispatch) => {
+export const getReputation = (data: Parameters<typeof reputation>[0]) => async (dispatch: Dispatch) => {
   const res = await reputation(data)
   dispatch({
     type: GET_REPUTATION_SUCCESS,

@@ -112,7 +112,7 @@ const INITIAL_STATE: INITIAL_STATE = {
   reputations: {},
 }
 
-export default function user(state = INITIAL_STATE, action: AnyAction) {
+export default function user(state = INITIAL_STATE, action: AnyAction): INITIAL_STATE {
   switch (action.type) {
     case GET_PRODUCT_DETAIL_SUCCESS:
       return {

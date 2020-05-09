@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   launchOption: undefined, // app 启动参数
 }
 
-export default function global(state = INITIAL_STATE, action: AnyAction) {
+export default function global(state = INITIAL_STATE, action: AnyAction): typeof INITIAL_STATE {
   switch (action.type) {
     case UPDATE_GLOBAL_DATA:
       return {
