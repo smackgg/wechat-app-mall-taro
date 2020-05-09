@@ -96,11 +96,15 @@ export type INITIAL_STATE = {
   coupons: any[],
   getableCoupons: [],
   shopCartInfo: {}, // 购物车信息
-  rechargeSendRules: any[], // 充值赠送规则
+  rechargeSendRules: {
+    confine: number
+    loop: boolean
+    send: number
+  }[], // 充值赠送规则
   billDiscountsRules: any[], // 买单优惠规则
 }
 
-const INITIAL_STATE: INITIAL_STATE = {
+var INITIAL_STATE: INITIAL_STATE = {
   userDetail: {
     avatarUrl: '',
   }, // 用户信息
@@ -120,7 +124,7 @@ const INITIAL_STATE: INITIAL_STATE = {
   getableCoupons: [],
   shopCartInfo: shopCartInfo || {}, // 购物车信息
   rechargeSendRules: [], // 充值赠送规则
-  billDiscountsRules: [], // 买单优惠规则
+  billDiscountsRules: [] // 买单优惠规则
 }
 
 export default function user(state = INITIAL_STATE, action: AnyAction): INITIAL_STATE {
