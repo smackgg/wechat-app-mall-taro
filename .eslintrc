@@ -2,10 +2,7 @@
   "extends": ["taro"],
   "rules": {
     "no-console": "off",
-    "quotes": [
-      "error",
-      "single"
-    ],
+    "quotes": ["error","single"],
     "no-unused-vars": "off",
     "no-restricted-globals": "off",
     "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
@@ -17,7 +14,8 @@
     "comma-dangle": ["error", "always-multiline"],
     "import/prefer-default-export": "off",
     "jsx-quotes": ["error", "prefer-double"],
-    "taro/this-props-function": 0
+    "taro/this-props-function": 0,
+    "react/sort-comp": "off"
   },
   "plugins": [
     "@typescript-eslint"
