@@ -1,14 +1,12 @@
-import { ComponentClass } from 'react'
-import Taro, { Component, Config } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Image, Swiper, SwiperItem, Text, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 
 import { getLevelList, getUserAmount, getUserDetail } from '@/redux/actions/user'
-import {
-  getOrderStatistics,
-} from '@/redux/actions/order'
-import { INITIAL_STATE as USER_TYPE } from '@/redux/reducers/user'
-import { OrderStatistics } from '@/redux/reducers/order'
+import { getOrderStatistics } from '@/redux/actions/order'
+import { UserState } from '@/redux/reducers/user'
+import { OrderState } from '@/redux/reducers/order'
 
 import { priceToFloat, setCartBadge } from '@/utils'
 import classNames from 'classnames'
@@ -17,15 +15,15 @@ import './index.scss'
 
 const SWIPER_ITEM_MARGIN = '45rpx'
 type PageStateProps = {
-  user: USER_TYPE
-  orderStatistics: OrderStatistics
+  user: UserState
+  orderStatistics: OrderState['orderStatistics']
 }
 
 type PageDispatchProps = {
-  getUserDetail: () => Promise<void>
-  getLevelList: () => Promise<void>
-  getUserAmount: () => Promise<void>
-  getOrderStatistics: () => Promise<void>
+  getUserDetail: typeof getUserDetail
+  getLevelList: typeof getLevelList
+  getUserAmount: typeof getUserAmount
+  getOrderStatistics: typeof getOrderStatistics
 }
 
 type PageOwnProps = {}
@@ -36,15 +34,11 @@ type PageState = {
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface Account {
-  props: IProps
-}
-
 type OrderStatus = {
   icon: string
   name: string,
   status: number,
-  key: keyof OrderStatistics,
+  key: keyof OrderState['orderStatistics'],
 }[]
 
 @connect(
@@ -57,7 +51,7 @@ type OrderStatus = {
     user,
     orderStatistics,
   }),
-  (dispatch: any) => ({
+  dispatch => ({
     getUserDetail: () => dispatch(getUserDetail()),
     getLevelList: () => dispatch(getLevelList()),
     getUserAmount: () => dispatch(getUserAmount()),
@@ -65,16 +59,14 @@ type OrderStatus = {
   }),
 )
 
-class Account extends Component {
-
-  config: Config = {
-    navigationBarTitleText: '个人中心',
-    navigationBarBackgroundColor: '#181923',
-    navigationBarTextStyle: 'white',
-  }
-
+export default class Account extends Component<IProps, PageState> {
   state = {
     swiperIndex: 0,
+  }
+
+
+  componentWillMount() {
+    setCartBadge()
   }
 
   orderStatus: OrderStatus = [
@@ -108,10 +100,6 @@ class Account extends Component {
     //   status: 99,
     // },
   ]
-
-  componentWillMount() {
-    setCartBadge()
-  }
 
   componentDidShow() {
     // 获取用户详情
@@ -224,7 +212,7 @@ class Account extends Component {
                     {
                       (lv === level.lv) && <View className="level-consumed">
                         您已经成为本店{level.name}
-                    </View>
+                      </View>
                     }
                     {/* {
                       (lv < level.lv && totleConsumed < level.upgradeAmount) && <View className="level-consumed">
@@ -239,8 +227,8 @@ class Account extends Component {
                     <View className="current" style={{ width: progressWidth }}></View>
                     <View className="vip-level-steps">
                       <View className={classNames({
-                          'step-gray': level.lv - 1 > lv,
-                        })}
+                        'step-gray': level.lv - 1 > lv,
+                      })}
                       >
                         <Text className="step">Lv.{level.lv - 1}</Text>
                         {level.lv - 1 === lv && <Text>(当前等级)</Text>}
@@ -310,19 +298,22 @@ class Account extends Component {
           </View>
           <View className="order-status">
             {
-              this.orderStatus.map(item => <View key={item.status} className="item" onClick={this.goPage.bind(this, `/pages/order-list/index?status=${item.status}`)}>
-                <Image
-                  className={classNames('image', {
-                    active: false,
-                  })}
-                  src={item.icon}
-                  mode="aspectFill"
-                />
-                <Text>{item.name}</Text>
-                {orderStatistics[item.key] && orderStatistics[item.key] > 0 && <View className="dot">
-                  {orderStatistics[item.key] > 99 ? '99+' : orderStatistics[item.key]}
-                </View>}
-              </View>)
+              this.orderStatus.map(item => {
+                const orderStatistic = orderStatistics[item.key]
+                return <View key={item.status} className="item" onClick={this.goPage.bind(this, `/pages/order-list/index?status=${item.status}`)}>
+                  <Image
+                    className={classNames('image', {
+                      active: false,
+                    })}
+                    src={item.icon}
+                    mode="aspectFill"
+                  />
+                  <Text>{item.name}</Text>
+                  {orderStatistic && orderStatistic > 0 && <View className="dot">
+                    {orderStatistic > 99 ? '99+' : orderStatistic}
+                  </View>}
+                </View>
+              })
             }
           </View>
         </View>
@@ -354,41 +345,39 @@ class Account extends Component {
         </View>
         {/* 其它 */}
         <View className="other-wrapper">
-            {
-              [{
-                title: '在线买单',
-                url: '/pages/recharge/index?type=1',
-              }, {
-                title: '收货地址',
-                url: '/pages/select-address/index?type=1',
-              }, {
-                title: '店铺位置、导航',
-                url: '/pages/location/index',
-              }, {
-                title: '店内 Wi-Fi',
-                url: '/pages/wifi/index',
-              }, {
-                title: '联系客服',
-                url: '',
-                contact: true,
-              }].map((item, index) => <Button
-                key={index}
-                className="item"
-                onClick={this.goPage.bind(this, item.url)}
-                openType={item.contact ? 'contact' : undefined}
-              >
-                <Text>{item.title}</Text>
-                <Image
-                  className="arrow-right"
-                  src="/assets/icon/arrow-right.png"
-                  mode="aspectFill"
-                />
-              </Button>)
-            }
+          {
+            [{
+              title: '在线买单',
+              url: '/pages/recharge/index?type=1',
+            }, {
+              title: '收货地址',
+              url: '/pages/select-address/index?type=1',
+            }, {
+              title: '店铺位置、导航',
+              url: '/pages/location/index',
+            }, {
+              title: '店内 Wi-Fi',
+              url: '/pages/wifi/index',
+            }, {
+              title: '联系客服',
+              url: '',
+              contact: true,
+            }].map((item, index) => <Button
+              key={index}
+              className="item"
+              onClick={this.goPage.bind(this, item.url)}
+              openType={item.contact ? 'contact' : undefined}
+            >
+              <Text>{item.title}</Text>
+              <Image
+                className="arrow-right"
+                src="/assets/icon/arrow-right.png"
+                mode="aspectFill"
+              />
+            </Button>)
+          }
         </View>
       </View>
     )
   }
 }
-
-export default Account as ComponentClass<PageOwnProps, PageState>

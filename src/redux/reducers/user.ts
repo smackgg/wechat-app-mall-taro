@@ -80,7 +80,7 @@ export type Address = {
   statusStr: string
 }
 
-export type INITIAL_STATE = {
+export type UserState = {
   userDetail: UserDetail, // 用户信息
   levelList: any[], // 所有 vip 等级列表
   userLevel: {
@@ -95,7 +95,7 @@ export type INITIAL_STATE = {
   scoreLog: CashScoreLog[], // 积分明细
   coupons: any[],
   getableCoupons: [],
-  shopCartInfo: {}, // 购物车信息
+  shopCartInfo: any, // 购物车信息
   rechargeSendRules: {
     confine: number
     loop: boolean
@@ -104,7 +104,7 @@ export type INITIAL_STATE = {
   billDiscountsRules: any[], // 买单优惠规则
 }
 
-var INITIAL_STATE: INITIAL_STATE = {
+var INITIAL_STATE: UserState = {
   userDetail: {
     avatarUrl: '',
   }, // 用户信息
@@ -127,7 +127,7 @@ var INITIAL_STATE: INITIAL_STATE = {
   billDiscountsRules: [] // 买单优惠规则
 }
 
-export default function user(state = INITIAL_STATE, action: AnyAction): INITIAL_STATE {
+export default function user(state = INITIAL_STATE, action: AnyAction): UserState {
   switch (action.type) {
     case GET_USER_DETAIL_SUCCESS:
       return {

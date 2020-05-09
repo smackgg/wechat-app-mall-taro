@@ -1,11 +1,11 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 
 import { getCategory, getProducts } from '@/redux/actions/goods'
-import { Product, CategoryItem } from '@/redux/reducers/goods'
+import { Product, CategoryItem, ProductsState } from '@/redux/reducers/goods'
 
 import { priceToFloat } from '@/utils'
 import classNames from 'classnames'
@@ -13,21 +13,14 @@ import classNames from 'classnames'
 import './index.scss'
 
 type PageStateProps = {
-  category: CategoryItem[]
-  products: { [key: string]: Product[] }
+  category: ProductsState['category']
+  products: ProductsState['products']
 }
 
-type GetProductParam = {
-  key: string,
-  categoryId?: number,
-  recommendStatus?: number,
-  page?: number,
-  pageSize?: number,
-}
 
 type PageDispatchProps = {
   getCategory: () => Promise<void>
-  getProducts: (data: GetProductParam) => Promise<void>
+  getProducts: typeof getProducts
 }
 
 type PageOwnProps = {}
@@ -38,24 +31,16 @@ type PageState = {
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface Category {
-  props: IProps
-}
-
 // 首页多加滤镜
 @connect(({ goods: { products }, goods }) => ({
   category: goods.category,
   products,
-}), (dispatch: any) => ({
+}), dispatch => ({
   getCategory: () => dispatch(getCategory()),
-  getProducts: (data: GetProductParam) => dispatch(getProducts(data)),
+  getProducts: data => dispatch(getProducts(data)),
 }))
 
-class Category extends Component {
-  config: Config = {
-    navigationBarTitleText: '商品分类',
-  }
-
+export default class Category extends Component<IProps, PageState> {
   state = {
     activeCategory: 0,
   }
@@ -81,7 +66,7 @@ class Category extends Component {
   }
 
   // 获取分类商品
-  getProducts = (categoryId: number) => {
+  getProducts = (categoryId: string) => {
     this.props.getProducts({
       key: `category_${categoryId}`,
       categoryId,
@@ -147,6 +132,4 @@ class Category extends Component {
     )
   }
 }
-
-export default Category as ComponentClass<PageOwnProps, PageState>
 

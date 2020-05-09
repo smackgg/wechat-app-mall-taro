@@ -1,5 +1,4 @@
 import { AnyAction } from 'redux'
-import { Product } from './goods'
 import { UserDetail } from './user'
 
 import {
@@ -59,7 +58,7 @@ export type Product = {
 
 export type CategoryItem = {
   icon: string
-  id: number
+  id: string
   isUse: boolean
   level: number
   name: string
@@ -98,21 +97,21 @@ export type Reputation = {
   user: UserDetail
 }
 
-type INITIAL_STATE = {
+export type ProductsState = {
   productDetail?: { [key: string]: ProductDetail }
   category: CategoryItem[]
-  products: { [key: string]: Product }
+  products: { [key: string]: Product[] }
   reputations: { [key: string]: Reputation[] }
 }
 
-const INITIAL_STATE: INITIAL_STATE = {
+const INITIAL_STATE: ProductsState = {
   productDetail: undefined,
   category: [],
   products: {},
   reputations: {},
 }
 
-export default function user(state = INITIAL_STATE, action: AnyAction): INITIAL_STATE {
+export default function user(state = INITIAL_STATE, action: AnyAction): ProductsState {
   switch (action.type) {
     case GET_PRODUCT_DETAIL_SUCCESS:
       return {

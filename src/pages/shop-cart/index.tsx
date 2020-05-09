@@ -1,36 +1,24 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Form, Button, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 
 import { ProductList, MyCheckbox, Price } from '@/components'
 import { updateCart } from '@/redux/actions/user'
 import { addWxFormId } from '@/services/wechat'
 import { setCartBadge } from '@/utils'
 import { Product } from '@/redux/reducers/goods'
+import { UserState } from '@/redux/reducers/user'
 
 import './index.scss'
 
-
-type ProductInfo = {
-  number: number | string
-  goodsId: string
-  propertyChildIds: string
-  active?: boolean
-}
-
-type ShopCartInfo = any
-
 type PageStateProps = {
-  shopCartInfo: ShopCartInfo
+  shopCartInfo: UserState['shopCartInfo']
 }
 
 type PageDispatchProps = {
-  updateCart: (data: {
-    type?: string,
-    products: ProductInfo[]
-  }) => Promise<void>
+  updateCart: typeof updateCart
 }
 
 type PageOwnProps = {}
@@ -45,11 +33,6 @@ type PageState = {
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface ShopCart {
-  props: IProps
-}
-
-
 @connect(
   ({
     user: {
@@ -58,18 +41,12 @@ interface ShopCart {
   }) => ({
     shopCartInfo,
   }),
-  (dispatch: any) => ({
-    updateCart: (data: {
-      type?: string,
-      products: ProductInfo[]
-    }) => dispatch(updateCart(data)),
+  dispatch => ({
+    updateCart: data => dispatch(updateCart(data)),
   }),
 )
 
-class ShopCart extends Component {
-  config: Config = {
-    navigationBarTitleText: '购物车',
-  }
+export default class ShopCart extends Component<IProps, PageState> {
 
   state = {
     editing: false,
@@ -83,15 +60,15 @@ class ShopCart extends Component {
     setCartBadge()
   }
 
-  async componentDidShow() {
-    this.handleData(this.props.shopCartInfo)
-  }
-
   componentWillReceiveProps(nextProps: PageStateProps) {
     this.handleData(nextProps.shopCartInfo)
   }
 
-  handleData = (shopCartInfo: ShopCartInfo) => {
+  async componentDidShow() {
+    this.handleData(this.props.shopCartInfo)
+  }
+
+  handleData = (shopCartInfo: UserState['shopCartInfo']) => {
     if (!shopCartInfo) {
       return
     }
@@ -211,5 +188,3 @@ class ShopCart extends Component {
     )
   }
 }
-
-export default ShopCart as ComponentClass<PageOwnProps, PageState>
