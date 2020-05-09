@@ -78,14 +78,14 @@ page {
     }
 
     .name,
-    .price,
+    .component__price ,
     .characteristic {
       line-height: 48rpx;
       font-size: 32rpx;
       text-align: center;
     }
 
-    .price {
+    .component__price  {
       margin-top: 10rpx;
       margin-bottom: 30rpx;
       font-family: 'DINCond-Black';

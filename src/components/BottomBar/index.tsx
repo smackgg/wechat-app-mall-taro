@@ -44,7 +44,7 @@ export default class BottomBar extends Component<PageOwnProps, PageState> {
         paddingBottom: '30rpx',
       }
     }
-    return <View className="bottom-bar" style={style}>
+    return <View className="component__bottom-bar" style={style}>
       {this.props.children}
     </View>
   }

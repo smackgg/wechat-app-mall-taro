@@ -121,7 +121,7 @@ export default class CouponList extends Component<PageOwnProps> {
   render () {
     const { list, isGetCoupon = false, isUseCoupon, selectedCoupon, onSelectCoupon } = this.props
 
-    return <View className="container">
+    return <View className="component__couponList">
       {
         list.length === 0 && <View className="no-data">没有优惠券</View>
       }

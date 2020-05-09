@@ -18,7 +18,7 @@ export default function Checkbox(props: PageOwnProps) {
     onChange && onChange(!checked)
   }
 
-  return <View className={classNames('check-box', { checked })} onClick={onClick}>
+  return <View className={classNames('component__check-box', { checked })} onClick={onClick}>
     <AtIcon value="check" size="14" color="#fff"></AtIcon>
   </View>
 }

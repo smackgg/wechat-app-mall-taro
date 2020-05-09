@@ -35,7 +35,7 @@ export default function ProductList(props: Props) {
     })
   }
 
-  return <View className="product-list">
+  return <View className="component__product-list">
     {
       list.map(product => {
         const { id, pic, name, goodsName, number, property, score, amount, active, price, label } = product

@@ -58,7 +58,7 @@ export default class Address extends Component<PageOwnProps, PageState> {
   render() {
     const { needLogistics, address, type } = this.props
 
-    return needLogistics && <View className="address">
+    return needLogistics && <View className="component__address">
       {
         (!address || (address && !address.id))
         && <View className="add-address" onClick={this.addAddress}>添加收货地址</View>

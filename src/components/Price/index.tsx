@@ -37,21 +37,21 @@ export default class Price extends Component<PageOwnProps> {
 
     // 只展示价格
     if (price >= 0 && score <= 0) {
-      return <View className={`price ${className}`}>
+      return <View className={`component__price ${className}`}>
         <View><Text className="small-text">￥</Text>{priceToFloat(price)}</View>
       </View>
     }
 
     // 只展示积分
     if (price <= 0 && score > 0) {
-      return <View className={`price ${className}`}>
+      return <View className={`component__price ${className}`}>
         <View>{score}<Text className="small-text"> 积分</Text></View>
       </View>
     }
 
     // 积分和价格同时展示
     if (price > 0 && score > 0) {
-      return <View className={`price ${className}`}>
+      return <View className={`component__price ${className}`}>
         <View><Text className="small-text">￥</Text>{priceToFloat(price)} + {score}<Text className="small-text"> 积分</Text></View>
       </View>
     }

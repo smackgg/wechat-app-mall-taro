@@ -51,7 +51,7 @@ export default function PriceInfo(props: Props) {
     return price && price >= 0
   })
 
-  return <View className="price-info">
+  return <View className="component__price-info">
     <View className="list">
       {list.map((key: Key) => {
         const price = props[key]
