@@ -1,15 +1,21 @@
-import { ComponentClass } from 'react'
-import Taro, { Component, Config } from '@tarojs/taro'
-import { connect } from '@tarojs/redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import Taro from '@tarojs/taro'
 import { View, Image, Video, Swiper, SwiperItem, Text } from '@tarojs/components'
+
 import { getBanners } from '@/redux/actions/config'
 import { getProducts } from '@/redux/actions/goods'
 import classNames from 'classnames'
 import { Price } from '@/components'
-import { setCartBadge, requireEntryPage } from '@/utils'
-import { AtIcon } from 'taro-ui'
+import { setCartBadge, config as uConfig } from '@/utils'
 
+import { AtIcon } from 'taro-ui'
 import './index.scss'
+
+const { requireEntryPage } = uConfig
+
+// import { add, minus, asyncAdd } from '../../redux/actions/counter'
+
 
 // #region 书写注意
 //
@@ -29,16 +35,9 @@ type PageStateProps = {
   products: { [key: string]: any }
 }
 
-type GetProductsParams = {
-  key: string,
-  categoryId?: string,
-  recommendStatus?: number,
-  page?: number,
-  pageSize?: number,
-}
 type PageDispatchProps = {
-  getBanners: (data: { type: string }) => Promise<void>
-  getProducts: (data: GetProductsParams) => Promise<void>
+  getBanners: typeof getBanners
+  getProducts: typeof getProducts
 }
 
 type PageOwnProps = {}
@@ -51,37 +50,19 @@ type PageState = {
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface Index {
-  props: IProps
-}
-
 @connect(({ config, goods: { products } }) => ({
   products,
   banners: config.banners['index'],
   systemConfig: config.systemConfig,
   recommendProducts: products.homeRecommendProducts,
   allProducts: products.allProducts,
-}), (dispatch: any) => ({
-    getBanners: (data: { type: string }) => dispatch(getBanners(data)),
-    getProducts: (data: GetProductsParams) => dispatch(getProducts(data)),
+}), dispatch => ({
+  getBanners: data => dispatch(getBanners(data)),
+  getProducts: data => dispatch(getProducts(data)),
 }))
 
-class Index extends Component {
-  orderCategoryId: string
-
-  /**
- * 指定config的类型声明为: Taro.Config
- *
- * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
- * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
- * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
- */
-  config: Config = {
-    navigationBarTitleText: '首页',
-    navigationStyle: 'custom',
-  }
-
-  state: PageState = {
+export default class Index extends Component<IProps, PageState> {
+  state = {
     swiperIndex: 0,
     playVideo: false,
     statusBarHeight: 0,
@@ -94,6 +75,8 @@ class Index extends Component {
       statusBarHeight,
     })
   }
+
+  orderCategoryId: string
 
   componentDidShow() {
     // 展示启动页
@@ -142,7 +125,7 @@ class Index extends Component {
       playVideo: true,
     }, () => {
       const videoContext = Taro.createVideoContext('playVideo')
-        videoContext.requestFullScreen({ direction: 0 })
+      videoContext.requestFullScreen({ direction: 0 })
     })
   }
 
@@ -227,78 +210,75 @@ class Index extends Component {
           })} key={item.id}
           ></View>)}
         </View>
-
-        {
-          <View className="recommend-products">
-            {/* 精品推荐商品块 */}
-            {
-              recommendProducts && recommendProducts.length > 0 && <View>
-                <View className="title title-line">精品推荐</View>
-                <View className="list">
-                  {
-                    recommendProducts.map(product => {
-                      const { id, pic, name, characteristic, minPrice, minScore } = product
-                      return <View key={id} onClick={this.goToProductDetail.bind(this, id)}>
-                        <Image className="product-image" src={pic} mode="aspectFill"></Image>
-                        <View className="name clamp">{name}</View>
-                        <View className="characteristic clamp">{characteristic}</View>
-                        <Price price={minPrice} score={minScore}></Price>
-                      </View>
-                    })
-                  }
-                </View>
-              </View>
-            }
-            {/* 店内环境 */}
-            {
-              videoUrl && <View onClick={this.playVideo}>
-                <View className="title title-line">店内环境</View>
-                <View className="video-wrapper">
-                  <Video
-                    src={videoUrl}
-                    loop
-                    autoplay
-                    muted
-                    controls={false}
-                    object-fit="fill"
-                  >
-                    <View className="mask">
-                      <View className="play-button"></View>
+        <View className="recommend-products">
+          {/* 精品推荐商品块 */}
+          {
+            recommendProducts && recommendProducts.length > 0 && <View>
+              <View className="title title-line">精品推荐</View>
+              <View className="list">
+                {
+                  recommendProducts.map(product => {
+                    const { id, pic, name, characteristic, minPrice, minScore } = product
+                    return <View key={id} onClick={this.goToProductDetail.bind(this, id)}>
+                      <Image className="product-image" src={pic} mode="aspectFill"></Image>
+                      <View className="name clamp">{name}</View>
+                      <View className="characteristic clamp">{characteristic}</View>
+                      <Price price={minPrice} score={minScore}></Price>
                     </View>
-                  </Video>
-                </View>
-                {playVideo && <Video
-                  src={videoUrl2}
+                  })
+                }
+              </View>
+            </View>
+          }
+          {/* 店内环境 */}
+          {
+            videoUrl && <View onClick={this.playVideo}>
+              <View className="title title-line">店内环境</View>
+              <View className="video-wrapper">
+                <Video
+                  src={videoUrl}
                   loop
                   autoplay
-                  objectFit="fill"
-                  id="playVideo"
-                  onFullscreenChange={this.onFullScreenChange}
+                  muted
+                  controls={false}
+                  object-fit="fill"
                 >
-                </Video>}
+                  <View className="mask">
+                    <View className="play-button"></View>
+                  </View>
+                </Video>
               </View>
-            }
-            {/* 在线定位 */}
-            {
-              orderCategoryProducts && orderCategoryProducts.length > 0 && <View>
-                <View className="title title-line">在线定位</View>
-                <View className="list">
-                  {
-                    orderCategoryProducts.map((product: any) => {
-                      const { id, pic, name, characteristic, minPrice, minScore } = product
-                      return <View key={id} onClick={this.goToProductDetail.bind(this, id)}>
-                        <Image className="product-image" src={pic} mode="aspectFill"></Image>
-                        <View className="name clamp">{name}</View>
-                        <View className="characteristic clamp">{characteristic}</View>
-                        <Price price={minPrice} score={minScore}></Price>
-                      </View>
-                    })
-                  }
-                </View>
+              {playVideo && <Video
+                src={videoUrl2}
+                loop
+                autoplay
+                objectFit="fill"
+                id="playVideo"
+                onFullscreenChange={this.onFullScreenChange}
+              >
+              </Video>}
+            </View>
+          }
+          {/* 在线定位 */}
+          {
+            orderCategoryProducts && orderCategoryProducts.length > 0 && <View>
+              <View className="title title-line">在线定位</View>
+              <View className="list">
+                {
+                  orderCategoryProducts.map((product: any) => {
+                    const { id, pic, name, characteristic, minPrice, minScore } = product
+                    return <View key={id} onClick={this.goToProductDetail.bind(this, id)}>
+                      <Image className="product-image" src={pic} mode="aspectFill"></Image>
+                      <View className="name clamp">{name}</View>
+                      <View className="characteristic clamp">{characteristic}</View>
+                      <Price price={minPrice} score={minScore}></Price>
+                    </View>
+                  })
+                }
               </View>
-            }
-          </View>
-        }
+            </View>
+          }
+        </View>
 
         {/* 发现更多商品块 */}
         {
@@ -326,12 +306,3 @@ class Index extends Component {
     )
   }
 }
-
-// #region 导出注意
-//
-// 经过上面的声明后需要将导出的 Taro.Component 子类修改为子类本身的 props 属性
-// 这样在使用这个子类时 Ts 才不会提示缺少 JSX 类型参数错误
-//
-// #endregion
-
-export default Index as ComponentClass<PageOwnProps, PageState>

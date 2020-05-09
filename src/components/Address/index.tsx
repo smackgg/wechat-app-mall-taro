@@ -1,5 +1,5 @@
-import { ComponentClass } from 'react'
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import PropTypes from 'prop-types'
 import { View, Text, Image } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
@@ -25,11 +25,7 @@ type PageOwnProps = {
 type PageState = {
 }
 
-interface Address {
-  props: PageOwnProps
-}
-
-class Address extends Component {
+export default class Address extends Component<PageOwnProps, PageState> {
   static propTypes = {
     needLogistics: PropTypes.bool,
     address: PropTypes.object.isRequired,
@@ -91,5 +87,3 @@ class Address extends Component {
     </View>
   }
 }
-
-export default Address as ComponentClass<PageOwnProps, PageState>

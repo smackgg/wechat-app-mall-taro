@@ -1,26 +1,13 @@
 {
-  "projectname": "wechat-app-mall-taro",
-  "description": "taro 电商项目",
+  "miniprogramRoot": "./dist",
+  "projectname": "name",
+  "description": "wechat-app-mall-taro",
   "appid": "wx9240aa3496e36a49",
   "setting": {
-    "urlCheck": false,
+    "urlCheck": true,
     "es6": false,
     "postcss": false,
-    "minified": false,
-    "newFeature": true,
-    "coverView": true,
-    "autoAudits": false,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
-    "uploadWithSourceMap": true,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    }
+    "minified": false
   },
-  "compileType": "miniprogram",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
-  "condition": {}
+  "compileType": "miniprogram"
 }

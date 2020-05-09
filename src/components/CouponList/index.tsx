@@ -1,5 +1,5 @@
-import { ComponentClass } from 'react'
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Form, Text, Button } from '@tarojs/components'
 import PropTypes from 'prop-types'
 import { Price } from '@/components'
@@ -34,14 +34,7 @@ type PageOwnProps = {
   onSelectCoupon?: (coupon: Coupon) => void,
 }
 
-type PageState = {
-}
-
-interface CouponList {
-  props: PageOwnProps
-}
-
-class CouponList extends Component {
+export default class CouponList extends Component<PageOwnProps> {
   static propTypes = {
     list: PropTypes.array,
     isGetCoupon: PropTypes.bool, // 是否是领取优惠券
@@ -161,13 +154,13 @@ class CouponList extends Component {
                 </Form>
               </View>}
               {isUseCoupon && selectedCoupon && selectedCoupon.id !== id && <View className="button-wrapper">
-                  <Button
-                    form-type="submit"
-                    className="button"
-                    // type="secondary"
-                    hoverClass="none"
-                    onClick={onSelectCoupon ? onSelectCoupon.bind(this, item) : (() => {})}
-                  >立即使用</Button>
+                <Button
+                  form-type="submit"
+                  className="button"
+                  // type="secondary"
+                  hoverClass="none"
+                  onClick={onSelectCoupon ? onSelectCoupon.bind(this, item) : (() => {})}
+                >立即使用</Button>
               </View>}
             </View>
             <View className="content">
@@ -198,5 +191,3 @@ class CouponList extends Component {
     </View>
   }
 }
-
-export default CouponList as ComponentClass<PageOwnProps, PageState>

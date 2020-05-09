@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import React from 'react'
 import { View, Text } from '@tarojs/components'
 import PropTypes from 'prop-types'
 import { priceToFloat } from '@/utils'
