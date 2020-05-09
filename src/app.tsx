@@ -48,7 +48,7 @@ class App extends Component {
       // 'pages/score-shop/index',
       // 'pages/reputation/index',
       'pages/shop-cart/index',
-      // 'pages/recharge/index',
+      'pages/recharge/index',
       'pages/entry/index',
       'pages/vip-center/index',
       'pages/vip-center/my',
