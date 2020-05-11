@@ -1,21 +1,20 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
+import Taro, { Current } from '@tarojs/taro'
 
-import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Checkbox, Text, Button, Form } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 
 import { checkToken, login, register, bindMobile } from '@/services/user'
-import { requireBindMobile, cError } from '@/utils'
+import { config, cError } from '@/utils'
 import { getUserDetail } from '@/redux/actions/user'
 
 import wechatSafeIcon from '@/assets/icon/wechat-safe.png'
 import successIcon from '@/assets/icon/success.png'
 
-// import { addWxFormId } from '@/services/wechat'
-
 import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import './index.scss'
 
+const { requireBindMobile } = config
 
 type PageStateProps = {
   isConnected: boolean
@@ -23,19 +22,13 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  getUserDetail: () => Promise<void>
+  getUserDetail: typeof getUserDetail
 }
 
 type PageOwnProps = {}
 
 type PageState = {
   showTelAuthModal: boolean
-}
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface Auth {
-  props: IProps
 }
 
 @connect(({ global, user }) => ({
@@ -45,23 +38,13 @@ interface Auth {
   getUserDetail: () => dispatch(getUserDetail()),
 }))
 
-class Auth extends Component {
-
-  fromPage: string
-
-  config: Config = {
-    navigationBarTitleText: '授权',
-    backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTextStyle: 'white',
-  }
-
+export default class Auth extends Component<PageStateProps & PageDispatchProps & PageOwnProps, PageState> {
   state = {
     showTelAuthModal: false,
   }
 
   componentWillMount() {
-    this.fromPage = decodeURIComponent(this.$router.params.from || '/pages/entry/index')
+    this.fromPage = decodeURIComponent(Current.router?.params.from || '/pages/entry/index')
 
     Taro.removeStorageSync('token')
     Taro.setNavigationBarColor({
@@ -69,6 +52,8 @@ class Auth extends Component {
       frontColor: '#ffffff',
     })
   }
+
+  fromPage = '/pages/entry/index'
 
   // 用户点击授权
   getUserInfo = (e: TaroBaseEventOrig) => {
@@ -264,5 +249,4 @@ class Auth extends Component {
   }
 }
 
-export default Auth as ComponentClass<PageOwnProps, PageState>
 
