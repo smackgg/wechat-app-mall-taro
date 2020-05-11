@@ -1,13 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+
+import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 
 import './index.scss'
 
 
 export default class Location extends Component {
-  config = {
-    navigationBarTitleText: '本店位置',
-  }
 
   componentDidMount() {
     Taro.openLocation({

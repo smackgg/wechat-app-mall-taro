@@ -24,8 +24,8 @@ export default {
     // 'pages/vip-center/my',
     // 'pages/vip-center/potences',
     // 'pages/contact/index',
-    // 'pages/wifi/index',
-    // 'pages/location/index'
+    'pages/wifi/index',
+    'pages/location/index'
   ],
   tabBar: {
     color: '#333333',
