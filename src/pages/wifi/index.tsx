@@ -1,8 +1,8 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtButton } from 'taro-ui'
 
 import './index.scss'
@@ -26,10 +26,6 @@ type PageState = {
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface WiFi {
-  props: IProps
-}
-
 @connect(({ config: { systemConfig: { concat_phone_number, wifi_password, wifi_ssid, mall_name, mall_avatar } } }) => ({
   concatPhoneNumber: concat_phone_number,
   wifiSsid: wifi_ssid,
@@ -38,38 +34,13 @@ interface WiFi {
   mallAvatar: mall_avatar,
 }))
 
-class WiFi extends Component {
+export default class WiFi extends Component<IProps, PageState> {
   startPromise: Promise<any>
-
-  config: Config = {
-    navigationBarTitleText: '连接 wifi',
-  }
 
   startWifiSuccess = false
 
   componentDidShow() {
     this.startPromise = this.startWifi()
-    // this.props.getBanners(BANNER_KEY)
-    // Taro.startWifi({
-    //   success: (result) => {
-    //     console.log('startWifi', result)
-    //     // Taro.getWifiList()
-    //     Taro.connectWifi({
-    //       SSID: 'WXsmackgg',
-    //       password: 'WXsmackgg',
-    //       success: res => {
-    //         console.log('connectWifi success', res)
-    //       },
-    //       fail: err => {
-    //         console.log('connectWifi fail', err)
-    //       },
-    //     })
-    //   },
-    // })
-    // Taro.getWifiList()
-    // Taro.onGetWifiList((res) => {
-    //   console.log('onGetWifiList', res)
-    // })
   }
 
 
@@ -95,7 +66,7 @@ class WiFi extends Component {
     if (!this.startWifiSuccess) {
       await this.startWifi()
     }
-    // console.log(111)
+
     const { wifiSsid, wifiPassword } = this.props
     Taro.showLoading({
       title: '加载中',
@@ -161,10 +132,9 @@ class WiFi extends Component {
           type="primary"
           onClick={this.onClick}
         >立即连接</AtButton>
-        <View className="go-app" onClick={this.goApp}>点击进入后生家小程序</View>
+        <View className="go-app" onClick={this.goApp}>点击进入{mallName}小程序</View>
       </View>
     )
   }
 }
 
-export default WiFi as ComponentClass<PageOwnProps, PageState>
