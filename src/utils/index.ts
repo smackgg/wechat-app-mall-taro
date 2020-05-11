@@ -25,7 +25,7 @@ export const cError = async (fn: Promise<any>): Promise<[null | { msg: string, c
 }
 
 // 价格处理
-export const priceToFloat = (price?: number): string => price ? price.toFixed(2) : ''
+export const priceToFloat = (price?: number): string => price !== undefined ? price.toFixed(2) : ''
 
 // 设置购物车小红点
 export const setCartBadge = () => {
