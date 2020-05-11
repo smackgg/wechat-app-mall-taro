@@ -23,7 +23,7 @@ export default {
     // 'pages/vip-center/index',
     // 'pages/vip-center/my',
     // 'pages/vip-center/potences',
-    // 'pages/contact/index',
+    'pages/contact/index',
     'pages/wifi/index',
     'pages/location/index'
   ],

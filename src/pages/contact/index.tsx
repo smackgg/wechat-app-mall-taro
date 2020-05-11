@@ -1,8 +1,8 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Text, Button, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 
 import './index.scss'
@@ -22,10 +22,6 @@ type PageState = {
 
 type IProps = PageStateProps & PageOwnProps
 
-interface Contact {
-  props: IProps
-}
-
 @connect(({ config: { systemConfig: { concat_phone_number, wifi_password, wifi_ssid, mall_name, mall_avatar } } }) => ({
   concatPhoneNumber: concat_phone_number,
   wifiSsid: wifi_ssid,
@@ -34,11 +30,7 @@ interface Contact {
   mallAvatar: mall_avatar,
 }))
 
-class Contact extends Component {
-  config = {
-    navigationBarTitleText: '咨询客服',
-  }
-
+export default class Contact extends Component<IProps, PageState> {
   state = {
     showActionSheet: false,
   }
@@ -88,4 +80,3 @@ class Contact extends Component {
   }
 }
 
-export default Contact as ComponentClass<PageOwnProps, PageState>
