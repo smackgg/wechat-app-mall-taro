@@ -47,12 +47,12 @@ export const getProvince = () => async (dispatch: Dispatch) => {
 }
 
 // nextRegion
-export const getNextRegion = ({ key, pid }: { key: string } & Parameters<typeof nextRegion>[0]) => async (dispatch: Dispatch) => {
-  const res = await nextRegion({ pid })
+export const getNextRegion = (data: ({ key: string } & Parameters<typeof nextRegion>[0])) => async (dispatch: Dispatch) => {
+  const res = await nextRegion({ pid: data.pid })
 
   dispatch({
     type: GET_PROVINCE_SUCCESS,
     data: res.data,
-    key,
+    key: data.key,
   })
 }

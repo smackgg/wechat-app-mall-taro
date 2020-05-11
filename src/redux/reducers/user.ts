@@ -101,7 +101,13 @@ export type UserState = {
     loop: boolean
     send: number
   }[], // 充值赠送规则
-  billDiscountsRules: any[], // 买单优惠规则
+  billDiscountsRules: {
+    confine: number
+    loop: boolean
+    send: number
+    consume: number
+    discounts: number
+  }[] // 买单优惠规则
 }
 
 var INITIAL_STATE: UserState = {

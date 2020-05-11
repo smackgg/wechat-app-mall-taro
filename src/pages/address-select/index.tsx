@@ -1,24 +1,25 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Current } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { getAddressList } from '@/redux/actions/user'
-import { theme } from '@/utils'
-import { AtButton, AtIcon, AtForm } from 'taro-ui'
+import { config } from '@/utils'
+import { AtButton, AtIcon } from 'taro-ui'
 import { updateAddress } from '@/services/user'
-import { addWxFormId } from '@/services/wechat'
+
 import { BottomBar } from '@/components'
-import { Address } from '@/redux/reducers/user'
+import { UserState } from '@/redux/reducers/user'
 import './index.scss'
 
+const { theme } = config
 
 type PageStateProps = {
-  addressList: Address[]
+  addressList: UserState['addressList']
 }
 
 type PageDispatchProps = {
-  getAddressList: () => Promise<void>
+  getAddressList: typeof getAddressList
 }
 
 type PageOwnProps = {}
@@ -28,53 +29,41 @@ type PageState = {
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface SelectAddress {
-  props: IProps
-}
-
 // 首页多加滤镜
 @connect(({ user: { addressList } }) => ({
   addressList,
 }), (dispatch: any) => ({
-    getAddressList: () => dispatch(getAddressList()),
+  getAddressList: () => dispatch(getAddressList()),
 }))
 
-class SelectAddress extends Component {
-  type: number
-
-  config: Config = {
-    navigationBarTitleText: '选择收货地址',
-  }
-
-  componentDidShow() {
-    this.props.getAddressList()
-  }
-
+export default class SelectAddress extends Component<IProps, PageState> {
   componentWillMount() {
-    const { type = 0 } = this.$router.params
-    this.type = +type
+    this.type = +(Current.router?.params?.type || 0)
 
     Taro.setNavigationBarTitle({
       title: this.type === 0 ? '选择收货地址' : '设置默认地址',
     })
   }
 
+  type: number
+
+  componentDidShow() {
+    this.props.getAddressList()
+  }
+
+
   // 编辑地址
   editAddress = (id: number, e: TaroBaseEventOrig) => {
     e.stopPropagation()
     Taro.navigateTo({
-      url: `/pages/edit-address/index?id=${id}`,
+      url: `/pages/address-edit/index?id=${id}`,
     })
   }
 
   // 新建地址
-  addAddress = async (e: TaroBaseEventOrig) => {
-    await addWxFormId({
-      type: 'form',
-      formId: e.detail.formId,
-    })
+  addAddress = async () => {
     Taro.navigateTo({
-      url: '/pages/edit-address/index',
+      url: '/pages/address-edit/index',
     })
   }
 
@@ -122,13 +111,9 @@ class SelectAddress extends Component {
           }
         </View>
         <BottomBar>
-          <AtForm reportSubmit onSubmit={this.addAddress}>
-            <AtButton type="primary" formType="submit">新建地址</AtButton>
-          </AtForm>
+          <AtButton onClick={this.addAddress} type="primary" formType="submit">新建地址</AtButton>
         </BottomBar>
       </View>
     )
   }
 }
-
-export default SelectAddress as ComponentClass<PageOwnProps, PageState>

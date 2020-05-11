@@ -1,51 +1,36 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Current } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { getRechargeSendRules, getPayBillDiscounts } from '@/redux/actions/user'
+import { UserState } from '@/redux/reducers/user'
+import { ConfigState } from '@/redux/reducers/config'
 import { AtInput, AtForm, AtButton } from 'taro-ui'
-import { addWxFormId } from '@/services/wechat'
+// import { addWxFormId } from '@/services/wechat'
 import pay from '@/utils/pay'
 
 import './index.scss'
 
 
 type PageStateProps = {
-  rechargeSendRules: {
-    confine: number
-    loop: boolean
-    send: number
-  }[]
-  rechargeAmountMin: number
-  billDiscountsRules: {
-    confine: number
-    loop: boolean
-    send: number
-  }[]
+  rechargeSendRules: UserState['rechargeSendRules']
+  rechargeAmountMin: ConfigState['rechargeAmountMin']
+  billDiscountsRules: UserState['billDiscountsRules']
 }
 
 type PageDispatchProps = {
-  getRechargeSendRules: () => Promise<void>
-  getPayBillDiscounts: () => Promise<void>
+  getRechargeSendRules: typeof getRechargeSendRules
+  getPayBillDiscounts: typeof getPayBillDiscounts
 }
 
 type PageOwnProps = {}
 
 type PageState = {
-  editing: boolean,
-  totalAmount: number,
-  totalScore: number,
-  productList: Product[],
-  selectAll: boolean,
+  number?: number
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface Recharge {
-  props: IProps
-}
-
 
 @connect(
   ({
@@ -67,19 +52,13 @@ interface Recharge {
   }),
 )
 
-export default class Recharge extends Component {
-  type: number
-
-  config: Config = {
-    navigationBarTitleText: '',
-  }
-
+export default class Recharge extends Component<IProps, PageState> {
   state = {
-    number: '',
+    number: undefined,
   }
   componentWillMount() {
-    const { type = '0' } = this.$router.params
-    this.type = +type
+    const type = Current.router?.params?.type
+    this.type = type ? +type : 0
 
     // 设置页面标题
     Taro.setNavigationBarTitle({
@@ -87,16 +66,9 @@ export default class Recharge extends Component {
     })
   }
 
+  type: number
+
   componentDidShow() {
-    // wx.startRecord({
-    //   success(res) {
-    //     console.log(res.tempFilePath)
-    //     const tempFilePath = res.tempFilePath
-    //   }
-    // })
-    // setTimeout(function () {
-    //   wx.stopRecord() // 结束录音
-    // }, 10000)
     // type=0: 充值 tupe=1: 买单
     if (this.type === 0) {
       this.props.getRechargeSendRules()
@@ -113,24 +85,28 @@ export default class Recharge extends Component {
 
   // 表单提交
   onFormSubmit = e => {
-    addWxFormId({
-      type: 'form',
-      formId: e.detail.formId,
-    })
+    // addWxFormId({
+    //   type: 'form',
+    //   formId: e.detail.formId,
+    // })
   }
 
   // 快速充值按钮
   onButtonClick = rule => {
-    this.type === 0
-      ? this.handlePay(rule.confine)
-      : this.handlePaybill(rule.consume)
+    if (this.type === 0) {
+      this.handlePay(rule.confine)
+    } else {
+      this.handlePaybill(rule.consume)
+    }
   }
 
   // 充值按钮
   onSubmit = () => {
-    this.type === 0
-      ? this.handlePay(+this.state.number)
-      : this.handlePaybill(+this.state.number)
+    if (this.type === 0) {
+      this.handlePay(this.state.number)
+    } else {
+      this.handlePaybill(this.state.number)
+    }
   }
 
   // 支付

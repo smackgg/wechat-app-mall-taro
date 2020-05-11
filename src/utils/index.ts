@@ -15,7 +15,7 @@ export const showToast = ({ complete, duration = 1500, finished = undefined, ...
 })
 
 // catch promise error
-export const cError = async (fn: Promise<any>): Promise<[null | { msg: string, code: number | string }, any]> => {
+export const cError = async (fn: (| Promise<any> | ((data: any) => Promise<any>))): Promise<[null | { msg: string, code: number | string }, any]> => {
   try {
     const result = await fn
     return [null, result]

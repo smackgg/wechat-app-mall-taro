@@ -1,42 +1,43 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Current } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { AtButton, AtInput, AtIndexes, AtDrawer, AtForm, AtMessage } from 'taro-ui'
 import { getProvince, getNextRegion } from '@/redux/actions/config'
 import { cError } from '@/utils'
-import { addWxFormId } from '@/services/wechat'
+// import { addWxFormId } from '@/services/wechat'
 import { addAddress, updateAddress, deleteAddress } from '@/services/user'
-import { Address } from '@/redux/reducers/user'
+import { UserState } from '@/redux/reducers/user'
+import { ConfigState } from '@/redux/reducers/config'
 
 import commonCityData from '@/third-utils/city'
 
 import './index.scss'
 
 interface AddressInfo {
-  provinceId: number | string
-  cityId: number | string
-  districtId: number | string
-  linkMan: string
-  address: string
-  mobile: number | string
-  code: number | string
-  isDefault: boolean
-  id: number | string
+  provinceId?: number | string
+  cityId?: number | string
+  districtId?: number | string
+  linkMan?: string
+  address?: string
+  mobile?: number | string
+  code?: number | string
+  isDefault?: boolean
+  id?: number | string
 }
 
 type PageStateProps = {
-  provinces: any
-  citys: any
-  districts: any
-  addressList: Address[]
+  provinces: ConfigState['provinces']
+  citys: ConfigState['citys']
+  districts: ConfigState['districts']
+  addressList: UserState['addressList']
 }
 
 type PageDispatchProps = {
-  getProvince: () => Promise<void>
-  getNextRegion: (data: { key: string, pid: string }) => Promise<void>
+  getProvince: typeof getProvince
+  getNextRegion: typeof getNextRegion
 }
 
 type PageOwnProps = {}
@@ -55,16 +56,12 @@ type PageState = {
     name: string,
   },
   addressData?: AddressInfo,
-  regionList: [], // 字母索引选择器数据
+  regionList: any[], // 字母索引选择器数据
   hideDistrict: boolean, // 是否隐藏街道选项
   showDrawer: boolean
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface EditAddress {
-  props: IProps
-}
 
 @connect(({
   config: { provinces, citys, districts },
@@ -79,13 +76,7 @@ interface EditAddress {
   getNextRegion: (data: { key: string, pid: string }) => dispatch(getNextRegion(data)),
 }))
 
-class EditAddress extends Component {
-  addressId: string
-
-  config = {
-    navigationBarTitleText: '新增收货地址',
-  }
-
+export default class EditAddress extends Component<IProps, PageState> {
   state = {
     province: {
       id: '',
@@ -124,9 +115,11 @@ class EditAddress extends Component {
     // 拉取省级联
     this.props.getProvince()
 
-    this.addressId = this.$router.params.id
+    this.addressId = Current.router?.params?.id || ''
 
+    let pageTitle = '新增收货地址'
     if (this.addressId) {
+      pageTitle = '编辑收货地址'
       const { addressList } = this.props
 
       const addressDetail = addressList.filter(item => item.id === +this.addressId)[0]
@@ -172,9 +165,14 @@ class EditAddress extends Component {
         city: nextState.city,
       })
       this.setState(nextState)
-
     }
+
+    Taro.setNavigationBarTitle({
+      title: pageTitle,
+    })
   }
+
+  addressId: string
 
   // 从微信导入数据
   readFromWx = () => {
@@ -322,13 +320,22 @@ class EditAddress extends Component {
   }
 
   // 选择地址
-  onChooseRegion = async (value: any) => {
-    const { key } = value
+  onChooseRegion = async (value: {
+    key: 'province' | 'city',
+    id: string,
+    name: string,
+  }) => {
     const nextState = {
-      [value.key]: value,
       showDrawer: false,
       hideDistrict: false,
     }
+
+    const { key } = value
+    nextState[key] = {
+      id: value.id,
+      name: value.name
+    }
+
     if (key === 'province') {
       await this.props.getNextRegion({
         pid: value.id,
@@ -369,10 +376,10 @@ class EditAddress extends Component {
 
   // 表单提交
   onSubmit = async (e: TaroBaseEventOrig) => {
-    addWxFormId({
-      type: 'form',
-      formId: e.detail.formId,
-    })
+    // addWxFormId({
+    //   type: 'form',
+    //   formId: e.detail.formId,
+    // })
 
     const {
       addressData: {
@@ -518,7 +525,7 @@ class EditAddress extends Component {
               type="number"
               placeholder="请填写11位手机号码"
               value={mobile}
-              maxLength="11"
+              maxLength={11}
               onChange={this.handleFormChange.bind(this, 'mobile')}
             />
             <View className="address-picker">
@@ -578,4 +585,3 @@ class EditAddress extends Component {
     )
   }
 }
-export default EditAddress as ComponentClass<PageOwnProps, PageState>

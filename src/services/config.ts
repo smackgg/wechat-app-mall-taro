@@ -28,9 +28,8 @@ export const province = () => request({
   needSubDomain: false,
 })
 
-export type NextRegionParams = { pid: string }
 // 获取下级省市区数据
-export const nextRegion = (data: NextRegionParams) => request({
+export const nextRegion = (data: { pid: string }) => request({
   url: '/common/region/child',
   needSubDomain: false,
   data,

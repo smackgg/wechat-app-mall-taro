@@ -358,7 +358,7 @@ export default class Account extends Component<IProps, PageState> {
               url: '/pages/recharge/index?type=1',
             }, {
               title: '收货地址',
-              url: '/pages/select-address/index?type=1',
+              url: '/pages/address-select/index?type=1',
             }, {
               title: '店铺位置、导航',
               url: '/pages/location/index',
