@@ -1,7 +1,7 @@
 export default {
   pages: [
     'pages/index/index',
-    // 'pages/authorize/index',
+    'pages/authorize/index',
     'pages/account/index',
     // 'pages/account/extinfo',
     // 'pages/product-detail/index',

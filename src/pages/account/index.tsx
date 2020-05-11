@@ -11,6 +11,13 @@ import { OrderState } from '@/redux/reducers/order'
 import { priceToFloat, setCartBadge } from '@/utils'
 import classNames from 'classnames'
 
+// icons
+import accountBg from '@/assets/img/account_bg.png'
+import paymentIcon from '@/assets/icon/payment.jpg'
+import shippedIcon from '@/assets/icon/shipped.jpg'
+import receiveIcon from '@/assets/icon/receive.jpg'
+import commentIcon from '@/assets/icon/comment.jpg'
+import arrowRight from '@/assets/icon/arrow-right.png'
 import './index.scss'
 
 const SWIPER_ITEM_MARGIN = '45rpx'
@@ -71,25 +78,25 @@ export default class Account extends Component<IProps, PageState> {
 
   orderStatus: OrderStatus = [
     {
-      icon: '/assets/icon/payment.jpg',
+      icon: paymentIcon,
       name: '待支付',
       status: 0,
       key: 'count_id_no_pay',
     },
     {
-      icon: '/assets/icon/shipped.jpg',
+      icon: shippedIcon,
       name: '待发货',
       status: 1,
       key: 'count_id_no_transfer',
     },
     {
-      icon: '/assets/icon/receive.jpg',
+      icon: receiveIcon,
       name: '待收货',
       status: 2,
       key: 'count_id_no_confirm',
     },
     {
-      icon: '/assets/icon/comment.jpg',
+      icon: commentIcon,
       name: '待评价',
       status: 3,
       key: 'count_id_no_reputation',
@@ -155,13 +162,13 @@ export default class Account extends Component<IProps, PageState> {
       <View className="container">
         {/* 用户信息 */}
         <View className="userinfo" style={{ backgroundColor: '#181923' }}>
-          <Image className="userinfo-bg" src="/assets/img/account_bg.png"></Image>
+          <Image className="userinfo-bg" src={accountBg}></Image>
           <View className="content">
             <Image className="avatar" src={avatarUrl}></Image>
             <View className="info">
               <View className="nickname">{nick}</View>
               {lv !== 0 && <View className="vip-info">
-                <Image className="vip-icon" src={`/assets/icon/vip${lv}_icon.png`}></Image>
+                <Image className="vip-icon" src={require(`@/assets/icon/vip${lv}_icon.png`)}></Image>
                 <View className={`vip-name vip${lv}`}>{name}</View>
                 <View className={`vip-level vip${lv}`}>Lv.{lv}</View>
               </View>}
@@ -194,7 +201,7 @@ export default class Account extends Component<IProps, PageState> {
                     className={classNames('image', {
                       active: swiperIndex === index,
                     })}
-                    src={`/assets/img/vip${level.lv}_bg.png`}
+                    src={require(`@/assets/img/vip${level.lv}_bg.png`)}
                     mode="aspectFill"
                   />
                   <View className="vip-names">
@@ -251,7 +258,7 @@ export default class Account extends Component<IProps, PageState> {
             <View className="interest" onClick={this.goPage.bind(this, '/pages/score-shop/index')}>
               <Image
                 className="interest-image"
-                src={`/assets/icon/vip${swiperLv.lv || 1}_score.png`}
+                src={require(`@/assets/icon/vip${swiperLv.lv || 1}_score.png`)}
                 mode="aspectFill"
               />
               <Text>积分兑换</Text>
@@ -259,7 +266,7 @@ export default class Account extends Component<IProps, PageState> {
             <View className="interest" onClick={this.goPage.bind(this, '/pages/coupons/index')}>
               <Image
                 className="interest-image"
-                src={`/assets/icon/vip${swiperLv.lv || 1}_coupon.png`}
+                src={require(`@/assets/icon/vip${swiperLv.lv || 1}_coupon.png`)}
                 mode="aspectFill"
               />
               <Text>领券中心</Text>
@@ -267,7 +274,7 @@ export default class Account extends Component<IProps, PageState> {
             <View className="interest" onClick={this.goPage.bind(this, '/pages/vip-center/index')}>
               <Image
                 className="interest-image"
-                src={`/assets/icon/vip${swiperLv.lv || 1}_more.png`}
+                src={require(`@/assets/icon/vip${swiperLv.lv || 1}_more.png`)}
                 mode="aspectFill"
               />
               <Text>查看权益</Text>
@@ -292,7 +299,7 @@ export default class Account extends Component<IProps, PageState> {
             <Text>我的订单</Text>
             <Image
               className="arrow-right"
-              src="/assets/icon/arrow-right.png"
+              src={arrowRight}
               mode="aspectFill"
             />
           </View>
@@ -309,7 +316,7 @@ export default class Account extends Component<IProps, PageState> {
                     mode="aspectFill"
                   />
                   <Text>{item.name}</Text>
-                  {orderStatistic && orderStatistic > 0 && <View className="dot">
+                  {!!orderStatistic && orderStatistic > 0 && <View className="dot">
                     {orderStatistic > 99 ? '99+' : orderStatistic}
                   </View>}
                 </View>
@@ -324,7 +331,7 @@ export default class Account extends Component<IProps, PageState> {
             <Text>我的钱包</Text>
             <Image
               className="arrow-right"
-              src="/assets/icon/arrow-right.png"
+              src={arrowRight}
               mode="aspectFill"
             />
           </View>
@@ -371,7 +378,7 @@ export default class Account extends Component<IProps, PageState> {
               <Text>{item.title}</Text>
               <Image
                 className="arrow-right"
-                src="/assets/icon/arrow-right.png"
+                src={arrowRight}
                 mode="aspectFill"
               />
             </Button>)
