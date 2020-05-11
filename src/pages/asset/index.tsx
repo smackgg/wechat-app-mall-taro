@@ -1,8 +1,8 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 
 import { getUserCashLog, getUserAmount, getUserScoreLog } from '@/redux/actions/user'
 import { AtTabs, AtTabsPane } from 'taro-ui'
@@ -18,9 +18,9 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  getUserCashLog: () => Promise<void>
-  getUserAmount: () => Promise<void>
-  getUserScoreLog: () => Promise<void>
+  getUserCashLog: typeof getUserCashLog
+  getUserAmount: typeof getUserAmount
+  getUserScoreLog: typeof getUserScoreLog
 }
 
 type PageOwnProps = {}
@@ -30,10 +30,6 @@ type PageState = {
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface Asset {
-  props: IProps
-}
 
 @connect(
   ({
@@ -54,12 +50,7 @@ interface Asset {
   }),
 )
 
-class Asset extends Component {
-
-  config: Config = {
-    navigationBarTitleText: '我的钱包',
-  }
-
+export default class Asset extends Component<IProps, PageState> {
   state = {
     tabIndex: 0,
   }
@@ -174,31 +165,31 @@ class Asset extends Component {
                 const list: CashScoreLog = this.props[key] || []
 
                 return <AtTabsPane key={index} current={tabIndex} index={index} >
-                    <View>
-                      {list.length === 0 && <View className="no-data">
-                        暂无数据
-                      </View>}
-                      {
-                        list.map(item => {
-                          const {
-                            id,
-                            amount,
-                            dateAdd,
-                            typeStr,
-                            behavior,
-                          } = item
-                          return <View key={id} className="log">
-                            <View className="log-info">
-                              <View className="name">{typeStr}</View>
-                              <View className="date">{dateAdd}</View>
-                            </View>
-                            <View className={`price ${behavior === 0 ? 'color-warn' : ''}`}>{behavior === 0 ? '+' : '-'}{tab.noPrice ? '' : '￥'}{amount}</View>
+                  <View>
+                    {list.length === 0 && <View className="no-data">
+                      暂无数据
+                    </View>}
+                    {
+                      list.map(item => {
+                        const {
+                          id,
+                          amount,
+                          dateAdd,
+                          typeStr,
+                          behavior,
+                        } = item
+                        return <View key={id} className="log">
+                          <View className="log-info">
+                            <View className="name">{typeStr}</View>
+                            <View className="date">{dateAdd}</View>
                           </View>
-                        })
-                      }
-                    </View>
-                  </AtTabsPane>
-                })
+                          <View className={`price ${(behavior === 0 && amount > 0) ? 'color-warn' : ''}`}>{(behavior === 1 || (behavior === 0 && amount <= 0)) ? '-' : '+'}{tab.noPrice ? '' : '￥'}{Math.abs(amount)}</View>
+                        </View>
+                      })
+                    }
+                  </View>
+                </AtTabsPane>
+              })
             }
           </AtTabs >
         </View>
@@ -207,5 +198,3 @@ class Asset extends Component {
   }
 }
 
-
-export default Asset as ComponentClass<PageOwnProps, PageState>

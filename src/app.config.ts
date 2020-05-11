@@ -13,7 +13,7 @@ export default {
     // // 'pages/order-list/index',
     // // 'pages/order-detail/index',
     'pages/category/index',
-    // 'pages/asset/index',
+    'pages/asset/index',
     // // 'pages/coupons/index',
     // // 'pages/score-shop/index',
     // // 'pages/reputation/index',
