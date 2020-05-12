@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import Taro from '@tarojs/taro'
+import Taro, { Current } from '@tarojs/taro'
 import { View, Canvas } from '@tarojs/components'
 import { connect } from 'react-redux'
 
@@ -48,7 +48,7 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
     productDetail: goods.productDetail,
   }),
   (dispatch: any) => ({
-    getProductDetail: (data: { id: string }) => dispatch(getProductDetail(data)),
+    getProductDetail: data => dispatch(getProductDetail(data)),
   }),
 )
 
@@ -65,7 +65,7 @@ export default class ShareProduct extends Component<IProps, PageState> {
       mask: true,
       title: '合成中...',
     })
-    const { id } = this.$router.params
+    const { id } = Current.router?.params || {}
     this.productId = id
 
     // 获取商品详情数据
@@ -80,6 +80,9 @@ export default class ShareProduct extends Component<IProps, PageState> {
 
   // 画图
   draw = async () => {
+    if (!this.props.productDetail) {
+      return
+    }
     const {
       basicInfo: {
         pic,

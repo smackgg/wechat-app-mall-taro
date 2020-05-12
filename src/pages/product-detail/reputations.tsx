@@ -1,29 +1,15 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component } from '@tarojs/taro'
-import { connect } from '@tarojs/redux'
+import { Current } from '@tarojs/taro'
+import { connect } from 'react-redux'
 import { View } from '@tarojs/components'
-import { Reputation } from '@/redux/reducers/goods'
+import { ProductsState } from '@/redux/reducers/goods'
 import { ReputationCard } from './_components'
 
 import './index.scss'
 
 type PageStateProps = {
-  reputations: { [key: string]: Reputation[] }
-}
-
-type PageDispatchProps = {
-}
-
-type PageOwnProps = {}
-
-type PageState = {
-}
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface Reputations {
-  props: IProps
+  reputations: ProductsState['reputations']
 }
 
 @connect(
@@ -32,18 +18,13 @@ interface Reputations {
   }),
 )
 
-class Reputations extends Component {
-  productId: string = ''
-
-  config = {
-    navigationBarTitleText: '全部评价',
-  }
-
+export default class Reputations extends Component<PageStateProps, {}> {
   componentWillMount() {
     // 获取页面商品id
-    let { id } = this.$router.params
+    let { id } = Current.router?.params || {}
     this.productId = id
   }
+  productId = ''
 
   render() {
     const reputations = this.props.reputations[this.productId] || []
@@ -63,5 +44,3 @@ class Reputations extends Component {
   }
 }
 
-
-export default Reputations as ComponentClass<PageOwnProps, PageState>

@@ -6,7 +6,7 @@ export default {
     // 'pages/account/extinfo',
     'pages/product-detail/index',
     'pages/product-detail/share',
-    // 'pages/product-detail/reputations',
+    'pages/product-detail/reputations',
     'pages/checkout/index',
     'pages/address-edit/index',
     'pages/address-select/index',
