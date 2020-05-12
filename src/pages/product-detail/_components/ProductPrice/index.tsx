@@ -24,7 +24,7 @@ export default class ProductPrice extends Component<PageOwnProps, PageState> {
 
   static propTypes = {
     basicInfo: PropTypes.object,
-    logistics: PropTypes.any.isRequired,
+    logistics: PropTypes.any,
     productId: PropTypes.string,
     isReserve: PropTypes.bool.isRequired
   }

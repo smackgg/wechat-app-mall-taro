@@ -19,7 +19,6 @@ type PageOwnProps = {
   productId: string,
   productInfoProps: ProductDetailType,
   selectSkuProps: any,
-  // handleSubmit: () => any,
   handleClose: () => any,
   buttonType: 1 | 2,
   isReserve: boolean,
@@ -40,7 +39,6 @@ export default class SkuSelect extends Component<PageOwnProps, PageState> {
   static propTypes = {
     productId: PropTypes.string.isRequired,
     productInfoProps: PropTypes.object.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     buttonType: PropTypes.number.isRequired,
     isReserve: PropTypes.bool.isRequired,
