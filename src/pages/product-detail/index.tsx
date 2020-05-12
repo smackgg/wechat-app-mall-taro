@@ -36,7 +36,7 @@ type PageOwnProps = {}
 type PageState = {
   productInfo?: ProductDetailType,
   isSkuFloatLayoutOpened: boolean,
-  selectSku?: Product,
+  selectSku?: { [P in keyof Product]?: Product[P] },
   buttonType: 1 | 2, // 1: 立即购买 2: 加入购物车
 }
 
@@ -302,7 +302,7 @@ export default class ProductDetail extends Component<IProps, PageState> {
         <View className="product-content">
           <View className="title-line">商品详情</View>
           {/* <WxParse html={productInfo.content} /> */}
-          <wxparse html={productInfo.content}  />
+          <wxparse html={productInfo.content} />
         </View>
 
         {/* 底部 bottom bar */}

@@ -1,3 +1,5 @@
 export default {
-  navigationBarTitleText: '商品分类',
+  navigationBarTitleText: '个人中心',
+  navigationBarBackgroundColor: '#181923',
+  navigationBarTextStyle: 'white',
 }

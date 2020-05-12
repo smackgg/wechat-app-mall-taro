@@ -1,14 +1,14 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Canvas } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 
 import { getProductDetail } from '@/redux/actions/goods'
 import { AtButton } from 'taro-ui'
 import { wxaQrcode } from '@/services/wechat'
 import { cError } from '@/utils'
-import { ProductDetail as ProductDetailType } from '@/redux/reducers/goods'
+import { ProductsState } from '@/redux/reducers/goods'
 
 import './share.scss'
 
@@ -25,11 +25,11 @@ const CANVAS_BASE_WIDTH = 300
 const CANVAS_WIDTH = ratio * CANVAS_BASE_WIDTH
 
 type PageStateProps = {
-  productDetail: { [key: string]: ProductDetailType }
+  productDetail: ProductsState['productDetail']
 }
 
 type PageDispatchProps = {
-  getProductDetail: (data: { id: string }) => Promise<void>
+  getProductDetail: typeof getProductDetail
 }
 
 type PageOwnProps = {}
@@ -43,11 +43,6 @@ type PageState = {
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface ShareProduct {
-  props: IProps
-}
-
-
 @connect(
   ({ goods }) => ({
     productDetail: goods.productDetail,
@@ -57,13 +52,7 @@ interface ShareProduct {
   }),
 )
 
-class ShareProduct extends Component {
-  productId: string = ''
-
-  config = {
-    navigationBarTitleText: '生成商品海报',
-  }
-
+export default class ShareProduct extends Component<IProps, PageState> {
   state = {
     canvasStyle: {
       width: CANVAS_WIDTH,
@@ -86,6 +75,8 @@ class ShareProduct extends Component {
 
     this.draw()
   }
+
+  productId: string = ''
 
   // 画图
   draw = async () => {
@@ -281,5 +272,3 @@ class ShareProduct extends Component {
     )
   }
 }
-
-export default ShareProduct as ComponentClass<PageOwnProps, PageState>

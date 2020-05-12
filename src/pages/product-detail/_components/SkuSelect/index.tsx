@@ -19,7 +19,7 @@ type PageOwnProps = {
   productId: string,
   productInfoProps: ProductDetailType,
   selectSkuProps: any,
-  handleSubmit: () => any,
+  // handleSubmit: () => any,
   handleClose: () => any,
   buttonType: 1 | 2,
   isReserve: boolean,
@@ -545,7 +545,7 @@ export default class SkuSelect extends Component<PageOwnProps, PageState> {
                           >
                             <View>{child.start}</View>
                             {
-                              child.data.id && <View className="reserve-price">{child.data.stores > 0 ? `￥${child.data.price}` : '已订满'}</View>
+                              child.data?.id && <View className="reserve-price">{child.data.stores > 0 ? `￥${child.data.price}` : '已订满'}</View>
                             }
                             {
                               start === i && <View className="reserve-time-tip">开始时间</View>
