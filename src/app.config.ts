@@ -5,7 +5,7 @@ export default {
     'pages/account/index',
     // 'pages/account/extinfo',
     'pages/product-detail/index',
-    // 'pages/product-detail/share',
+    'pages/product-detail/share',
     // 'pages/product-detail/reputations',
     'pages/checkout/index',
     'pages/address-edit/index',
