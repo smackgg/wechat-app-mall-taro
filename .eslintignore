@@ -3,3 +3,4 @@ dist
 build
 
 src/third-utils
+src/components/WxParse

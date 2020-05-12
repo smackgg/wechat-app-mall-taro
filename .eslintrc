@@ -6,7 +6,7 @@
         "no-unused-expressions": "off",
         "quotes": ["error","single"],
         "jsx-quotes": ["error", "prefer-double"],
-        "@typescript-eslint/no-unused-expressions": ["error", { "allowShortCircuit": true  }],
+        "@typescript-eslint/no-unused-expressions": ["error", { "allowShortCircuit": true, "allowTernary": true  }],
         "semi": "off",
         "@typescript-eslint/semi": ["error", "never"],
         "@typescript-eslint/indent": ["error", 2],
