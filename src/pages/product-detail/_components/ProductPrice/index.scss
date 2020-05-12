@@ -1,8 +1,20 @@
 // 商品信息
-.product-info {
+.product-detail__product-info {
   width: 100%;
   background: $color-white;
   padding: 20rpx 30rpx;
+
+  .price-wrapper {
+    display: flex;
+    align-items: baseline;
+  }
+  .component__price {
+    color: $text-color-red;
+    font-size: 40rpx;
+    margin-right: 30rpx;
+    font-weight: bolder;
+  }
+
   .base {
     display: flex;
     justify-content: space-between;

@@ -1,5 +1,4 @@
-import { ComponentClass } from 'react'
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
 import { View, Image } from '@tarojs/components'
 import { AtRate } from 'taro-ui'
 import classNames from 'classnames'
@@ -15,14 +14,7 @@ type PageOwnProps = {
 type PageState = {
 }
 
-interface ReputationCard {
-  props: PageOwnProps
-}
-class ReputationCard extends Component {
-  static options = {
-    addGlobalClass: true,
-  }
-
+export default class ReputationCard extends Component<PageOwnProps, PageState> {
   static propTypes = {
     reputation: PropTypes.object,
     showAllRemark: PropTypes.bool,
@@ -40,7 +32,7 @@ class ReputationCard extends Component {
     }
     const { goods: { dateReputation, goodReputation, goodReputationStr, goodReputationRemark }, user: { avatarUrl } } = reputation
 
-    return <View className="reputation">
+    return <View className="product-detail__reputation">
       <View className="reputation__info">
         <View className="avatar-block">
           <Image className="avatar" src={avatarUrl} mode="aspectFill"></Image>
@@ -65,4 +57,3 @@ class ReputationCard extends Component {
   }
 }
 
-export default ReputationCard as ComponentClass<PageOwnProps, PageState>

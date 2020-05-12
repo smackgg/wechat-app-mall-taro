@@ -13,17 +13,6 @@
     }
   }
 
-  .price-wrapper {
-    display: flex;
-    align-items: baseline;
-  }
-  .price {
-    color: $text-color-red;
-    font-size: 40rpx;
-    margin-right: 30rpx;
-    font-weight: bolder;
-  }
-
   .service {
     margin-top: 20rpx;
     padding: 20rpx 30rpx;
@@ -112,6 +101,7 @@
         }
         .icon-image {
           width: 44rpx;
+          height: 44rpx;
           margin-bottom: 6rpx;
         }
       }

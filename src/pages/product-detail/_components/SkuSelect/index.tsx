@@ -1,6 +1,6 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Image, Button, ScrollView } from '@tarojs/components'
 import { AtInputNumber } from 'taro-ui'
 import { BottomBar } from '@/components'
@@ -9,21 +9,11 @@ import PropTypes from 'prop-types'
 import { productPrice } from '@/services/goods'
 import dateFormat from '@/utils/dateFormat'
 import { ProductDetail as ProductDetailType, Properties } from '@/redux/reducers/goods'
+import { addCart } from '@/redux/actions/user'
 
 import { cError } from '@/utils'
 
 import './index.scss'
-
-type ProductInfo = {
-  number: number | string
-  goodsId: string
-  propertyChildIds: string
-  active?: boolean
-}
-type AddCartParams = {
-  type: string
-  productInfo: ProductInfo
-}
 
 type PageOwnProps = {
   productId: string,
@@ -33,27 +23,20 @@ type PageOwnProps = {
   handleClose: () => any,
   buttonType: 1 | 2,
   isReserve: boolean,
-  addCart: (data: AddCartParams) => any,
+  addCart: typeof addCart,
 }
 
 type PageState = {
   selectSku: any
   productInfo: ProductDetailType
   amount: number
-  reserveData: {
+  reserveData?: {
     start: number
     end: number
   }
 }
 
-interface SkuSelect {
-  props: PageOwnProps
-}
-class SkuSelect extends Component {
-  static options = {
-    addGlobalClass: true,
-  }
-
+export default class SkuSelect extends Component<PageOwnProps, PageState> {
   static propTypes = {
     productId: PropTypes.string,
     productInfoProps: PropTypes.object,
@@ -69,18 +52,6 @@ class SkuSelect extends Component {
     isReserve: false,
   }
 
-  // constructor(props: PageOwnProps) {
-  //   super(props)
-  //   this.state = {
-  //     selectSku: props.selectSkuProps || {},
-  //     productInfo: props.productInfoProps || {},
-  //     amount: 1, // 商品数量
-  //     reserveData: {
-  //       start: -1,
-  //       end: -1,
-  //     },
-  //   }
-  // }
   state = {
     selectSku: this.props.selectSkuProps || {},
     productInfo: this.props.productInfoProps || {},
@@ -104,7 +75,7 @@ class SkuSelect extends Component {
 
     let properties = pps || this.state.productInfo.properties
 
-    const { promiseList } = properties.reduce((pre: any, propertie: Properties, index: number) => {
+    const { promiseList }: { promiseList: (ReturnType<typeof cError>)[] } = properties.reduce((pre: any, propertie: Properties, index: number) => {
       // 非时间段
       if (index !== properties.length - 1) {
         pre.attrs += propertie.id + ':' + (propertie.childsCurGoods.find(item => item.checked) || {}).id + ','
@@ -133,7 +104,8 @@ class SkuSelect extends Component {
       properties[properties.length - 1].childsCurGoods = reserveProps
         .childsCurGoods
         .map((item, index) => {
-          const [error, res] = results[index]
+          const result = results[index]
+          const [error, res] = result
           if (error) {
             return {
               ...item,
@@ -222,7 +194,7 @@ class SkuSelect extends Component {
       return
     }
     const { reserveData: { start, end } } = this.state
-    let reserveData = {}
+    let reserveData = { start, end }
     // 不能重复点击按钮
     if (start === index || end === index) {
       return
@@ -281,7 +253,7 @@ class SkuSelect extends Component {
   getReserveDate = (attr: string) => {
     const now = Date.now()
 
-    let date: number
+    let date = now
 
     if (attr.includes('今天')) {
       date = now
@@ -526,7 +498,7 @@ class SkuSelect extends Component {
                 {
                   isReserveTime && start > 0 && <View className="cancel-reservetime text-color-blue" onClick={this.cancelReserveDateSelect}>
                     取消
-                    </View>
+                  </View>
                 }
                 {/* 非预约时间 */}
                 {
@@ -628,4 +600,3 @@ class SkuSelect extends Component {
   }
 }
 
-export default SkuSelect as ComponentClass<PageOwnProps, PageState>

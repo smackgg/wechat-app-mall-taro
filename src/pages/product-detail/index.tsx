@@ -1,40 +1,34 @@
-import { ComponentClass } from 'react'
-import Taro, { Component, Config } from '@tarojs/taro'
-import { connect } from '@tarojs/redux'
+import React, { Component } from 'react'
+import Taro, { Current } from '@tarojs/taro'
+import { connect } from 'react-redux'
 import { View, Image, Text, Swiper, SwiperItem, Button } from '@tarojs/components'
 import { AtFloatLayout } from 'taro-ui'
 import { getProductDetail, getReputation } from '@/redux/actions/goods'
-import WxParse from '@/third-utils/wxParse/wxParse'
 import { productPrice } from '@/services/goods'
 import { BottomBar } from '@/components'
 import classNames from 'classnames'
 import { addCart } from '@/redux/actions/user'
-import { ProductDetail as ProductDetailType, Product, Properties, Reputation } from '@/redux/reducers/goods'
+import { ProductsState, ProductDetail as ProductDetailType, Product, Properties } from '@/redux/reducers/goods'
+import { UserState } from '@/redux/reducers/user'
+
+import shopIcon from '@/assets/icon/shop.jpg'
+import shopcartIcon from '@/assets/icon/shopcart.jpg'
+import contactIcon from '@/assets/icon/contact.jpg'
+
 import { ProductPrice, SkuSelect, ReputationCard } from './_components'
 
 import './index.scss'
 
-type ProductInfo = {
-  number: number | string
-  goodsId: string
-  propertyChildIds: string
-  active?: boolean
-}
-type AddCartParams = {
-  type: string
-  productInfo: ProductInfo
-}
-
 type PageStateProps = {
-  productDetail: { [key: string]: ProductDetailType }
-  reputations: { [key: string]: Reputation[] }
-  shopCartInfo: any
+  productDetail: ProductDetailType
+  reputations: ProductsState['reputations']
+  shopCartInfo: UserState['shopCartInfo']
 }
 
 type PageDispatchProps = {
-  getProductDetail: (data: { id: string }) => Promise<void>
-  getReputation: (data: { goodsId: string }) => Promise<void>
-  addCart: (data: AddCartParams) => Promise<void>
+  getProductDetail: typeof getProductDetail
+  getReputation: typeof getReputation
+  addCart: typeof addCart
 }
 
 type PageOwnProps = {}
@@ -48,10 +42,6 @@ type PageState = {
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface ProductDetail {
-  props: IProps
-}
-
 @connect(
   ({ goods, user: { shopCartInfo } }) => ({
     productDetail: goods.productDetail,
@@ -59,21 +49,14 @@ interface ProductDetail {
     shopCartInfo,
   }),
   (dispatch: any) => ({
-    getProductDetail: (data: { id: string }) => dispatch(getProductDetail(data)),
-    getReputation: (data: { goodsId: string }) => dispatch(getReputation(data)),
-    addCart: (data: AddCartParams) => dispatch(addCart(data)),
+    getProductDetail: data => dispatch(getProductDetail(data)),
+    getReputation: data => dispatch(getReputation(data)),
+    addCart: data => dispatch(addCart(data)),
     // updateCart: data => dispatch(updateCart(data)),
   }),
 )
 
-class ProductDetail extends Component {
-  productId: string = ''
-  curuid: string = ''
-
-  config: Config = {
-    navigationBarTitleText: '',
-  }
-
+export default class ProductDetail extends Component<IProps, PageState> {
   state: PageState = {
     productInfo: undefined,
     isSkuFloatLayoutOpened: false,
@@ -83,7 +66,7 @@ class ProductDetail extends Component {
 
   componentWillMount() {
     // 获取页面商品id
-    let { id, scene } = this.$router.params
+    let { id, scene } = Current.router?.params || {}
     this.productId = id
 
     // 处理扫码进商品详情页面的逻辑
@@ -95,20 +78,27 @@ class ProductDetail extends Component {
     }
   }
 
+  productId: string = ''
+  curuid: string = ''
+
+
   async componentDidShow() {
     // 获取商品详情数据
     await this.props.getProductDetail({
       id: this.productId,
     })
 
-    const productInfo = this.props.productDetail[this.productId]
+    const productDetail = this.props.productDetail
+    if (!productDetail) {
+      return
+    }
+
+    const productInfo = productDetail[this.productId]
 
     this.handleSelectSku(productInfo)
 
     this.curuid = Taro.getStorageSync('uid')
 
-    // 处理商品详情富文本
-    WxParse.wxParse('article', 'html', productInfo.content, this.$scope, 5)
     // 设置页面标题
     Taro.setNavigationBarTitle({
       title: productInfo.basicInfo.name,
@@ -309,10 +299,10 @@ class ProductDetail extends Component {
         }
 
         {/* 商品详情 */}
-        <import src="../../third-utils/wxParse/wxParse.wxml" />
         <View className="product-content">
           <View className="title-line">商品详情</View>
-          <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+          {/* <WxParse html={productInfo.content} /> */}
+          <wxparse html={productInfo.content}  />
         </View>
 
         {/* 底部 bottom bar */}
@@ -322,7 +312,7 @@ class ProductDetail extends Component {
               <View className="icon" onClick={this.goHome}>
                 <Image
                   className="icon-image"
-                  src="/assets/icon/shop.jpg"
+                  src={shopIcon}
                   mode="widthFix"
                 />
                 <Text>店铺</Text>
@@ -330,7 +320,7 @@ class ProductDetail extends Component {
               <View className="icon" onClick={this.goPage.bind(this, '/pages/shop-cart/index', true)}>
                 <Image
                   className="icon-image"
-                  src="/assets/icon/shopcart.jpg"
+                  src={shopcartIcon}
                   mode="widthFix"
                 />
                 <Text>购物车</Text>
@@ -341,7 +331,7 @@ class ProductDetail extends Component {
               <Button className="icon" openType="contact">
                 <Image
                   className="icon-image"
-                  src="/assets/icon/contact.jpg"
+                  src={contactIcon}
                   mode="widthFix"
                 />
                 <Text>客服</Text>
@@ -386,6 +376,3 @@ class ProductDetail extends Component {
     )
   }
 }
-
-
-export default ProductDetail as ComponentClass<PageOwnProps, PageState>

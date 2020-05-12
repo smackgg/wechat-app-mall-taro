@@ -1,6 +1,6 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import PropTypes from 'prop-types'
 import { View, Text, Button } from '@tarojs/components'
 import { Price } from '@/components'
@@ -20,14 +20,7 @@ type PageState = {
   showActionSheet: boolean
 }
 
-interface ProductPrice {
-  props: PageOwnProps
-}
-
-class ProductPrice extends Component {
-  static options = {
-    addGlobalClass: true,
-  }
+export default class ProductPrice extends Component<PageOwnProps, PageState> {
 
   static propTypes = {
     basicInfo: PropTypes.object,
@@ -82,7 +75,7 @@ class ProductPrice extends Component {
 
     const { showActionSheet } = this.state
     return <View>
-      <View className="product-info">
+      <View className="product-detail__product-info">
         <View className="base">
           <View className="info">
             <Text className="name">{name}</Text>
@@ -110,10 +103,9 @@ class ProductPrice extends Component {
         </AtActionSheetItem>
         <AtActionSheetItem onClick={this.goPage.bind(this, `/pages/product-detail/share?id=${productId}`, false)}>
           生成海报
-          </AtActionSheetItem>
+        </AtActionSheetItem>
       </AtActionSheet>
     </View>
   }
 }
 
-export default ProductPrice as ComponentClass<PageOwnProps, PageState>
