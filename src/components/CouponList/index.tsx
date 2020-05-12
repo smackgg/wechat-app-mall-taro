@@ -5,8 +5,9 @@ import PropTypes from 'prop-types'
 import { Price } from '@/components'
 import { dateFormat, cError } from '@/utils'
 import { getCoupon } from '@/services/user'
-import { addWxFormId } from '@/services/wechat'
+// import { addWxFormId } from '@/services/wechat'
 import classNames from 'classnames'
+import { AtMessage } from 'taro-ui'
 import './index.scss'
 
 
@@ -28,7 +29,6 @@ type Coupon = {
 type PageOwnProps = {
   list: Coupon[],
   isGetCoupon?: boolean, // 是否是领取优惠券
-  atMessage: Function,
   isUseCoupon?: boolean, // 是否是使用优惠券
   selectedCoupon?: Coupon, // 已经选中的优惠券
   onSelectCoupon?: (coupon: Coupon) => void,
@@ -38,7 +38,6 @@ export default class CouponList extends Component<PageOwnProps> {
   static propTypes = {
     list: PropTypes.array,
     isGetCoupon: PropTypes.bool, // 是否是领取优惠券
-    atMessage: PropTypes.func,
     isUseCoupon: PropTypes.bool, // 是否是使用优惠券
     selectedCoupon: PropTypes.object, // 已经选中的优惠券
     onSelectCoupon: PropTypes.func,
@@ -53,11 +52,6 @@ export default class CouponList extends Component<PageOwnProps> {
   // 领取优惠券
   onGetCoupon = async (coupon: Coupon, e: TaroBaseEventOrig, confirm: boolean) => {
     const { needScore, id } = coupon
-
-    addWxFormId({
-      type: 'form',
-      formId: e.detail.formId,
-    })
 
     // 消耗积分需要二次确认
     if (needScore && !confirm) {
@@ -74,10 +68,10 @@ export default class CouponList extends Component<PageOwnProps> {
     }
 
     const [error] =  await cError(getCoupon({ id }))
-    const { atMessage } = this.props
+    // const { atMessage } = this.props
 
     if (!error) {
-      atMessage({
+      Taro.atMessage({
         message: '领取成功~',
         type: 'success',
       })
@@ -85,34 +79,34 @@ export default class CouponList extends Component<PageOwnProps> {
     }
 
     if (error.code === 20001 || error.code === 20002) {
-      atMessage({
+      Taro.atMessage({
         message: '领取失败, 来晚了呀~',
         type: 'error',
       })
       return
     }
     if (error.code === 20003) {
-      atMessage({
+      Taro.atMessage({
         message: '您已经领过了，别贪心哦~',
         type: 'error',
       })
       return
     }
     if (error.code === 30001) {
-      atMessage({
+      Taro.atMessage({
         message: '您的积分不足',
         type: 'error',
       })
       return
     }
     if (error.code === 20004) {
-      atMessage({
+      Taro.atMessage({
         message: '领取失败, 优惠券已过期~',
         type: 'error',
       })
       return
     }
-    atMessage({
+    Taro.atMessage({
       message: '领取失败, ' + error.msg,
       type: 'error',
     })
@@ -122,6 +116,7 @@ export default class CouponList extends Component<PageOwnProps> {
     const { list, isGetCoupon = false, isUseCoupon, selectedCoupon, onSelectCoupon } = this.props
 
     return <View className="component__couponList">
+      <AtMessage />
       {
         list.length === 0 && <View className="no-data">没有优惠券</View>
       }

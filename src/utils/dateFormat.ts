@@ -1,4 +1,4 @@
-export default function dateFormat(current: string | Date, format: string): string {
+export default function dateFormat(current: string | number | Date, format: string): string {
   // ios 日期处理兼容
   if (typeof current === 'string') {
     current = current.replace(/-/g, '/')

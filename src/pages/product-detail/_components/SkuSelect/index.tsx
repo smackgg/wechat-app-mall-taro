@@ -38,13 +38,13 @@ type PageState = {
 
 export default class SkuSelect extends Component<PageOwnProps, PageState> {
   static propTypes = {
-    productId: PropTypes.string,
-    productInfoProps: PropTypes.object,
-    handleSubmit: PropTypes.func,
-    handleClose: PropTypes.func,
-    buttonType: PropTypes.number,
-    isReserve: PropTypes.bool,
-    addCart: PropTypes.func,
+    productId: PropTypes.string.isRequired,
+    productInfoProps: PropTypes.object.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    buttonType: PropTypes.number.isRequired,
+    isReserve: PropTypes.bool.isRequired,
+    addCart: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -263,7 +263,7 @@ export default class SkuSelect extends Component<PageOwnProps, PageState> {
       date = now + 24 * 60 * 60 * 1000 * 2
     }
 
-    return date && dateFormat('' + date, 'MM月dd日')
+    return date && dateFormat(date, 'MM月dd日')
   }
 
   padZero = (num: number) => (num >= 10 ? num : '0' + num) + ':00'

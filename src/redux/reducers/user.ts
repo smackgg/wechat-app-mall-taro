@@ -70,7 +70,7 @@ export type Address = {
   dateAdd: string
   dateUpdate: string
   districtId: string
-  id: number
+  id: string
   isDefault: boolean
   linkMan: string
   mobile: string

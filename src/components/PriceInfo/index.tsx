@@ -73,7 +73,6 @@ export default function PriceInfo(props: Props) {
 }
 
 PriceInfo.propTypes = {
-  list: PropTypes.array.isRequired,
   productsAmount: PropTypes.number,
   shippingAmount: PropTypes.number,
   couponAmount: PropTypes.number,

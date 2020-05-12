@@ -1,17 +1,49 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { Current } from '@tarojs/taro'
 import { View, Text, Form, Button, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 
 import { getDefaultAddress, getCoupons, updateCart } from '@/redux/actions/user'
 import { createOrder } from '@/services/order'
 import { AtTextarea, AtDrawer } from 'taro-ui'
 import { cError } from '@/utils'
 import pay from '@/utils/pay'
-import { addWxFormId, sendTempleMsg } from '@/services/wechat'
+// import { addWxFormId, sendTempleMsg } from '@/services/wechat'
 import { PriceInfo, ProductList, Address, BottomBar, Price, CouponList } from '@/components'
 import classNames from 'classnames'
-import dateFormat from '@/utils/dateFormat'
+// import dateFormat from '@/utils/dateFormat'
+import { UserState } from '@/redux/reducers/user'
+
 import './index.scss'
+
+
+type PageStateProps = {
+  defaultAddress: UserState['defaultAddress']
+  coupons: UserState['coupons']
+}
+
+type PageDispatchProps = {
+  getDefaultAddress: typeof getDefaultAddress,
+  getCoupons: typeof getCoupons,
+  updateCart: typeof updateCart,
+}
+
+type PageState = {
+  peisongType: 'kd' | 'zq', // 配送方式 kd,zq 分别表示快递/到店自取
+  productList: any[],
+  needLogistics: boolean, // 是否需要物流
+  productsAmount: number, // 商品总金额
+  shippingAmount: number, // 运费
+  couponAmount: number, // 优惠券
+  totalAmount: number, // 总价格
+  otherDiscounts: number, // 其它减免 会员折扣等
+  score: number, // 积分
+  remark: string, // 留言
+  selectedCoupon: any,
+  showDrawer: boolean,
+}
+
+type IProps = PageStateProps & PageDispatchProps
 
 @connect(({
   user: {
@@ -22,16 +54,13 @@ import './index.scss'
   defaultAddress,
   coupons: coupons.filter(coupon => coupon.status === 0),
 }), dispatch => ({
-  getDefaultAddress: type => dispatch(getDefaultAddress(type)),
+  getDefaultAddress: () => dispatch(getDefaultAddress()),
   getCoupons: data => dispatch(getCoupons(data)),
   updateCart: data => dispatch(updateCart(data)),
 }))
 
-export default class Checkout extends Component {
-  config: Config = {
-    navigationBarTitleText: '订单确认',
-  }
-  state = {
+export default class Checkout extends Component<IProps, PageState> {
+  state: PageState = {
     peisongType: 'kd', // 配送方式 kd,zq 分别表示快递/到店自取
     productList: [],
     needLogistics: false, // 是否需要物流
@@ -47,8 +76,11 @@ export default class Checkout extends Component {
   }
 
   componentWillMount () {
-    this.goodsJsonStr = ''
   }
+
+  goodsJsonStr = ''
+  orderType = 'cart'
+  reserveDate: any
 
   // setState promise 封装
   setStateP = data => new Promise(resolve => {
@@ -57,9 +89,9 @@ export default class Checkout extends Component {
 
   async componentDidShow () {
     let productList = []
-    this.orderType = this.$router.params.orderType || 'cart'
+    this.orderType = Current.router?.params?.orderType || 'cart'
     // 预约商品
-    this.reserveDate = this.$router.params.reserveDate
+    this.reserveDate = Current.router?.params?.reserveDate
 
     // 立即购买进入结算页
     if (this.orderType === 'buyNow') {
@@ -140,17 +172,10 @@ export default class Checkout extends Component {
   }
 
   // 下单
-  placeOrder = async e => {
-    if (e) {
-      addWxFormId({
-        type: 'form',
-        formId: e.detail.formId,
-      })
-    }
-
+  placeOrder = async (e?: any) => {
     const { remark, peisongType, needLogistics, selectedCoupon, productsAmount, productList } = this.state
     const { defaultAddress } = this.props
-    let postData = {
+    let postData: any = {
       goodsJsonStr: this.goodsJsonStr,
       remark: !this.reserveDate ? remark : `${remark} ===> 在线定位日期: ${this.reserveDate}`,
       peisongType,
@@ -241,88 +266,88 @@ export default class Checkout extends Component {
 
     const {
       id,
-      dateAdd,
-      dateClose,
-      orderNumber,
+      // dateAdd,
+      // dateClose,
+      // orderNumber,
       amountReal,
       score,
     } = result.data
 
     // 模板消息中的金额信息
-    let amountMsg = `${amountReal}元`
+    // let amountMsg = `${amountReal}元`
 
-    // 积分
-    if (score > 0) {
-      if (amountReal === 0) {
-        amountMsg = `${score}积分`
-      } else {
-        amountMsg += ` + ${score}积分`
-      }
-    }
+    // // 积分
+    // if (score > 0) {
+    //   if (amountReal === 0) {
+    //     amountMsg = `${score}积分`
+    //   } else {
+    //     amountMsg += ` + ${score}积分`
+    //   }
+    // }
 
     // 配置模板消息
-    const color = '#173177'
+    // const color = '#173177'
     // 订单取消模板消息
-    sendTempleMsg({
-      module: 'order',
-      business_id: id,
-      trigger: -1,
-      postJsonString: JSON.stringify({
-        keyword1: {
-          value: dateAdd,
-          color,
-        },
-        keyword2: {
-          value: amountMsg,
-          color,
-        },
-        keyword3: {
-          value: orderNumber,
-          color,
-        },
-        keyword4: {
-          value: '订单已关闭',
-          color,
-        },
-        keyword5: {
-          value: '您可以重新下单，请在30分钟内完成支付',
-          color,
-        },
-      }),
-      template_id: 'CnzS9AtwGj3Zo9rsRGxYvkdflUyz5lsRwNf6c7NgcrA',
-      type: 0,
-      url: `pages/order-detail/index?id=${id}`,
-    })
+    // sendTempleMsg({
+    //   module: 'order',
+    //   business_id: id,
+    //   trigger: -1,
+    //   postJsonString: JSON.stringify({
+    //     keyword1: {
+    //       value: dateAdd,
+    //       color,
+    //     },
+    //     keyword2: {
+    //       value: amountMsg,
+    //       color,
+    //     },
+    //     keyword3: {
+    //       value: orderNumber,
+    //       color,
+    //     },
+    //     keyword4: {
+    //       value: '订单已关闭',
+    //       color,
+    //     },
+    //     keyword5: {
+    //       value: '您可以重新下单，请在30分钟内完成支付',
+    //       color,
+    //     },
+    //   }),
+    //   template_id: 'CnzS9AtwGj3Zo9rsRGxYvkdflUyz5lsRwNf6c7NgcrA',
+    //   type: 0,
+    //   url: `pages/order-detail/index?id=${id}`,
+    // })
 
     // 发货通知模板消息
-    sendTempleMsg({
-      module: 'order',
-      business_id: id,
-      trigger: 2,
-      postJsonString: JSON.stringify({
-        keyword1: {
-          value: '已发货',
-          color,
-        },
-        keyword2: {
-          value: orderNumber,
-          color,
-        },
-        keyword3: {
-          value: dateAdd,
-          color,
-        },
-        keyword4: {
-          value: (needLogistics && peisongType === 'kd')
-            ? defaultAddress.provinceStr + defaultAddress.cityStr + (defaultAddress.areaStr === '-' ? '' : defaultAddress.areaStr) + defaultAddress.address
-            : '不需要邮寄地址',
-          color,
-        },
-      }),
-      template_id: 'nsHgGpdWxvT2mxwAL3i-4zoCEreb-t50J2tbxWpLTgs',
-      type: 0,
-      url: `pages/order-detail/index?id=${id}`,
-    })
+    // sendTempleMsg({
+    //   module: 'order',
+    //   business_id: id,
+    //   trigger: 2,
+    //   postJsonString: JSON.stringify({
+    //     keyword1: {
+    //       value: '已发货',
+    //       color,
+    //     },
+    //     keyword2: {
+    //       value: orderNumber,
+    //       color,
+    //     },
+    //     keyword3: {
+    //       value: dateAdd,
+    //       color,
+    //     },
+    //     keyword4: {
+    //       value: (needLogistics && peisongType === 'kd')
+    //         ? defaultAddress.provinceStr + defaultAddress.cityStr + (defaultAddress.areaStr === '-' ? '' : defaultAddress.areaStr) + defaultAddress.address
+    //         : '不需要邮寄地址',
+    //       color,
+    //     },
+    //   }),
+    //   template_id: 'nsHgGpdWxvT2mxwAL3i-4zoCEreb-t50J2tbxWpLTgs',
+    //   type: 0,
+    //   url: `pages/order-detail/index?id=${id}`,
+    // })
 
     if (this.orderType === 'buyNow') {
       Taro.removeStorageSync('buyNowInfo')
@@ -342,41 +367,41 @@ export default class Checkout extends Component {
     }).catch(() => {
 
       // 订单待支付模板消息
-      sendTempleMsg({
-        module: 'order',
-        business_id: id,
-        trigger: 0,
-        module: 'immediately',
-        postJsonString: JSON.stringify({
-          keyword1: {
-            value: '待支付',
-            color,
-          },
-          keyword2: {
-            value: amountMsg,
-            color,
-          },
-          keyword3: {
-            value: orderNumber,
-            color,
-          },
-          keyword4: {
-            value: dateAdd,
-            color,
-          },
-          keyword5: {
-            value: dateClose,
-            color,
-          },
-          keyword6: {
-            value: `请在${dateFormat(dateClose, 'HH:mm')}之前完成支付`,
-            color,
-          },
-        }),
-        template_id: 'LDpMo2-1M7tdBcz8OCVGGyiHe9k5LR7lsJ4TNVZEd00',
-        type: 0,
-        url: `pages/order-detail/index?id=${id}`,
-      })
+      // sendTempleMsg({
+      //   module: 'order',
+      //   business_id: id,
+      //   trigger: 0,
+      //   module: 'immediately',
+      //   postJsonString: JSON.stringify({
+      //     keyword1: {
+      //       value: '待支付',
+      //       color,
+      //     },
+      //     keyword2: {
+      //       value: amountMsg,
+      //       color,
+      //     },
+      //     keyword3: {
+      //       value: orderNumber,
+      //       color,
+      //     },
+      //     keyword4: {
+      //       value: dateAdd,
+      //       color,
+      //     },
+      //     keyword5: {
+      //       value: dateClose,
+      //       color,
+      //     },
+      //     keyword6: {
+      //       value: `请在${dateFormat(dateClose, 'HH:mm')}之前完成支付`,
+      //       color,
+      //     },
+      //   }),
+      //   template_id: 'LDpMo2-1M7tdBcz8OCVGGyiHe9k5LR7lsJ4TNVZEd00',
+      //   type: 0,
+      //   url: `pages/order-detail/index?id=${id}`,
+      // })
       return Promise.resolve()
     })
 
@@ -447,7 +472,7 @@ export default class Checkout extends Component {
     return (
       <View className="container">
         {/* 地址 */}
-        <Address needLogistics={needLogistics} address={defaultAddress} />
+        {defaultAddress && <Address needLogistics={needLogistics} address={defaultAddress} />}
 
         {/*  商品卡 */}
         <View className="product-list">
@@ -511,7 +536,7 @@ export default class Checkout extends Component {
                 className="button"
                 hoverClass="none"
                 size="mini"
-                type="secondary"
+                // type="secondary"
               >去下单</Button>
             </View>
           </Form>

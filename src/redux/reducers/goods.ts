@@ -9,7 +9,7 @@ import {
 } from '../actions/goods'
 
 export type Product = {
-  id: number
+  id: string
   pic: string
   name: string
   goodsName?: string
