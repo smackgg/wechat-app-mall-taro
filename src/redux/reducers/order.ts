@@ -18,12 +18,12 @@ export type OrderState = {
   orders: {},
   orderStatistics: OrderStatistics,
   orderList: {
-    '-1': [], // 已关闭
-    0: [], // 待支付
-    1: [], // 待发货
-    2: [], // 待收货
-    3: [], // 待评价
-    4: [], // 已完成
+    '-1': any[], // 已关闭
+    0: any[], // 待支付
+    1: any[], // 待发货
+    2: any[], // 待收货
+    3: any[], // 待评价
+    4: any[], // 已完成
   },
 }
 
