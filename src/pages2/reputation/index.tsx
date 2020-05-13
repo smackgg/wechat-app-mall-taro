@@ -182,7 +182,7 @@ export default class Reputation extends Component<PageProps, PageState> {
             })
           }
         </View>
-        {/* 预订按钮 */}
+
         <BottomBar>
           <Button
             className="submit-button"

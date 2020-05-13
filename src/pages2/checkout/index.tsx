@@ -85,7 +85,6 @@ export default class Checkout extends Component<PageProps, PageState> {
   async componentDidShow () {
     let productList = []
     this.orderType = Current.router?.params?.orderType || 'cart'
-    // 预约商品
 
     // 立即购买进入结算页
     if (this.orderType === 'buyNow') {

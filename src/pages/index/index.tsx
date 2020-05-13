@@ -79,13 +79,6 @@ export default class Index extends Component<PageProps, PageState> {
       page: 1,
       pageSize: 10,
     })
-
-    this.orderCategoryId = this.props.systemConfig.home_order_category_id
-    // 加载在线定位数据
-    this.props.getProducts({
-      key: `category_${this.orderCategoryId}`,
-      categoryId: this.orderCategoryId,
-    })
   }
 
   // 跳转商品详情页
@@ -151,16 +144,12 @@ export default class Index extends Component<PageProps, PageState> {
       banners = [],
       recommendProducts,
       allProducts,
-      products,
       systemConfig: {
         index_video_1: videoUrl,
         index_video_2: videoUrl2,
-        home_order_category_id: orderCategoryId,
       },
     } = this.props
     const { swiperIndex, playVideo } = this.state
-
-    const orderCategoryProducts = products[`category_${orderCategoryId}`] || []
 
     return (
       <View className="index">
@@ -230,25 +219,6 @@ export default class Index extends Component<PageProps, PageState> {
                 onFullscreenChange={this.onFullScreenChange}
               >
               </Video>}
-            </View>
-          }
-          {/* 在线定位 */}
-          {
-            orderCategoryProducts && orderCategoryProducts.length > 0 && <View>
-              <View className="title title-line">在线定位</View>
-              <View className="list">
-                {
-                  orderCategoryProducts.map((product: any) => {
-                    const { id, pic, name, characteristic, minPrice, minScore } = product
-                    return <View key={id} onClick={this.goToProductDetail.bind(this, id)}>
-                      <Image className="product-image" src={pic} mode="aspectFill"></Image>
-                      <View className="name clamp">{name}</View>
-                      <View className="characteristic clamp">{characteristic}</View>
-                      <Price price={minPrice} score={minScore}></Price>
-                    </View>
-                  })
-                }
-              </View>
             </View>
           }
         </View>

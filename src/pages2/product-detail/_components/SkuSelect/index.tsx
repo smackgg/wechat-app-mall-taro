@@ -265,7 +265,6 @@ export default class SkuSelect extends Component<Props, State> {
         </View>
       </ScrollView>
 
-      {/* 预订按钮 */}
       <BottomBar>
         <Button
           className="submit-button"
