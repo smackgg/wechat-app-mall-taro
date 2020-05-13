@@ -301,7 +301,7 @@ export default class OrderDetail extends Component<Props, State> {
                 className="button"
                 hoverClass="none"
                 size="mini"
-                onClick={() => this.goPage(`/pages/a-package-1/reputation/index?id=${this.orderId}`)}
+                onClick={() => this.goPage(`/pages2/reputation/index?id=${this.orderId}`)}
               >去评价</Button>
             }
           </View>

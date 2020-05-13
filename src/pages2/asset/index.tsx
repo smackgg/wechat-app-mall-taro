@@ -147,7 +147,7 @@ export default class Asset extends Component<IProps, PageState> {
                   <Text>积分</Text>
                   <Text className="price2">{score}</Text>
                 </View>
-                <View className="score-shop-button" onClick={this.goPage.bind(this, '/pages/score-shop/index')}>
+                <View className="score-shop-button" onClick={this.goPage.bind(this, '/pages2/score-shop/index')}>
                   马上兑换 &gt;
                 </View>
               </View>

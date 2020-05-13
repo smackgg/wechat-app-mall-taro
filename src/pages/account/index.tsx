@@ -255,7 +255,7 @@ export default class Account extends Component<IProps, PageState> {
           </Swiper>
 
           <View className="vip-interests">
-            <View className="interest" onClick={this.goPage.bind(this, '/pages/score-shop/index')}>
+            <View className="interest" onClick={this.goPage.bind(this, '/pages2/score-shop/index')}>
               <Image
                 className="interest-image"
                 src={require(`@/assets/icon/vip${swiperLv.lv || 1}_score.png`)}

@@ -7,7 +7,7 @@ export default {
     'pages/category/index',
     // // 'pages/score-shop/index',
     'pages/shop-cart/index',
-    // 'pages/entry/index',
+    'pages/entry/index',
     // 'pages/vip-center/index',
     // 'pages/vip-center/my',
     // 'pages/vip-center/potences',
@@ -30,6 +30,7 @@ export default {
       'contact/index',
       'wifi/index',
       'coupons/index',
+      'score-shop/index'
     ],
   }],
   tabBar: {

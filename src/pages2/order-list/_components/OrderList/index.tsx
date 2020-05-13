@@ -115,7 +115,7 @@ export default class CouponList extends Component<Props, any> {
                     size="mini"
                     onClick={e => {
                       e.stopPropagation()
-                      this.goPage(`/pages/a-package-1/reputation/index?id=${id}`)
+                      this.goPage(`/pages2/reputation/index?id=${id}`)
                     }}
                   >去评价</Button>
                 </View>

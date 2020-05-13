@@ -1,8 +1,8 @@
-import { ComponentClass } from 'react'
+import React, { Component } from 'react'
 
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Image, Text, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtIcon, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 
 import { getBanners } from '@/redux/actions/config'
@@ -10,26 +10,15 @@ import { getBanners } from '@/redux/actions/config'
 import './index.scss'
 
 
-type PageStateProps = {
+type PageProps = {
   banners: any[]
   concatPhoneNumber: string
   mallName: string
+  getBanners: typeof getBanners
 }
-
-type PageDispatchProps = {
-  getBanners: (data: { type: string }) => Promise<void>
-}
-
-type PageOwnProps = {}
 
 type PageState = {
   showActionSheet: boolean
-}
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface Entry {
-  props: IProps
 }
 
 const BANNER_KEY = 'entry'
@@ -39,16 +28,19 @@ const BANNER_KEY = 'entry'
   concatPhoneNumber: config.systemConfig.concat_phone_number,
   mallName: config.systemConfig.mall_name,
 }), (dispatch: any) => ({
-  getBanners: (data: { type: string }) => dispatch(getBanners(data)),
+  getBanners: (data) => dispatch(getBanners(data)),
 }))
 
-class Entry extends Component {
-  config: Config = {
-    navigationBarTitleText: '',
-  }
+export default class Entry extends Component<PageProps, PageState> {
 
   state = {
     showActionSheet: false,
+  }
+
+  componentWillReceiveProps(nextProps: PageProps) {
+    if (nextProps.mallName !== this.props.mallName) {
+      this.setTitle(nextProps.mallName)
+    }
   }
 
   componentDidShow() {
@@ -58,19 +50,12 @@ class Entry extends Component {
     this.setTitle(this.props.mallName)
   }
 
-  componentWillReceiveProps(nextProps: IProps) {
-    if (nextProps.mallName !== this.props.mallName) {
-      this.setTitle(nextProps.mallName)
-    }
-  }
-
   // 设置页面标题
   setTitle = (title: string) => {
     Taro.setNavigationBarTitle({
       title: title || '首页',
     })
   }
-
 
   // 跳转 url
   goPage = (url: string, tabBar = false) => {
@@ -169,5 +154,3 @@ class Entry extends Component {
     )
   }
 }
-
-export default Entry as ComponentClass<PageOwnProps, PageState>
