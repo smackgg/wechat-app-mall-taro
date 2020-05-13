@@ -82,7 +82,7 @@ export default class SkuSelect extends Component<PageOwnProps, PageState> {
           const propertyChildIds = pre.attrs + propertie.id + ':' + item.id
           pre.promiseList.push(cError(productPrice({
             propertyChildIds,
-            goodsId: +productId,
+            goodsId: productId,
           })))
         })
       }
@@ -161,7 +161,7 @@ export default class SkuSelect extends Component<PageOwnProps, PageState> {
       .join(',')
     const res = await productPrice({
       propertyChildIds,
-      goodsId: +productId,
+      goodsId: productId,
     })
 
     if (this.props.isReserve) {

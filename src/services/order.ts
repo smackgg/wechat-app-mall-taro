@@ -44,7 +44,7 @@ export const orderStatistics = () => request({
 })
 
 // 订单列表
-export const orderList = (data: { status: string }) => request({
+export const orderList = (data: { status: number | string }) => request({
   url: '/order/list',
   method: 'POST',
   data,
