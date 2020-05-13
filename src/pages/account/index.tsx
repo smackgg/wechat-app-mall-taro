@@ -263,7 +263,7 @@ export default class Account extends Component<IProps, PageState> {
               />
               <Text>积分兑换</Text>
             </View>
-            <View className="interest" onClick={this.goPage.bind(this, '/pages/coupons/index')}>
+            <View className="interest" onClick={this.goPage.bind(this, '/pages2/coupons/index')}>
               <Image
                 className="interest-image"
                 src={require(`@/assets/icon/vip${swiperLv.lv || 1}_coupon.png`)}

@@ -140,7 +140,7 @@ export const userScoreLog = () => request({
 })
 
 // 查询用户优惠券
-export const coupons = (data: { status: number }) => request({
+export const coupons = (data?: { status: number }) => request({
   url: '/discounts/my',
   data,
 })

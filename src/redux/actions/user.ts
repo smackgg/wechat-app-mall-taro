@@ -123,7 +123,7 @@ export const getUserScoreLog = () => async (dispatch: Dispatch) => {
 
 
 // 获取优惠券列表
-export const getCoupons = (data: Parameters<typeof coupons>[0]) => async (dispatch: Dispatch) => {
+export const getCoupons = (data?: Parameters<typeof coupons>[0]) => async (dispatch: Dispatch) => {
   const [error, res] = await cError(coupons(data))
   return dispatch({
     type: GET_COUPONS_SUCCESS,
