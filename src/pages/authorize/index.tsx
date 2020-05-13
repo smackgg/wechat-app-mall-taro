@@ -39,7 +39,7 @@ export default class Auth extends Component<PageProps, PageState> {
   }
 
   componentWillMount() {
-    this.fromPage = decodeURIComponent(Current.router?.params.from || '/pages/entry/index')
+    this.fromPage = decodeURIComponent(Current.router?.params.from || '/pages/index/index')
 
     Taro.removeStorageSync('token')
     Taro.setNavigationBarColor({
@@ -48,7 +48,7 @@ export default class Auth extends Component<PageProps, PageState> {
     })
   }
 
-  fromPage = '/pages/entry/index'
+  fromPage = '/pages/index/index'
 
   // 用户点击授权
   getUserInfo = (e: TaroBaseEventOrig) => {
@@ -211,7 +211,7 @@ export default class Auth extends Component<PageProps, PageState> {
 
   // 跳转回首页
   goHome = () => Taro.navigateTo({
-    url: '/pages/entry/index',
+    url: '/pages/index/index',
   })
 
   render () {

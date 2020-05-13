@@ -82,8 +82,6 @@ class App extends Component {
         'concat_phone_number',
         'mall_name',
         'home_order_category_id',
-        'wifi_ssid',
-        'wifi_password',
         'mall_avatar',
       ].join(','),
     }))

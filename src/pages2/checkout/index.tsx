@@ -76,7 +76,6 @@ export default class Checkout extends Component<PageProps, PageState> {
 
   goodsJsonStr = ''
   orderType = 'cart'
-  reserveDate: any
 
   // setState promise 封装
   setStateP = data => new Promise(resolve => {
@@ -87,7 +86,6 @@ export default class Checkout extends Component<PageProps, PageState> {
     let productList = []
     this.orderType = Current.router?.params?.orderType || 'cart'
     // 预约商品
-    this.reserveDate = Current.router?.params?.reserveDate
 
     // 立即购买进入结算页
     if (this.orderType === 'buyNow') {
@@ -173,7 +171,7 @@ export default class Checkout extends Component<PageProps, PageState> {
     const { defaultAddress } = this.props
     let postData: any = {
       goodsJsonStr: this.goodsJsonStr,
-      remark: !this.reserveDate ? remark : `${remark} ===> 在线定位日期: ${this.reserveDate}`,
+      remark,
       peisongType,
       calculate: !e, // 计算价格
     }

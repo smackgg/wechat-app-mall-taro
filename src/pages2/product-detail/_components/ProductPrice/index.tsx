@@ -13,7 +13,6 @@ type Props = {
   basicInfo?: Product
   logistics: any
   productId?: string
-  isReserve: boolean
 }
 
 type State = {
@@ -26,14 +25,12 @@ export default class ProductPrice extends Component<Props, State> {
     basicInfo: PropTypes.object,
     logistics: PropTypes.any,
     productId: PropTypes.string,
-    isReserve: PropTypes.bool.isRequired
   }
 
   static defaultProps = {
     basicInfo: undefined,
     logistics: null,
     productId: undefined,
-    isReserve: false,
   }
 
   state = {
@@ -73,7 +70,6 @@ export default class ProductPrice extends Component<Props, State> {
       },
       logistics,
       productId,
-      isReserve,
     } = this.props
 
     const { showActionSheet } = this.state
@@ -93,7 +89,6 @@ export default class ProductPrice extends Component<Props, State> {
           <View className="price-wrapper">
             <Price price={minPrice} score={minScore}></Price>
             {originalPrice !== minPrice && <Text className="original-price">￥{originalPrice}</Text>}
-            {isReserve && <Text className="reserve-tip">[订金/每小时]</Text>}
           </View>
           {logistics && <Text className="name">邮费：{logistics.isFree ? '包邮' : '￥' + logistics.details[0].firstAmount}</Text>}
           <Text>已售：{numberOrders}</Text>

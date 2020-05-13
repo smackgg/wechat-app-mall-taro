@@ -106,11 +106,6 @@ export default class VipCenter extends Component<PageProps, PageState> {
       image: potenceIcon,
       onClick: () => this.goPage('/pages2/vip-center/potences'),
     },
-    {
-      title: '我的信息',
-      image: myIcon,
-      onClick: () => this.goPage('/pages/account/extinfo'),
-    },
     // {
     //   title: '最近活动',
     //   image: noticeIcon,

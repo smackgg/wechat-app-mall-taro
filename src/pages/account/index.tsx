@@ -353,12 +353,6 @@ export default class Account extends Component<PageProps, PageState> {
               title: '收货地址',
               url: '/pages2/address-select/index?type=1',
             }, {
-              title: '店铺位置、导航',
-              url: '/pages2/location/index',
-            }, {
-              title: '店内 Wi-Fi',
-              url: '/pages2/wifi/index',
-            }, {
               title: '联系客服',
               url: '',
               contact: true,

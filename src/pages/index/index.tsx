@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Taro from '@tarojs/taro'
-import { View, Image, Video, Swiper, SwiperItem, Text } from '@tarojs/components'
+import { View, Image, Video, Swiper, SwiperItem } from '@tarojs/components'
 
 import { getBanners } from '@/redux/actions/config'
 import { getProducts } from '@/redux/actions/goods'
 import classNames from 'classnames'
 import { Price } from '@/components'
-import { setCartBadge, config as uConfig } from '@/utils'
-
-import { AtIcon } from 'taro-ui'
+import { setCartBadge } from '@/utils'
 import './index.scss'
-
-const { requireEntryPage } = uConfig
 
 // import { add, minus, asyncAdd } from '../../redux/actions/counter'
 
@@ -39,8 +35,7 @@ type PageProps = {
 
 type PageState = {
   swiperIndex: number
-  playVideo: boolean,
-  statusBarHeight: number,
+  playVideo: boolean
 }
 
 @connect(({ config, goods: { products } }) => ({
@@ -58,15 +53,10 @@ export default class Index extends Component<PageProps, PageState> {
   state = {
     swiperIndex: 0,
     playVideo: false,
-    statusBarHeight: 0,
   }
 
   componentWillMount() {
     setCartBadge()
-    const { statusBarHeight } = Taro.getSystemInfoSync()
-    this.setState({
-      statusBarHeight,
-    })
   }
 
   orderCategoryId: string
@@ -152,7 +142,7 @@ export default class Index extends Component<PageProps, PageState> {
   // 返回首页
   goHome = () => {
     Taro.redirectTo({
-      url: '/pages/entry/index',
+      url: '/pages/index/index',
     })
   }
 
@@ -168,22 +158,12 @@ export default class Index extends Component<PageProps, PageState> {
         home_order_category_id: orderCategoryId,
       },
     } = this.props
-    const { swiperIndex, playVideo, statusBarHeight } = this.state
+    const { swiperIndex, playVideo } = this.state
 
     const orderCategoryProducts = products[`category_${orderCategoryId}`] || []
 
     return (
       <View className="index">
-        {requireEntryPage && <View
-          className="go-home"
-          style={{
-            paddingTop: `${statusBarHeight * 2}rpx`,
-          }}
-          onClick={this.goHome}
-        >
-          <AtIcon value="chevron-left" size="20" color="#fff"></AtIcon>
-          <Text>首页</Text>
-        </View>}
         {/* banner */}
         <Swiper
           className="swiper"
