@@ -8,9 +8,9 @@ export default {
     // // 'pages/score-shop/index',
     'pages/shop-cart/index',
     'pages/entry/index',
-    // 'pages/vip-center/index',
-    // 'pages/vip-center/my',
-    // 'pages/vip-center/potences',
+    // 'page2/vip-center/index',
+    // 'pages2/vip-center/my',
+    // 'pages2/vip-center/potences',
   ],
   subPackages: [{
     root: 'pages2',
@@ -30,7 +30,10 @@ export default {
       'contact/index',
       'wifi/index',
       'coupons/index',
-      'score-shop/index'
+      'score-shop/index',
+      'vip-center/index',
+      'vip-center/my',
+      'vip-center/potences',
     ],
   }],
   tabBar: {

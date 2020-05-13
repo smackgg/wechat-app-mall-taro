@@ -271,7 +271,7 @@ export default class Account extends Component<IProps, PageState> {
               />
               <Text>领券中心</Text>
             </View>
-            <View className="interest" onClick={this.goPage.bind(this, '/pages/vip-center/index')}>
+            <View className="interest" onClick={this.goPage.bind(this, '/page2/vip-center/index')}>
               <Image
                 className="interest-image"
                 src={require(`@/assets/icon/vip${swiperLv.lv || 1}_more.png`)}

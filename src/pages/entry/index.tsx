@@ -86,7 +86,7 @@ export default class Entry extends Component<PageProps, PageState> {
     },
     {
       title: '会员中心',
-      onClick: () => this.goPage('/pages/vip-center/index'),
+      onClick: () => this.goPage('/page2/vip-center/index'),
     },
     {
       title: '专属顾问',

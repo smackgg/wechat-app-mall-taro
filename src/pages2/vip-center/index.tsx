@@ -1,34 +1,29 @@
-import { ComponentClass } from 'react';
+import React, { Component } from 'react'
 
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Image, Text, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtActionSheet, AtActionSheetItem } from 'taro-ui'
 
 import { getBanners } from '@/redux/actions/config'
+// icons
+import myIcon from './res/vip_my.jpg'
+import couponsIcon from './res/vip_coupons.jpg'
+import potenceIcon from './res/vip_potence.jpg'
+// import noticeIcon from './res/vip_notice.jpg'
+import contactIcon from './res/vip_contact.jpg'
 
 import './index.scss'
 
-type PageStateProps = {
+type PageProps = {
   user: any
   banners: any[]
   concatPhoneNumber: string
+  getBanners: typeof getBanners
 }
-
-type PageDispatchProps = {
-  getBanners: (data: { type: string }) => Promise<void>
-}
-
-type PageOwnProps = {}
 
 type PageState = {
   showActionSheet: boolean
-}
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface VipCenter {
-  props: IProps
 }
 
 const BANNER_KEY = 'entry'
@@ -40,11 +35,7 @@ const BANNER_KEY = 'entry'
   getBanners: (data: { type: string }) => dispatch(getBanners(data)),
 }))
 
-class VipCenter extends Component {
-  config: Config = {
-    navigationBarTitleText: '会员中心',
-  }
-
+export default class VipCenter extends Component<PageProps, PageState> {
   state = {
     showActionSheet: false,
   }
@@ -102,32 +93,32 @@ class VipCenter extends Component {
   centerList = [
     {
       title: '我的会员',
-      image: '/assets/icon/vip_my.jpg',
-      onClick: () => this.goPage('/pages/vip-center/my'),
+      image: myIcon,
+      onClick: () => this.goPage('/pages2/vip-center/my'),
     },
     {
       title: '我的礼券',
-      image: '/assets/icon/vip_coupons.jpg',
-      onClick: () => this.goPage('/pages/coupons/index'),
+      image: couponsIcon,
+      onClick: () => this.goPage('/pages2/coupons/index'),
     },
     {
       title: '会员权益',
-      image: '/assets/icon/vip_potence.jpg',
-      onClick: () => this.goPage('/pages/vip-center/potences'),
+      image: potenceIcon,
+      onClick: () => this.goPage('/pages2/vip-center/potences'),
     },
     {
       title: '我的信息',
-      image: '/assets/icon/vip_my.jpg',
+      image: myIcon,
       onClick: () => this.goPage('/pages/account/extinfo'),
     },
     // {
     //   title: '最近活动',
-    //   image: '/assets/icon/vip_notice.jpg',
+    //   image: noticeIcon,
     //   onClick: () => this.goPage('/pages/vip-center/activity'),
     // },
     {
       title: '专属顾问',
-      image: '/assets/icon/vip_contact.jpg',
+      image: contactIcon,
       onClick: () => this.onToggleActionSheet(),
     },
   ]
@@ -137,7 +128,7 @@ class VipCenter extends Component {
     const { userDetail: { nick } } = this.props.user
     const { showActionSheet } = this.state
     return (
-      <View className="container">
+      <View className="vip-center__container">
         {/* 会员中心头部 */}
         <View className="header">
           {banners[1] && <Image
@@ -186,5 +177,3 @@ class VipCenter extends Component {
     )
   }
 }
-
-export default VipCenter as ComponentClass<PageOwnProps, PageState>

@@ -1,33 +1,18 @@
-import { ComponentClass } from 'react'
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
 import { View } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { getLevelList, getLevelDetail } from '@/redux/actions/user'
-import { INITIAL_STATE as USER_TYPE } from '@/redux/reducers/user'
+import { UserState } from '@/redux/reducers/user'
 
 import './potences.scss'
 
-type PageStateProps = {
-  user: USER_TYPE
+type PageProps = {
+  user: UserState
+  getLevelList: typeof getLevelList
+  getLevelDetail: typeof getLevelDetail
 }
-
-type PageDispatchProps = {
-  getUserDetail: () => Promise<void>
-  getLevelList: () => Promise<void>
-  getUserAmount: () => Promise<void>
-  getOrderStatistics: () => Promise<void>
-  getLevelDetail: (data: { id: string }) => Promise<void>
-}
-
-type PageOwnProps = {}
 
 type PageState = {
-}
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface Potences {
-  props: IProps
 }
 
 @connect(({ user }) => ({
@@ -36,11 +21,7 @@ interface Potences {
   getLevelList: () => dispatch(getLevelList()),
   getLevelDetail: (data: { id: string })  => dispatch(getLevelDetail(data)),
 }))
-class Potences extends Component {
-  config = {
-    navigationBarTitleText: '会员权益',
-  }
-
+export default class Potences extends Component<PageProps, PageState> {
   async componentDidShow() {
     // 获取vip等级列表
     await this.props.getLevelList()
@@ -56,7 +37,7 @@ class Potences extends Component {
     } = this.props.user
 
     return (
-      <View className="container">
+      <View className="vip-center__potences">
         {
           levelList.map((level: any) => {
             const { id, name, potences = [], upgradeAmount } = level
@@ -79,6 +60,3 @@ class Potences extends Component {
     )
   }
 }
-
-export default Potences as ComponentClass<PageOwnProps, PageState>
-

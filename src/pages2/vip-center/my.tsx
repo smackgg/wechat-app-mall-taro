@@ -1,36 +1,25 @@
-import { ComponentClass } from 'react'
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
 import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { getLevelList, getUserAmount, getLevelDetail } from '@/redux/actions/user'
 
 import classNames from 'classnames'
-import { INITIAL_STATE as USER_TYPE } from '@/redux/reducers/user'
+import { UserState } from '@/redux/reducers/user'
+// icons
+import accountBg from '@/assets/img/account_bg.png'
 
 import './my.scss'
 
-type PageStateProps = {
-  user: USER_TYPE
+type PageProps = {
+  user: UserState
+  getLevelList: typeof getLevelList
+  getLevelDetail: typeof getLevelDetail
+  getUserAmount: typeof getUserAmount
 }
-
-type PageDispatchProps = {
-  getUserDetail: () => Promise<void>
-  getLevelList: () => Promise<void>
-  getUserAmount: () => Promise<void>
-  getOrderStatistics: () => Promise<void>
-  getLevelDetail: (data: { id: string }) => Promise<void>
-}
-
-type PageOwnProps = {}
 
 type PageState = {
   swiperIndex: number
-}
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
-interface MyVip {
-  props: IProps
+  loading: boolean
 }
 
 const SWIPER_ITEM_MARGIN = '45rpx'
@@ -38,15 +27,11 @@ const SWIPER_ITEM_MARGIN = '45rpx'
   user,
 }), (dispatch: any) => ({
   getLevelList: () => dispatch(getLevelList()),
-  getLevelDetail: (data: { id: string }) => dispatch(getLevelDetail(data)),
+  getLevelDetail: data => dispatch(getLevelDetail(data)),
   getUserAmount: () => dispatch(getUserAmount()),
 }))
 
-class MyVip extends Component {
-  config = {
-    navigationBarTitleText: '我的会员',
-  }
-
+export default class MyVip extends Component<PageProps, PageState> {
   state = {
     swiperIndex: 0,
     loading: true,
@@ -96,20 +81,20 @@ class MyVip extends Component {
       return null
     }
     return (
-      <View className="container">
+      <View className="vip-center__my">
         {
           lv === 0 && <View className="no-data">亲爱的{nick}，您还不是本店会员</View>
         }
         {
           lv !== 0 && <View className="vip">
             <View className="userinfo" style={{ backgroundColor: '#181923' }}>
-              <Image className="userinfo-bg" src="/assets/img/account_bg.png"></Image>
+              <Image className="userinfo-bg" src={accountBg}></Image>
               <View className="content">
                 <Image className="avatar" src={avatarUrl}></Image>
                 <View className="info">
                   <View className="nickname">{nick}</View>
                   {lv !== 0 && <View className="vip-info">
-                    <Image className="vip-icon" src={`/assets/icon/vip${lv}_icon.png`}></Image>
+                    <Image className="vip-icon" src={require(`@/assets/icon/vip${lv}_icon.png`)}></Image>
                     <View className={`vip-name vip${lv}`}>{name}</View>
                     <View className={`vip-level vip${lv}`}>Lv.{lv}</View>
                   </View>}
@@ -142,7 +127,7 @@ class MyVip extends Component {
                         className={classNames('image', {
                           active: swiperIndex === index,
                         })}
-                        src={`/assets/img/vip${level.lv}_bg.png`}
+                        src={require(`@/assets/img/vip${level.lv}_bg.png`)}
                         mode="aspectFill"
                       />
                       <View className="vip-names">
@@ -214,5 +199,3 @@ class MyVip extends Component {
     )
   }
 }
-
-export default MyVip as ComponentClass<PageOwnProps, PageState>
