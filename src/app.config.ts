@@ -18,15 +18,20 @@ export default {
     // // 'pages/score-shop/index',
     // // 'pages/reputation/index',
     'pages/shop-cart/index',
-    'pages/recharge/index',
     // 'pages/entry/index',
     // 'pages/vip-center/index',
     // 'pages/vip-center/my',
     // 'pages/vip-center/potences',
-    'pages/contact/index',
-    'pages/wifi/index',
-    'pages/location/index'
   ],
+  subPackages: [{
+    root: 'pages2',
+    pages: [
+      'location/index',
+      'contact/index',
+      'wifi/index',
+      'recharge/index'
+    ],
+  }],
   tabBar: {
     color: '#333333',
     selectedColor: '#D6B44C',

@@ -126,7 +126,7 @@ export default class Asset extends Component<IProps, PageState> {
                 <Text>余额(元)</Text>
                 <Text className="price">{priceToFloat(balance)}</Text>
               </View>
-              <View className="button" onClick={this.goPage.bind(this, '/pages/recharge/index')}>
+              <View className="button" onClick={this.goPage.bind(this, '/pages2/recharge/index')}>
                 充值
               </View>
               <View className="price-info">

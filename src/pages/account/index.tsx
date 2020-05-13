@@ -355,16 +355,16 @@ export default class Account extends Component<IProps, PageState> {
           {
             [{
               title: '在线买单',
-              url: '/pages/recharge/index?type=1',
+              url: '/pages2/recharge/index?type=1',
             }, {
               title: '收货地址',
               url: '/pages/address-select/index?type=1',
             }, {
               title: '店铺位置、导航',
-              url: '/pages/location/index',
+              url: '/pages2/location/index',
             }, {
               title: '店内 Wi-Fi',
-              url: '/pages/wifi/index',
+              url: '/pages2/wifi/index',
             }, {
               title: '联系客服',
               url: '',
