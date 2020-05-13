@@ -13,7 +13,7 @@ export const productDetail = (data: { id: string }) => request({
 // 获取sku库存、价格
 export const productPrice = (data: {
   propertyChildIds: string,
-  goodsId: number,
+  goodsId: string,
 }) => request({
   url: '/shop/goods/price',
   method: 'POST',
