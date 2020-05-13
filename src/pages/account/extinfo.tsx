@@ -1,24 +1,39 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Picker, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtButton, AtInput } from 'taro-ui'
 import jobCategory from '@/third-utils/jobCategory'
 import { modifyUserInfo } from '@/services/user'
 import { showToast, cError } from '@/utils'
+import { UserState } from '@/redux/reducers/user'
 
 import './extinfo.scss'
 
+
+type Props = {
+  userDetail: UserState['userDetail']
+}
+
+type State = {
+  form: {
+    birthday?: string,
+    mail?: string,
+    salary?: string,
+    name?: string,
+    job?: any[],
+  },
+  jobCategory: any[],
+  editing: boolean,
+}
+
+const noop = () => {}
 @connect(({ user: { userDetail } }) => ({
   userDetail,
 }))
-export default class ExtInfo extends Component {
-  config = {
-    navigationBarTitleText: '个人信息',
-  }
-
-  state = {
-    form: {
-    },
+export default class ExtInfo extends Component<Props, State> {
+  state: State = {
+    form: {},
     jobCategory: [jobCategory],
     editing: false,
   }
@@ -27,7 +42,7 @@ export default class ExtInfo extends Component {
     this.initFormData(this.props.userDetail)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.userDetail !== this.props.userDetail) {
       this.initFormData(nextProps.userDetail)
     }
@@ -43,7 +58,7 @@ export default class ExtInfo extends Component {
   }
 
   // 表单变化
-  handleChange = (key, e) => {
+  handleChange = (key: string, e) => {
     this.setState({
       form: {
         ...this.state.form,
@@ -63,6 +78,7 @@ export default class ExtInfo extends Component {
 
     const { label, children } = jobs[index][e.target.value]
     job[index] = label
+
     if (children) {
       jobs[index + 1] = children
       jobs = jobs.slice(0, index + 2)
@@ -100,7 +116,7 @@ export default class ExtInfo extends Component {
       name,
       job,
     } = this.state.form
-    const { jobs } = this.state
+    const { jobCategory: jobs } = this.state
 
     if (!birthday) {
       Taro.showToast({
@@ -144,7 +160,7 @@ export default class ExtInfo extends Component {
 
     // 更新用户信息
     const [error] = await cError(modifyUserInfo({
-      nick: this.props.userDetail.nick,
+      nick: this.props.userDetail.nick || '',
       extJsonStr: JSON.stringify(data),
     }))
 
@@ -199,13 +215,14 @@ export default class ExtInfo extends Component {
     const isExtJob = typeof job === 'string'
 
     return (
-      <View className="container">
+      <View className="extinfo-container">
         <AtInput
           name="nick"
           title="昵称"
           type="text"
           value={nick}
           disabled
+          onChange={noop}
         />
         <AtInput
           name="region"
@@ -213,6 +230,7 @@ export default class ExtInfo extends Component {
           type="text"
           value={`${province} ${city}`}
           disabled
+          onChange={noop}
         />
         <AtInput
           name="name"
@@ -231,8 +249,8 @@ export default class ExtInfo extends Component {
           onChange={this.handleChange.bind(this, ' mail')}
         />
         <View className="picker-item">
-            <View className="label">出生日期</View>
-          <Picker mode="date" onChange={this.handleChange.bind(this, 'birthday')}>
+          <View className="label">出生日期</View>
+          <Picker value="" mode="date" onChange={this.handleChange.bind(this, 'birthday')}>
             <View className="picker">
               {birthday || <Text className="text">请选择日期</Text>}
             </View>
@@ -241,7 +259,7 @@ export default class ExtInfo extends Component {
 
         <View className="picker-item">
           <View className="label">薪资水平</View>
-          <Picker mode="selector" range={this.salarys} onChange={this.handleSalaryChange}>
+          <Picker value={0} mode="selector" range={this.salarys} onChange={this.handleSalaryChange}>
             <View className="picker">
               {salary || <Text className="text">请选择薪资范围</Text>}
             </View>
@@ -251,12 +269,12 @@ export default class ExtInfo extends Component {
         <View className="picker-item">
           <View className="label">职业</View>
           {
-            jobs.map((jobItem, index) => <Picker key={index} mode="selector" range={jobItem} onChange={this.handleJobChange.bind(this, index)} rangeKey="label">
+            jobs.map((jobItem, index) => <Picker value={0} key={index} mode="selector" range={jobItem} onChange={this.handleJobChange.bind(this, index)} rangeKey="label">
               <View className="picker">
                 {
                   isExtJob && <Text className="text">{job}</Text>
                 }
-                {!isExtJob && (job[index] || <Text className="text">请选择</Text>)}
+                {!isExtJob && ((job && job[index]) || <Text className="text">请选择</Text>)}
               </View>
             </Picker>)
           }
