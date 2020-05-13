@@ -15,7 +15,7 @@ import { cError } from '@/utils'
 
 import './index.scss'
 
-type PageOwnProps = {
+type Props = {
   productId: string,
   productInfoProps: ProductDetailType,
   selectSkuProps: any,
@@ -25,7 +25,7 @@ type PageOwnProps = {
   addCart: typeof addCart,
 }
 
-type PageState = {
+type State = {
   selectSku: any
   productInfo: ProductDetailType
   amount: number
@@ -35,7 +35,7 @@ type PageState = {
   }
 }
 
-export default class SkuSelect extends Component<PageOwnProps, PageState> {
+export default class SkuSelect extends Component<Props, State> {
   static propTypes = {
     productId: PropTypes.string.isRequired,
     productInfoProps: PropTypes.object.isRequired,

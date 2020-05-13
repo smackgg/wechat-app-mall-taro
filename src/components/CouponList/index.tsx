@@ -26,7 +26,7 @@ type Coupon = {
   statusStr: string,
 }
 
-type PageOwnProps = {
+type Props = {
   list: Coupon[],
   isGetCoupon?: boolean, // 是否是领取优惠券
   isUseCoupon?: boolean, // 是否是使用优惠券
@@ -34,7 +34,7 @@ type PageOwnProps = {
   onSelectCoupon?: (coupon: Coupon) => void,
 }
 
-export default class CouponList extends Component<PageOwnProps> {
+export default class CouponList extends Component<Props> {
   static propTypes = {
     list: PropTypes.array,
     isGetCoupon: PropTypes.bool, // 是否是领取优惠券

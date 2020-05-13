@@ -21,25 +21,18 @@ import arrowRight from '@/assets/icon/arrow-right.png'
 import './index.scss'
 
 const SWIPER_ITEM_MARGIN = '45rpx'
-type PageStateProps = {
+type PageProps = {
   user: UserState
   orderStatistics: OrderState['orderStatistics']
-}
-
-type PageDispatchProps = {
   getUserDetail: typeof getUserDetail
   getLevelList: typeof getLevelList
   getUserAmount: typeof getUserAmount
   getOrderStatistics: typeof getOrderStatistics
 }
 
-type PageOwnProps = {}
-
 type PageState = {
   swiperIndex: number
 }
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 type OrderStatus = {
   icon: string
@@ -66,7 +59,7 @@ type OrderStatus = {
   }),
 )
 
-export default class Account extends Component<IProps, PageState> {
+export default class Account extends Component<PageProps, PageState> {
   state = {
     swiperIndex: 0,
   }

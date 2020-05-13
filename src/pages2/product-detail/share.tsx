@@ -24,15 +24,10 @@ const CANVAS_BASE_WIDTH = 300
 // 真实的 canvas 大小
 const CANVAS_WIDTH = ratio * CANVAS_BASE_WIDTH
 
-type PageStateProps = {
+type PageProps = {
   productDetail: ProductsState['productDetail']
-}
-
-type PageDispatchProps = {
   getProductDetail: typeof getProductDetail
 }
-
-type PageOwnProps = {}
 
 type PageState = {
   canvasStyle: {
@@ -40,8 +35,6 @@ type PageState = {
     height: number
   }
 }
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 @connect(
   ({ goods }) => ({
@@ -52,7 +45,7 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
   }),
 )
 
-export default class ShareProduct extends Component<IProps, PageState> {
+export default class ShareProduct extends Component<PageProps, PageState> {
   state = {
     canvasStyle: {
       width: CANVAS_WIDTH,

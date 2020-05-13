@@ -14,20 +14,13 @@ import './index.scss'
 
 const { theme } = config
 
-type PageStateProps = {
+type PageProps = {
   addressList: UserState['addressList']
-}
-
-type PageDispatchProps = {
   getAddressList: typeof getAddressList
 }
 
-type PageOwnProps = {}
-
 type PageState = {
 }
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 // 首页多加滤镜
 @connect(({ user: { addressList } }) => ({
@@ -36,7 +29,7 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
   getAddressList: () => dispatch(getAddressList()),
 }))
 
-export default class SelectAddress extends Component<IProps, PageState> {
+export default class SelectAddress extends Component<PageProps, PageState> {
   componentWillMount() {
     this.type = +(Current.router?.params?.type || 0)
 

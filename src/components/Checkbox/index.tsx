@@ -6,12 +6,12 @@ import classNames from 'classnames'
 
 import './index.scss'
 
-type PageOwnProps = {
+type Props = {
   checked: boolean,
   onChange?: (checked: boolean) => void
 }
 
-export default function Checkbox(props: PageOwnProps) {
+export default function Checkbox(props: Props) {
   const { checked, onChange } = props
 
   const onClick = () => {

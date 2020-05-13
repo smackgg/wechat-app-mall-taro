@@ -9,18 +9,18 @@ import { Product } from '@/redux/reducers/goods'
 
 import './index.scss'
 
-type PageOwnProps = {
+type Props = {
   basicInfo?: Product
   logistics: any
   productId?: string
   isReserve: boolean
 }
 
-type PageState = {
+type State = {
   showActionSheet: boolean
 }
 
-export default class ProductPrice extends Component<PageOwnProps, PageState> {
+export default class ProductPrice extends Component<Props, State> {
 
   static propTypes = {
     basicInfo: PropTypes.object,

@@ -12,24 +12,16 @@ import classNames from 'classnames'
 
 import './index.scss'
 
-type PageStateProps = {
+type PageProps = {
   category: ProductsState['category']
   products: ProductsState['products']
-}
-
-
-type PageDispatchProps = {
-  getCategory: () => Promise<void>
+  getCategory: typeof getCategory
   getProducts: typeof getProducts
 }
-
-type PageOwnProps = {}
 
 type PageState = {
   activeCategory: number
 }
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 // 首页多加滤镜
 @connect(({ goods: { products }, goods }) => ({
@@ -40,7 +32,7 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
   getProducts: data => dispatch(getProducts(data)),
 }))
 
-export default class Category extends Component<IProps, PageState> {
+export default class Category extends Component<PageProps, PageState> {
   state = {
     activeCategory: 0,
   }

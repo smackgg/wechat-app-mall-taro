@@ -11,25 +11,19 @@ import { CashScoreLog, UserAmount } from '@/redux/reducers/user'
 import { priceToFloat } from '@/utils'
 import './index.scss'
 
-type PageStateProps = {
+type PageProps = {
   userAmount: UserAmount
   cashLog: CashScoreLog
   scoreLog: CashScoreLog
-}
-
-type PageDispatchProps = {
   getUserCashLog: typeof getUserCashLog
   getUserAmount: typeof getUserAmount
   getUserScoreLog: typeof getUserScoreLog
 }
 
-type PageOwnProps = {}
 
 type PageState = {
   tabIndex: number
 }
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 @connect(
   ({
@@ -50,7 +44,7 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
   }),
 )
 
-export default class Asset extends Component<IProps, PageState> {
+export default class Asset extends Component<PageProps, PageState> {
   state = {
     tabIndex: 0,
   }

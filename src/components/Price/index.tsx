@@ -5,13 +5,13 @@ import { priceToFloat } from '@/utils'
 import './index.scss'
 
 
-type PageOwnProps = {
+type Props = {
   price?: number,
   className?: string,
   score?: number,
 }
 
-export default class Price extends Component<PageOwnProps> {
+export default class Price extends Component<Props> {
   static propTypes = {
     price: PropTypes.number,
     score: PropTypes.number,

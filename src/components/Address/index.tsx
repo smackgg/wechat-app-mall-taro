@@ -8,7 +8,7 @@ import addressIcon from '@/assets/icon/address.png'
 import './index.scss'
 
 
-type PageOwnProps = {
+type Props = {
   needLogistics?: boolean,
   address: {
     id: string,
@@ -22,10 +22,10 @@ type PageOwnProps = {
   type?: number, // 0: 结算页过来的，可以跳转地址列表；2: 订单的地址，不可以
 }
 
-type PageState = {
+type State = {
 }
 
-export default class Address extends Component<PageOwnProps, PageState> {
+export default class Address extends Component<Props, State> {
   static propTypes = {
     needLogistics: PropTypes.bool,
     address: PropTypes.object.isRequired,

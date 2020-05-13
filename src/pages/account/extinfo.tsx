@@ -11,11 +11,11 @@ import { UserState } from '@/redux/reducers/user'
 import './extinfo.scss'
 
 
-type Props = {
+type PageProps = {
   userDetail: UserState['userDetail']
 }
 
-type State = {
+type PageState = {
   form: {
     birthday?: string,
     mail?: string,
@@ -31,8 +31,8 @@ const noop = () => {}
 @connect(({ user: { userDetail } }) => ({
   userDetail,
 }))
-export default class ExtInfo extends Component<Props, State> {
-  state: State = {
+export default class ExtInfo extends Component<PageProps, PageState> {
+  state: PageState = {
     form: {},
     jobCategory: [jobCategory],
     editing: false,
@@ -42,7 +42,7 @@ export default class ExtInfo extends Component<Props, State> {
     this.initFormData(this.props.userDetail)
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: PageProps) {
     if (nextProps.userDetail !== this.props.userDetail) {
       this.initFormData(nextProps.userDetail)
     }

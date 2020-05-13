@@ -9,12 +9,12 @@ import { OrderState } from '@/redux/reducers/order'
 import List from './_components/OrderList'
 import './index.scss'
 
-type PropsType = {
+type PageProps = {
   orderList: OrderState['orderList']
   getOrderList: typeof getOrderList
 }
 
-type StateType = {
+type PageState = {
   tabIndex: number
 }
 
@@ -31,7 +31,7 @@ type StateType = {
   }),
 )
 
-export default class OrderList extends Component<PropsType, StateType> {
+export default class OrderList extends Component<PageProps, PageState> {
   state = {
     tabIndex: 0,
   }

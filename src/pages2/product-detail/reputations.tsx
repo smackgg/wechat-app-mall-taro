@@ -8,7 +8,7 @@ import { ReputationCard } from './_components'
 
 import './index.scss'
 
-type PageStateProps = {
+type PageProps = {
   reputations: ProductsState['reputations']
 }
 
@@ -18,7 +18,7 @@ type PageStateProps = {
   }),
 )
 
-export default class Reputations extends Component<PageStateProps, {}> {
+export default class Reputations extends Component<PageProps, {}> {
   componentWillMount() {
     // 获取页面商品id
     let { id } = Current.router?.params || {}

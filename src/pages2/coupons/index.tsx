@@ -11,7 +11,7 @@ import { UserState } from '@/redux/reducers/user'
 
 import './index.scss'
 
-type Props = {
+type PageProps = {
   coupons: UserState['coupons']
   getableCoupons: UserState['getableCoupons']
   invalidCoupons: UserState['coupons']
@@ -40,7 +40,7 @@ type PageState = {
   }),
 )
 
-export default class Coupons extends Component<Props, PageState> {
+export default class Coupons extends Component<PageProps, PageState> {
   state = {
     tabIndex: 0,
   }

@@ -13,15 +13,10 @@ import { UserState } from '@/redux/reducers/user'
 
 import './index.scss'
 
-type PageStateProps = {
+type PageProps = {
   shopCartInfo: UserState['shopCartInfo']
-}
-
-type PageDispatchProps = {
   updateCart: typeof updateCart
 }
-
-type PageOwnProps = {}
 
 type PageState = {
   editing: boolean,
@@ -30,8 +25,6 @@ type PageState = {
   productList: Product[],
   selectAll: boolean,
 }
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 @connect(
   ({
@@ -46,7 +39,7 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
   }),
 )
 
-export default class ShopCart extends Component<IProps, PageState> {
+export default class ShopCart extends Component<PageProps, PageState> {
 
   state = {
     editing: false,
@@ -60,7 +53,7 @@ export default class ShopCart extends Component<IProps, PageState> {
     setCartBadge()
   }
 
-  componentWillReceiveProps(nextProps: PageStateProps) {
+  componentWillReceiveProps(nextProps: PageProps) {
     this.handleData(nextProps.shopCartInfo)
   }
 

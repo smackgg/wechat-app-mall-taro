@@ -27,28 +27,21 @@ const { requireEntryPage } = uConfig
 //
 // #endregion
 
-type PageStateProps = {
+type PageProps = {
   banners: any[]
   systemConfig: { [key: string]: string }
   recommendProducts: []
   allProducts: []
   products: { [key: string]: any }
-}
-
-type PageDispatchProps = {
   getBanners: typeof getBanners
   getProducts: typeof getProducts
 }
-
-type PageOwnProps = {}
 
 type PageState = {
   swiperIndex: number
   playVideo: boolean,
   statusBarHeight: number,
 }
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 @connect(({ config, goods: { products } }) => ({
   products,
@@ -61,7 +54,7 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
   getProducts: data => dispatch(getProducts(data)),
 }))
 
-export default class Index extends Component<IProps, PageState> {
+export default class Index extends Component<PageProps, PageState> {
   state = {
     swiperIndex: 0,
     playVideo: false,

@@ -5,14 +5,14 @@ import PropTypes from 'prop-types'
 
 import './index.scss'
 
-type PageOwnProps = {
+type Props = {
 }
 
-type PageState = {
+type State = {
   isIphoneX: boolean,
 }
 
-export default class BottomBar extends Component<PageOwnProps, PageState> {
+export default class BottomBar extends Component<Props, State> {
   static propTypes = {
     children: PropTypes.node,
   }

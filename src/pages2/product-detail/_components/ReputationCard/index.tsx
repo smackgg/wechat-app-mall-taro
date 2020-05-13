@@ -6,15 +6,15 @@ import PropTypes from 'prop-types'
 import { Reputation } from '@/redux/reducers/goods'
 import './index.scss'
 
-type PageOwnProps = {
+type Props = {
   showAllRemark?: boolean
   reputation: Reputation
 }
 
-type PageState = {
+type State = {
 }
 
-export default class ReputationCard extends Component<PageOwnProps, PageState> {
+export default class ReputationCard extends Component<Props, State> {
   static propTypes = {
     reputation: PropTypes.object,
     showAllRemark: PropTypes.bool,

@@ -7,7 +7,7 @@ import { AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 
 import './index.scss'
 
-type PageStateProps = {
+type PageProps = {
   concatPhoneNumber: string
   wifiSsid: string
   wifiPassword: string
@@ -15,12 +15,6 @@ type PageStateProps = {
   mallAvatar: string
 }
 
-type PageOwnProps = {}
-
-type PageState = {
-}
-
-type IProps = PageStateProps & PageOwnProps
 
 @connect(({ config: { systemConfig: { concat_phone_number, wifi_password, wifi_ssid, mall_name, mall_avatar } } }) => ({
   concatPhoneNumber: concat_phone_number,
@@ -30,7 +24,7 @@ type IProps = PageStateProps & PageOwnProps
   mallAvatar: mall_avatar,
 }))
 
-export default class Contact extends Component<IProps, PageState> {
+export default class Contact extends Component<PageProps, PageState> {
   state = {
     showActionSheet: false,
   }

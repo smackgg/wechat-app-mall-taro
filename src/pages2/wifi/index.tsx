@@ -8,23 +8,13 @@ import { AtButton } from 'taro-ui'
 import './index.scss'
 
 
-type PageStateProps = {
+type PageProps = {
   concatPhoneNumber: string,
   wifiSsid: string,
   wifiPassword: string,
   mallName: string,
   mallAvatar: string,
 }
-
-type PageDispatchProps = {
-}
-
-type PageOwnProps = {}
-
-type PageState = {
-}
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 @connect(({ config: { systemConfig: { concat_phone_number, wifi_password, wifi_ssid, mall_name, mall_avatar } } }) => ({
   concatPhoneNumber: concat_phone_number,
@@ -34,7 +24,7 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
   mallAvatar: mall_avatar,
 }))
 
-export default class WiFi extends Component<IProps, PageState> {
+export default class WiFi extends Component<PageProps> {
   startPromise: Promise<any>
 
   startWifiSuccess = false

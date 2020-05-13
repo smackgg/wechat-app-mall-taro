@@ -17,14 +17,14 @@ import { OrderState } from '@/redux/reducers/order'
 import './index.scss'
 
 
-type Props = {
+type PageProps = {
   orders: OrderState['orders']
   userAmount: UserState['userAmount']
   getOrderDetail: typeof getOrderDetail
   getUserAmount: typeof getUserAmount
 }
 
-type State = {
+type PageState = {
   productList: any[],
   orderInfo: any,
   productsAmount: number,
@@ -47,8 +47,8 @@ type State = {
   getUserAmount: () => dispatch(getUserAmount()),
 }))
 
-export default class OrderDetail extends Component<Props, State> {
-  state: State = {
+export default class OrderDetail extends Component<PageProps, PageState> {
+  state: PageState = {
     productList: [],
     orderInfo: {},
     productsAmount: -1,

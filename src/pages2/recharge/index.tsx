@@ -13,24 +13,17 @@ import pay from '@/utils/pay'
 import './index.scss'
 
 
-type PageStateProps = {
+type PageProps = {
   rechargeSendRules: UserState['rechargeSendRules']
   rechargeAmountMin: ConfigState['rechargeAmountMin']
   billDiscountsRules: UserState['billDiscountsRules']
-}
-
-type PageDispatchProps = {
   getRechargeSendRules: typeof getRechargeSendRules
   getPayBillDiscounts: typeof getPayBillDiscounts
 }
 
-type PageOwnProps = {}
-
 type PageState = {
   number?: number
 }
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 @connect(
   ({
@@ -52,7 +45,7 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
   }),
 )
 
-export default class Recharge extends Component<IProps, PageState> {
+export default class Recharge extends Component<PageProps, PageState> {
   state = {
     number: undefined,
   }

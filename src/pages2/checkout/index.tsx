@@ -17,16 +17,14 @@ import { UserState } from '@/redux/reducers/user'
 import './index.scss'
 
 
-type PageStateProps = {
+type PageProps = {
   defaultAddress: UserState['defaultAddress']
   coupons: UserState['coupons']
-}
-
-type PageDispatchProps = {
   getDefaultAddress: typeof getDefaultAddress,
   getCoupons: typeof getCoupons,
   updateCart: typeof updateCart,
 }
+
 
 type PageState = {
   peisongType: 'kd' | 'zq', // 配送方式 kd,zq 分别表示快递/到店自取
@@ -43,8 +41,6 @@ type PageState = {
   showDrawer: boolean,
 }
 
-type IProps = PageStateProps & PageDispatchProps
-
 @connect(({
   user: {
     defaultAddress,
@@ -59,7 +55,7 @@ type IProps = PageStateProps & PageDispatchProps
   updateCart: data => dispatch(updateCart(data)),
 }))
 
-export default class Checkout extends Component<IProps, PageState> {
+export default class Checkout extends Component<PageProps, PageState> {
   state: PageState = {
     peisongType: 'kd', // 配送方式 kd,zq 分别表示快递/到店自取
     productList: [],

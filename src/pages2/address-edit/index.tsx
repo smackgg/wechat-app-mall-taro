@@ -28,19 +28,14 @@ interface AddressInfo {
   id?: number | string
 }
 
-type PageStateProps = {
+type PageProps = {
   provinces: ConfigState['provinces']
   citys: ConfigState['citys']
   districts: ConfigState['districts']
   addressList: UserState['addressList']
-}
-
-type PageDispatchProps = {
   getProvince: typeof getProvince
   getNextRegion: typeof getNextRegion
 }
-
-type PageOwnProps = {}
 
 type PageState = {
   province: {
@@ -61,8 +56,6 @@ type PageState = {
   showDrawer: boolean
 }
 
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
-
 @connect(({
   config: { provinces, citys, districts },
   user: { addressList },
@@ -76,7 +69,7 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
   getNextRegion: (data: { key: string, pid: string }) => dispatch(getNextRegion(data)),
 }))
 
-export default class EditAddress extends Component<IProps, PageState> {
+export default class EditAddress extends Component<PageProps, PageState> {
   state = {
     province: {
       id: '',

@@ -13,7 +13,7 @@ type Props = {
   refreshData: () => void
 }
 
-export default class CouponList extends Component<Props, any> {
+export default class CouponList extends Component<Props> {
   static propTypes = {
     list: PropTypes.array,
     statusName: PropTypes.string,

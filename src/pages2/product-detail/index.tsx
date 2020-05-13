@@ -19,19 +19,14 @@ import { ProductPrice, SkuSelect, ReputationCard } from './_components'
 
 import './index.scss'
 
-type PageStateProps = {
+type PageProps = {
   productDetail: ProductDetailType
   reputations: ProductsState['reputations']
   shopCartInfo: UserState['shopCartInfo']
-}
-
-type PageDispatchProps = {
   getProductDetail: typeof getProductDetail
   getReputation: typeof getReputation
   addCart: typeof addCart
 }
-
-type PageOwnProps = {}
 
 type PageState = {
   productInfo?: ProductDetailType,
@@ -39,8 +34,6 @@ type PageState = {
   selectSku?: { [P in keyof Product]?: Product[P] },
   buttonType: 1 | 2, // 1: 立即购买 2: 加入购物车
 }
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 @connect(
   ({ goods, user: { shopCartInfo } }) => ({
@@ -56,7 +49,7 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
   }),
 )
 
-export default class ProductDetail extends Component<IProps, PageState> {
+export default class ProductDetail extends Component<PageProps, PageState> {
   state: PageState = {
     productInfo: undefined,
     isSkuFloatLayoutOpened: false,

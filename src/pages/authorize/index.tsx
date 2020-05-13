@@ -16,16 +16,11 @@ import './index.scss'
 
 const { requireBindMobile } = config
 
-type PageStateProps = {
+type PageProps = {
   isConnected: boolean
   mobile: string
-}
-
-type PageDispatchProps = {
   getUserDetail: typeof getUserDetail
 }
-
-type PageOwnProps = {}
 
 type PageState = {
   showTelAuthModal: boolean
@@ -38,7 +33,7 @@ type PageState = {
   getUserDetail: () => dispatch(getUserDetail()),
 }))
 
-export default class Auth extends Component<PageStateProps & PageDispatchProps & PageOwnProps, PageState> {
+export default class Auth extends Component<PageProps, PageState> {
   state = {
     showTelAuthModal: false,
   }
