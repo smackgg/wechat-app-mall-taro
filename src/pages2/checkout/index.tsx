@@ -316,7 +316,7 @@ export default class Checkout extends Component<IProps, PageState> {
     //   }),
     //   template_id: 'CnzS9AtwGj3Zo9rsRGxYvkdflUyz5lsRwNf6c7NgcrA',
     //   type: 0,
-    //   url: `pages/order-detail/index?id=${id}`,
+    //   url: `pages2/order-detail/index?id=${id}`,
     // })
 
     // 发货通知模板消息
@@ -346,7 +346,7 @@ export default class Checkout extends Component<IProps, PageState> {
     //   }),
     //   template_id: 'nsHgGpdWxvT2mxwAL3i-4zoCEreb-t50J2tbxWpLTgs',
     //   type: 0,
-    //   url: `pages/order-detail/index?id=${id}`,
+    //   url: `pages2/order-detail/index?id=${id}`,
     // })
 
     if (this.orderType === 'buyNow') {
@@ -400,13 +400,13 @@ export default class Checkout extends Component<IProps, PageState> {
       //   }),
       //   template_id: 'LDpMo2-1M7tdBcz8OCVGGyiHe9k5LR7lsJ4TNVZEd00',
       //   type: 0,
-      //   url: `pages/order-detail/index?id=${id}`,
+      //   url: `pages2/order-detail/index?id=${id}`,
       // })
       return Promise.resolve()
     })
 
     Taro.redirectTo({
-      url: `/pages/order-detail/index?id=${id}`,
+      url: `/pages2/order-detail/index?id=${id}`,
     })
   }
 

@@ -24,12 +24,14 @@ export default {
       'checkout/index',
       'address-select/index',
       'address-edit/index',
+      'order-list/index',
+      // 'order-detail/index',
       'asset/index',
       'recharge/index',
       'location/index',
       'contact/index',
       'wifi/index',
-      'coupons/index'
+      'coupons/index',
     ],
   }],
   tabBar: {
