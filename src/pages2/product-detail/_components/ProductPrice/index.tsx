@@ -104,7 +104,7 @@ export default class ProductPrice extends Component<PageOwnProps, PageState> {
         <AtActionSheetItem>
           <Button openType="share" className="share-button">直接分享</Button>
         </AtActionSheetItem>
-        <AtActionSheetItem onClick={this.goPage.bind(this, `/pages/product-detail/share?id=${productId}`, false)}>
+        <AtActionSheetItem onClick={this.goPage.bind(this, `/pages2/product-detail/share?id=${productId}`, false)}>
           生成海报
         </AtActionSheetItem>
       </AtActionSheet>

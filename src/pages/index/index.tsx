@@ -108,7 +108,7 @@ export default class Index extends Component<IProps, PageState> {
   // 跳转商品详情页
   goToProductDetail = (id: string) => {
     Taro.navigateTo({
-      url: `/pages/product-detail/index?id=${id}`,
+      url: `/pages2/product-detail/index?id=${id}`,
     })
   }
 

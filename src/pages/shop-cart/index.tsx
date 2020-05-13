@@ -152,7 +152,7 @@ export default class ShopCart extends Component<IProps, PageState> {
     if (!editing) {
       // 跳转到结算页
       Taro.navigateTo({
-        url: '/pages/checkout/index?orderType=cart',
+        url: '/pages2/checkout/index?orderType=cart',
       })
     }
   }

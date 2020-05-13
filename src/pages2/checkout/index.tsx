@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Taro, { Current } from '@tarojs/taro'
-import { View, Text, Form, Button, Image } from '@tarojs/components'
+import { View, Text, Button, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 
 import { getDefaultAddress, getCoupons, updateCart } from '@/redux/actions/user'
@@ -527,19 +527,17 @@ export default class Checkout extends Component<IProps, PageState> {
 
         {/* 底部Bar */}
         <BottomBar>
-          <Form reportSubmit onSubmit={this.placeOrder}>
-            <View className="bottom-bar">
-              <Text className="price">实付：</Text>
-              <Price price={realAmount} score={score} />
-              <Button
-                form-type="submit"
-                className="button"
-                hoverClass="none"
-                size="mini"
-                // type="secondary"
-              >去下单</Button>
-            </View>
-          </Form>
+          <View className="bottom-bar" onClick={this.placeOrder}>
+            <Text className="price">实付：</Text>
+            <Price price={realAmount} score={score} />
+            <Button
+              form-type="submit"
+              className="button"
+              hoverClass="none"
+              size="mini"
+              // type="secondary"
+            >去下单</Button>
+          </View>
         </BottomBar>
 
         {/* 优惠券侧弹窗 */}

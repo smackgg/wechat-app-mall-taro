@@ -136,7 +136,7 @@ export default class Recharge extends Component<IProps, PageState> {
     })
 
     Taro.redirectTo({
-      url: '/pages/asset/index',
+      url: '/pages2/asset/index',
     })
   }
 
@@ -175,7 +175,7 @@ export default class Recharge extends Component<IProps, PageState> {
     })
 
     Taro.redirectTo({
-      url: '/pages/asset/index',
+      url: '/pages2/asset/index',
     })
   }
 

@@ -40,7 +40,7 @@ export default class Address extends Component<PageOwnProps, PageState> {
   // 添加地址
   addAddress = () => {
     Taro.navigateTo({
-      url: '/pages/address-edit/index',
+      url: '/pages2/address-edit/index',
     })
   }
 
@@ -51,7 +51,7 @@ export default class Address extends Component<PageOwnProps, PageState> {
       return
     }
     Taro.navigateTo({
-      url: '/pages/address-select/index',
+      url: '/pages2/address-select/index',
     })
   }
 

@@ -340,7 +340,7 @@ export default class SkuSelect extends Component<PageOwnProps, PageState> {
     this.props.handleClose()
     // 跳转到结算页
     Taro.navigateTo({
-      url: `/pages/checkout/index?orderType=buyNow&reserveDate=${reserveDate}`,
+      url: `/pages2/checkout/index?orderType=buyNow&reserveDate=${reserveDate}`,
     })
   }
 
@@ -381,7 +381,7 @@ export default class SkuSelect extends Component<PageOwnProps, PageState> {
     this.props.handleClose()
     // 跳转到结算页
     Taro.navigateTo({
-      url: '/pages/checkout/index?orderType=buyNow',
+      url: '/pages2/checkout/index?orderType=buyNow',
     })
   }
 

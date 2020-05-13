@@ -56,14 +56,14 @@ export default class SelectAddress extends Component<IProps, PageState> {
   editAddress = (id: number, e: TaroBaseEventOrig) => {
     e.stopPropagation()
     Taro.navigateTo({
-      url: `/pages/address-edit/index?id=${id}`,
+      url: `/pages2/address-edit/index?id=${id}`,
     })
   }
 
   // 新建地址
   addAddress = async () => {
     Taro.navigateTo({
-      url: '/pages/address-edit/index',
+      url: '/pages2/address-edit/index',
     })
   }
 

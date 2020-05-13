@@ -326,7 +326,7 @@ export default class Account extends Component<IProps, PageState> {
         </View>
 
         {/* 我的钱包 */}
-        <View className="amount-wrapper" onClick={this.goPage.bind(this, '/pages/asset/index')}>
+        <View className="amount-wrapper" onClick={this.goPage.bind(this, '/pages2/asset/index')}>
           <View className="title title-line">
             <Text>我的钱包</Text>
             <Image
@@ -358,7 +358,7 @@ export default class Account extends Component<IProps, PageState> {
               url: '/pages2/recharge/index?type=1',
             }, {
               title: '收货地址',
-              url: '/pages/address-select/index?type=1',
+              url: '/pages2/address-select/index?type=1',
             }, {
               title: '店铺位置、导航',
               url: '/pages2/location/index',
