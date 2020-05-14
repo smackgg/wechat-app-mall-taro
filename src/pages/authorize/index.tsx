@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Taro, { Current } from '@tarojs/taro'
 
-import { View, Image, Checkbox, Text, Button, Form } from '@tarojs/components'
+import { View, Image, Checkbox, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 
 import { checkToken, login, register, bindMobile } from '@/services/user'
@@ -218,27 +218,25 @@ export default class Auth extends Component<PageProps, PageState> {
     const { showTelAuthModal } = this.state
     return (
       <View className="container">
-        <Form reportSubmit>
-          <View className="top">
-            <Image className="safe-icon" src={wechatSafeIcon} mode="widthFix" />
-            <View>应用需要授权获得以下权限</View>
-          </View>
-          <Checkbox value="" checked disabled className="checkbox"><Text className="checkbox-info">获得你的公开信息（昵称、头像等）</Text></Checkbox>
-          <View className="info2">*未授权无法进行下单、查看会员等操作</View>
-          <Button formType="submit" className="button" type="primary" openType="getUserInfo" onGetUserInfo={this.getUserInfo}>允许授权</Button>
-          <View className="info1" onClick={this.goHome}>暂不授权</View>
-          <AtModal isOpened={showTelAuthModal}>
-            <AtModalHeader>微信授权</AtModalHeader>
-            <AtModalContent>
-              <View className="modal-content">
-                <Image className="success-icon" src={successIcon} mode="widthFix" />
-                <View >微信授权成功</View>
-                <View className="modal-info">授权绑定你的手机号码</View>
-              </View>
-            </AtModalContent>
-            <AtModalAction> <Button formType="submit" onClick={this.closeModal}>取消</Button> <Button formType="submit" openType="getPhoneNumber" onGetPhoneNumber={this.getPhoneNumber}>允许</Button> </AtModalAction>
-          </AtModal>
-        </Form>
+        <View className="top">
+          <Image className="safe-icon" src={wechatSafeIcon} mode="widthFix" />
+          <View>应用需要授权获得以下权限</View>
+        </View>
+        <Checkbox value="" checked disabled className="checkbox"><Text className="checkbox-info">获得你的公开信息（昵称、头像等）</Text></Checkbox>
+        <View className="info2">*未授权无法进行下单、查看会员等操作</View>
+        <Button className="button" type="primary" openType="getUserInfo" onGetUserInfo={this.getUserInfo}>允许授权</Button>
+        <View className="info1" onClick={this.goHome}>暂不授权</View>
+        <AtModal isOpened={showTelAuthModal}>
+          <AtModalHeader>微信授权</AtModalHeader>
+          <AtModalContent>
+            <View className="modal-content">
+              <Image className="success-icon" src={successIcon} mode="widthFix" />
+              <View >微信授权成功</View>
+              <View className="modal-info">授权绑定你的手机号码</View>
+            </View>
+          </AtModalContent>
+          <AtModalAction> <Button onClick={this.closeModal}>取消</Button> <Button openType="getPhoneNumber" onGetPhoneNumber={this.getPhoneNumber}>允许</Button> </AtModalAction>
+        </AtModal>
       </View>
     )
   }

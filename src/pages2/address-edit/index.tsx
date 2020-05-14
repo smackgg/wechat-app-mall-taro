@@ -4,7 +4,7 @@ import Taro, { Current } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import { AtButton, AtInput, AtIndexes, AtDrawer, AtForm, AtMessage } from 'taro-ui'
+import { AtButton, AtInput, AtIndexes, AtDrawer, AtMessage } from 'taro-ui'
 import { getProvince, getNextRegion } from '@/redux/actions/config'
 import { cError } from '@/utils'
 // import { addWxFormId } from '@/services/wechat'
@@ -368,12 +368,7 @@ export default class EditAddress extends Component<PageProps, PageState> {
   }
 
   // 表单提交
-  onSubmit = async (e: TaroBaseEventOrig) => {
-    // addWxFormId({
-    //   type: 'form',
-    //   formId: e.detail.formId,
-    // })
-
+  onSubmit = async () => {
     const {
       addressData: {
         linkMan,
@@ -502,7 +497,7 @@ export default class EditAddress extends Component<PageProps, PageState> {
     return (
       <View>
         <AtMessage />
-        <AtForm reportSubmit onSubmit={this.onSubmit} className="container">
+        <View className="container">
           <View className="form">
             <AtInput
               name="linkMan"
@@ -551,7 +546,7 @@ export default class EditAddress extends Component<PageProps, PageState> {
             />
           </View>
           <View className="buttons">
-            <AtButton className="button" type="primary" formType="submit">保存</AtButton>
+            <AtButton className="button" type="primary" onClick={this.onSubmit}>保存</AtButton>
             {!this.addressId && <AtButton className="button wx" type="primary" onClick={this.readFromWx}>从微信导入</AtButton>}
             {this.addressId && <AtButton className="button" type="secondary" onClick={this.deleteAddress}>删除地址</AtButton>}
             <AtButton className="button" onClick={this.onCancel}>取消</AtButton>
@@ -573,7 +568,7 @@ export default class EditAddress extends Component<PageProps, PageState> {
               </AtIndexes>
             </View>
           </AtDrawer>
-        </AtForm>
+        </View>
       </View>
     )
   }
