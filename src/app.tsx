@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { getVipLevel, getSystemConfig } from '@/redux/actions/config'
-import { checkToken } from '@/services/user'
+import { checkToken, modifyUserInfo } from '@/services/user'
 import { getUserDetail } from '@/redux/actions/user'
 // import 'taro-ui/dist/style/index.scss'
 
@@ -129,6 +129,19 @@ class App extends Component {
         })
         return reject()
       }
+
+      // 更新用户信息
+      Taro.getUserInfo({
+        success: async result => {
+          const { userInfo } = result
+          modifyUserInfo({
+            avatarUrl: userInfo.avatarUrl,
+            city: userInfo.city,
+            nick: userInfo.nickName,
+            province: userInfo.province,
+          })
+        },
+      })
 
       resolve()
     } catch (e) {

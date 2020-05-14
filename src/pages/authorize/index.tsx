@@ -4,7 +4,7 @@ import Taro, { Current } from '@tarojs/taro'
 import { View, Image, Checkbox, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 
-import { checkToken, login, register, bindMobile } from '@/services/user'
+import { checkToken, login, register, bindMobile, modifyUserInfo } from '@/services/user'
 import { config, cError } from '@/utils'
 import { getUserDetail } from '@/redux/actions/user'
 
@@ -49,6 +49,7 @@ export default class Auth extends Component<PageProps, PageState> {
   }
 
   fromPage = '/pages/entry/index'
+  userInfo?: Taro.getUserInfo.SuccessCallbackResult = undefined
 
   // 用户点击授权
   getUserInfo = (e: TaroBaseEventOrig) => {
@@ -152,33 +153,56 @@ export default class Auth extends Component<PageProps, PageState> {
   // 用户注册
   registerUser = () => {
     Taro.login({
-      success: res => {
+      success: async res => {
         // 微信登录接口返回的 code 参数，下面注册接口需要用到
         const { code } = res
-        Taro.getUserInfo({
-          success: async result => {
-            const { iv, encryptedData } = result
-            // 推荐人
-            const referrer = Taro.getStorageSync('referrer') || ''
-            // 注册
-            await register({
-              code,
-              encryptedData,
-              iv,
-              referrer,
-            })
 
-            Taro.hideLoading()
-            this.login()
-          },
+        const result = await this.getUserInfoData()
+        const { iv, encryptedData } = result
+        // 推荐人
+        const referrer = Taro.getStorageSync('referrer') || ''
+        // 注册
+        await register({
+          code,
+          encryptedData,
+          iv,
+          referrer,
         })
+
+        Taro.hideLoading()
+        this.login()
       },
     })
   }
 
+  getUserInfoData = async (): Promise<Taro.getUserInfo.SuccessCallbackResult> => {
+    if (this.userInfo) {
+      return this.userInfo
+    }
+
+    return new Promise((resolve, reject) => {
+      Taro.getUserInfo({
+        success: async result => {
+          this.userInfo = result
+          resolve(result)
+        },
+        fail: reject
+      })
+    })
+  }
   // 处理授权登录成功后逻辑
   handleLoginSuccess = async () => {
     await this.props.getUserDetail()
+
+    const { userInfo } = await this.getUserInfoData()
+    // 更新用户信息
+    modifyUserInfo({
+      avatarUrl: userInfo.avatarUrl,
+      city: userInfo.city,
+      nick: userInfo.nickName,
+      province: userInfo.province,
+    })
+
     // 是否需要强制手机号
     if (requireBindMobile && !this.props.mobile) {
       this.setState({
