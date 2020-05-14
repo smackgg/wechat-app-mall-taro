@@ -35,8 +35,11 @@ export const register = (data: {
 
 // 修改用户信息
 export const modifyUserInfo = (data: {
-  nick: string,
-  extJsonStr: string,
+  avatarUrl?: string,
+  city?: string,
+  nick?: string,
+  province?: string,
+  extJsonStr?: string,
 }) => request({
   url: '/user/modify',
   method: 'POST',
