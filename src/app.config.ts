@@ -64,6 +64,5 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: '',
     navigationBarTextStyle: 'black'
-  },
-  navigateToMiniProgramAppIdList: ['wx60d176f873ca2d67', 'wxcefbc3693001e0d2']
+  }
 }
