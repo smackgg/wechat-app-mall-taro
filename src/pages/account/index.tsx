@@ -287,7 +287,7 @@ export default class Account extends Component<PageProps, PageState> {
         </View>
 
         {/* 我的订单 */}
-        <View className="orders-wrapper" onClick={this.goPage.bind(this, '/pages/order-list/index')}>
+        <View className="orders-wrapper" onClick={this.goPage.bind(this, '/pages2/order-list/index')}>
           <View className="title title-line">
             <Text>我的订单</Text>
             <Image
@@ -300,7 +300,7 @@ export default class Account extends Component<PageProps, PageState> {
             {
               this.orderStatus.map(item => {
                 const orderStatistic = orderStatistics[item.key]
-                return <View key={item.status} className="item" onClick={this.goPage.bind(this, `/pages/order-list/index?status=${item.status}`)}>
+                return <View key={item.status} className="item" onClick={this.goPage.bind(this, `/pages2/order-list/index?status=${item.status}`)}>
                   <Image
                     className={classNames('image', {
                       active: false,
