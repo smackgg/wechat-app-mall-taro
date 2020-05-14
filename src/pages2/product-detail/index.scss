@@ -119,6 +119,10 @@
       }
       .button-buynow {
         background-color: $color-brand;
+
+        &.is-reserve {
+          width: 500rpx;
+        }
       }
     }
   }

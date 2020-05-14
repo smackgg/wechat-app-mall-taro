@@ -70,6 +70,7 @@ export type Properties = {
   dateAdd: string
   id: number
   name: string
+  reserveTimes: any
 }
 
 export type ProductDetail = {

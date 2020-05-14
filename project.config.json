@@ -1,5 +1,6 @@
 {
-  "projectname": "wechat-app-mall-taro",
+  "miniprogramRoot": "./dist",
+  "projectname": "name",
   "description": "wechat-app-mall-taro",
   "appid": "wx9240aa3496e36a49",
   "setting": {
@@ -8,26 +9,5 @@
     "postcss": false,
     "minified": false
   },
-  "compileType": "miniprogram",
-  "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
-      "list": []
-    },
-    "plugin": {
-      "current": -1,
-      "list": []
-    },
-    "game": {
-      "list": []
-    },
-    "gamePlugin": {
-      "current": -1,
-      "list": []
-    }
-  }
+  "compileType": "miniprogram"
 }

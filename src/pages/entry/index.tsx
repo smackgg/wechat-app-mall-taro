@@ -3,22 +3,17 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { AtActionSheet, AtActionSheetItem } from 'taro-ui'
+import { AtIcon, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 
 import { getBanners } from '@/redux/actions/config'
-// icons
-import myIcon from './res/vip_my.jpg'
-import couponsIcon from './res/vip_coupons.jpg'
-import potenceIcon from './res/vip_potence.jpg'
-// import noticeIcon from './res/vip_notice.jpg'
-import contactIcon from './res/vip_contact.jpg'
 
 import './index.scss'
 
+
 type PageProps = {
-  user: any
   banners: any[]
   concatPhoneNumber: string
+  mallName: string
   getBanners: typeof getBanners
 }
 
@@ -27,22 +22,38 @@ type PageState = {
 }
 
 const BANNER_KEY = 'entry'
-@connect(({ user, config }) => ({
-  user,
+
+@connect(({ config }) => ({
   banners: config.banners[BANNER_KEY] || [],
   concatPhoneNumber: config.systemConfig.concat_phone_number,
+  mallName: config.systemConfig.mall_name,
 }), (dispatch: any) => ({
-  getBanners: (data: { type: string }) => dispatch(getBanners(data)),
+  getBanners: (data) => dispatch(getBanners(data)),
 }))
 
-export default class VipCenter extends Component<PageProps, PageState> {
+export default class Entry extends Component<PageProps, PageState> {
+
   state = {
     showActionSheet: false,
+  }
+
+  componentWillReceiveProps(nextProps: PageProps) {
+    if (nextProps.mallName !== this.props.mallName) {
+      this.setTitle(nextProps.mallName)
+    }
   }
 
   componentDidShow() {
     this.props.getBanners({
       type: BANNER_KEY,
+    })
+    this.setTitle(this.props.mallName)
+  }
+
+  // 设置页面标题
+  setTitle = (title: string) => {
+    Taro.setNavigationBarTitle({
+      title: title || '首页',
     })
   }
 
@@ -75,7 +86,7 @@ export default class VipCenter extends Component<PageProps, PageState> {
     },
     {
       title: '会员中心',
-      onClick: () => this.goPage('/pages/index/index'),
+      onClick: () => this.goPage('/page2/vip-center/index'),
     },
     {
       title: '专属顾问',
@@ -90,70 +101,36 @@ export default class VipCenter extends Component<PageProps, PageState> {
     })
   }
 
-  centerList = [
-    {
-      title: '我的会员',
-      image: myIcon,
-      onClick: () => this.goPage('/pages2/vip-center/my'),
-    },
-    {
-      title: '我的礼券',
-      image: couponsIcon,
-      onClick: () => this.goPage('/pages2/coupons/index'),
-    },
-    {
-      title: '会员权益',
-      image: potenceIcon,
-      onClick: () => this.goPage('/pages2/vip-center/potences'),
-    },
-    {
-      title: '我的信息',
-      image: myIcon,
-      onClick: () => this.goPage('/pages/account/extinfo'),
-    },
-    // {
-    //   title: '最近活动',
-    //   image: noticeIcon,
-    //   onClick: () => this.goPage('/pages/vip-center/activity'),
-    // },
-    {
-      title: '专属顾问',
-      image: contactIcon,
-      onClick: () => this.onToggleActionSheet(),
-    },
-  ]
-
   render () {
     const { banners, concatPhoneNumber } = this.props
-    const { userDetail: { nick } } = this.props.user
     const { showActionSheet } = this.state
     return (
-      <View className="vip-center__container">
-        {/* 会员中心头部 */}
-        <View className="header">
-          {banners[1] && <Image
-            className="image"
-            src={banners[1].picUrl}
-            mode="aspectFill"
-          />}
-          <View className="nick-name">
-            <View className="nick">{nick}</View>
-            <View>欢迎来到会员中心</View>
-          </View>
-        </View>
-
-        {/* 模块 list */}
-        <View className="center-list">
+      <View className="container">
+        <View className="banners">
           {
-            this.centerList.map(item => {
-              const { title, onClick, image } = item
-              return <View key={title} onClick={onClick} className="item">
+            banners.map((banner, index) => {
+              const { id, picUrl } = banner
+              const { onClick, title } = this.bannerInfo[index]
+              return <View
+                className="content"
+                key={id}
+                onClick={onClick}
+              >
                 <Image
-                  className="icon"
-                  src={image}
+                  className="image"
+                  src={picUrl}
                   mode="aspectFill"
                 />
-                <View>{title}</View>
+                {index === 0 && <View className="first-item item">
+                  <Text className="text">{title}</Text>
+                  <View className="buy-button">立即选购</View>
+                </View>}
+                {
+                  index !== 0 && <View className="item">
+                    <Text className="text">{title}</Text>
+                    <AtIcon value="chevron-right" size="24" color="#fff"></AtIcon>
+                  </View>
+                }
               </View>
             })
           }
