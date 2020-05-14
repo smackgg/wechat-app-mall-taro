@@ -1,6 +1,7 @@
 import Taro, { RequestParams } from '@tarojs/taro'
+import { config, getCurrentPageUrl } from '@/utils'
 
-import { subDomain, getCurrentPageUrl } from '@/utils'
+const { subDomain } = config
 
 const API_BASE_URL = 'https://api.it120.cc'
 

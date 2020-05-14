@@ -1,25 +1,17 @@
-import { ComponentClass } from 'react';
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, Text } from '@tarojs/components'
 import { priceToFloat } from '@/utils'
 import './index.scss'
 
 
-type PageOwnProps = {
+type Props = {
   price?: number,
   className?: string,
   score?: number,
 }
 
-type PageState = {
-}
-
-interface Price {
-  props: PageOwnProps
-}
-
-class Price extends Component {
+export default class Price extends Component<Props> {
   static propTypes = {
     price: PropTypes.number,
     score: PropTypes.number,
@@ -45,25 +37,23 @@ class Price extends Component {
 
     // 只展示价格
     if (price >= 0 && score <= 0) {
-      return <View className={`price ${className}`}>
+      return <View className={`component__price ${className}`}>
         <View><Text className="small-text">￥</Text>{priceToFloat(price)}</View>
       </View>
     }
 
     // 只展示积分
     if (price <= 0 && score > 0) {
-      return <View className={`price ${className}`}>
+      return <View className={`component__price ${className}`}>
         <View>{score}<Text className="small-text"> 积分</Text></View>
       </View>
     }
 
     // 积分和价格同时展示
     if (price > 0 && score > 0) {
-      return <View className={`price ${className}`}>
+      return <View className={`component__price ${className}`}>
         <View><Text className="small-text">￥</Text>{priceToFloat(price)} + {score}<Text className="small-text"> 积分</Text></View>
       </View>
     }
   }
 }
-
-export default Price as ComponentClass<PageOwnProps, PageState>

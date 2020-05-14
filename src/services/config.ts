@@ -9,16 +9,14 @@ export const vipLevel = () => request({
   url: '/config/vipLevel',
 })
 
-export type SystemConfigParams = { keys: string }
 // 获取系统参数等（商城名称、最小充值金额
-export const systemConfig = (data: SystemConfigParams) => request({
+export const systemConfig = (data: { keys: string }) => request({
   url: '/config/values',
   data,
 })
 
-export type BannersParams = { type: string }
 // 获取banner
-export const banners = (data: BannersParams) => request({
+export const banners = (data: { type: string }) => request({
   url: '/banner/list',
   data,
 })
@@ -30,9 +28,8 @@ export const province = () => request({
   needSubDomain: false,
 })
 
-export type NextRegionParams = { pid: string }
 // 获取下级省市区数据
-export const nextRegion = (data: NextRegionParams) => request({
+export const nextRegion = (data: { pid: string }) => request({
   url: '/common/region/child',
   needSubDomain: false,
   data,

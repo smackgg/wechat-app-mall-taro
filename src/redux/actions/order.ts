@@ -8,14 +8,12 @@ export const GET_ORDER_LIST_SUCCESS = 'config/GET_ORDER_LIST_SUCCESS'
 
 
 // 订单详情
-export const getOrderDetail = ({ id }: { id: string }) => async (dispatch: Dispatch) => {
-  const res = await orderDetail({
-    id,
-  })
+export const getOrderDetail = (data: Parameters<typeof orderDetail>[0]) => async (dispatch: Dispatch) => {
+  const res = await orderDetail(data)
   return dispatch({
     type: GET_ORDER_DETAIL_SUCCESS,
     data: res.data,
-    orderId: id,
+    orderId: data.id,
   })
 }
 
@@ -29,7 +27,7 @@ export const getOrderStatistics = () => async (dispatch: Dispatch) => {
 }
 
 // 订单列表
-export const getOrderList = (data: { status: string }) => async (dispatch: Dispatch) => {
+export const getOrderList = (data: Parameters<typeof orderList>[0]) => async (dispatch: Dispatch) => {
   const { status = 'all' } = data
   const [error, res] = await cError(orderList(data))
 

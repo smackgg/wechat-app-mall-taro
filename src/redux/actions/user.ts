@@ -59,7 +59,7 @@ export const getLevelList = () => async (dispatch: Dispatch) => {
 }
 
 // 获取会员详情
-export const getLevelDetail = (data: { id: string }) => async (dispatch: Dispatch) => {
+export const getLevelDetail = (data: Parameters<typeof levelDetail>[0]) => async (dispatch: Dispatch) => {
   const res = await levelDetail(data)
   dispatch({
     type: GET_LEVEL_DETAIL_SUCCESS,
@@ -123,7 +123,7 @@ export const getUserScoreLog = () => async (dispatch: Dispatch) => {
 
 
 // 获取优惠券列表
-export const getCoupons = (data: { status: number }) => async (dispatch: Dispatch) => {
+export const getCoupons = (data?: Parameters<typeof coupons>[0]) => async (dispatch: Dispatch) => {
   const [error, res] = await cError(coupons(data))
   return dispatch({
     type: GET_COUPONS_SUCCESS,
@@ -140,19 +140,22 @@ export const getGetableCoupons = () => async (dispatch: Dispatch) => {
   })
 }
 
+type ProductInfo = {
+  number: number | string
+  goodsId: string
+  propertyChildIds: string
+  active?: boolean
+}
+type AddCartParams = {
+  type?: string
+  productInfo: ProductInfo
+}
+
 // 添加购物车
 export const addCart = ({
   type = 'cart',
   productInfo,
-}: {
-  type: string,
-  productInfo: {
-    number: number | string
-    goodsId: string
-    propertyChildIds: string
-    active ?: boolean
-  }
-}) => async (dispatch: Dispatch) => dispatch({
+}: AddCartParams) => async (dispatch: Dispatch) => dispatch({
   type: ADD_SHOP_CART,
   data: productInfo,
   actionType: type,
@@ -162,6 +165,9 @@ export const addCart = ({
 export const updateCart = ({
   type = 'update',
   products,
+}: {
+  type?: string,
+  products: ProductInfo[]
 }) => async (dispatch: Dispatch) => {
   return dispatch({
     type: UPDATE_SHOP_CART,

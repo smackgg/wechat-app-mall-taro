@@ -44,7 +44,7 @@ export const orderStatistics = () => request({
 })
 
 // 订单列表
-export const orderList = (data: { status: string }) => request({
+export const orderList = (data: { status: number | string }) => request({
   url: '/order/list',
   method: 'POST',
   data,
@@ -68,7 +68,7 @@ export const orderDelivery = (data: { orderId: string })  => request({
 export const orderReputation = (data: {
   token: string,
   orderId: string,
-  reputations: [{ id: string, remark: string, reputation: 0 | 1 | 2 }],
+  reputations: { id: string, remark: string, reputation: number }[],
 }) => request({
   url: '/order/reputation',
   method: 'POST',

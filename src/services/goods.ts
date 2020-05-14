@@ -33,6 +33,7 @@ export const products = (data: {
   recommendStatus?: number,
   page?: number,
   pageSize?: number,
+  tagsLike?: string,
 }) => request({
   url: '/shop/goods/list',
   method: 'POST',

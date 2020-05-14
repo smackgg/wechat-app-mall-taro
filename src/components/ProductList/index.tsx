@@ -1,25 +1,12 @@
-import Taro from '@tarojs/taro'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Image, Text } from '@tarojs/components'
+import { Product } from '@/redux/reducers/goods'
 import { AtInputNumber } from 'taro-ui'
 import MyCheckbox from '../Checkbox'
 import Price from '../Price'
 
 import './index.scss'
-
-type Product = {
-  id: string,
-  pic: string,
-  name: string,
-  goodsName: string,
-  number: number,
-  property: string,
-  score: number,
-  amount: number,
-  active: boolean,
-  price: number,
-  label: string,
-}
 
 type Props = {
   list: Product[],
@@ -48,7 +35,7 @@ export default function ProductList(props: Props) {
     })
   }
 
-  return <View className="product-list">
+  return <View className="component__product-list">
     {
       list.map(product => {
         const { id, pic, name, goodsName, number, property, score, amount, active, price, label } = product

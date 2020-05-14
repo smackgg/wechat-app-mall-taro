@@ -27,7 +27,7 @@ export const addCart = ({ type = 'cart', productInfo }: AddCartParams) => {
     shopCartInfo = { shopNum: 0, shopList: [] }
   }
 
-  const { shopList }: { shopList: [ProductInfo] } = shopCartInfo
+  const { shopList }: { shopList: ProductInfo[] } = shopCartInfo
 
   if (type === 'cart') {
     // 购物车逻辑
@@ -87,7 +87,7 @@ export const addCart = ({ type = 'cart', productInfo }: AddCartParams) => {
  * @param {Object} productInfo // 商品信息
  * @param {Array} productLit // 批量更新
  */
-export const updateCart = ({ type = 'update', products = [] }: { type: string, products: [ProductInfo] | []}) => {
+export const updateCart = ({ type = 'update', products = [] }: { type: string, products: ProductInfo[]}) => {
   // 购物车数据
   let shopCartInfo = Taro.getStorageSync('shopCartInfo') || {}
 
@@ -97,11 +97,12 @@ export const updateCart = ({ type = 'update', products = [] }: { type: string, p
 
 
   // 如果历史购物车中有该商品，就直接更新数量和信息
-  const { shopNum, shopList }: { shopNum: number, shopList: [ProductInfo] } = shopCartInfo.shopList.reduce((result: { shopNum: number, shopList: any[] }, item: ProductInfo) => {
+  const { shopNum, shopList }: { shopNum: number, shopList: ProductInfo[] } = shopCartInfo.shopList.reduce((result: { shopNum: number, shopList: any[] }, item: ProductInfo) => {
     let updated = false
 
     products.forEach(product => {
       const { goodsId, propertyChildIds } = product
+
       if (item.goodsId === goodsId && item.propertyChildIds === propertyChildIds) {
         updated = true
         if (type !== 'delete') {
@@ -116,11 +117,12 @@ export const updateCart = ({ type = 'update', products = [] }: { type: string, p
 
     if (!updated) {
       result.shopList.push(item)
-    }
-
-    if (!updated) {
       result.shopNum += +item.number
     }
+
+    // if (!updated) {
+    //   result.shopNum += +item.number
+    // }
 
 
     return result

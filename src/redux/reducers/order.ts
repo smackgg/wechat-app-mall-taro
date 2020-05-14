@@ -5,7 +5,29 @@ import {
   GET_ORDER_LIST_SUCCESS,
 } from '../actions/order'
 
-const INITIAL_STATE = {
+type OrderStatistics = {
+  count_id_close?: number
+  count_id_no_confirm?: number
+  count_id_no_pay?: number
+  count_id_no_reputation?: number
+  count_id_no_transfer?: number
+  count_id_success?: number
+}
+
+export type OrderState = {
+  orders: {},
+  orderStatistics: OrderStatistics,
+  orderList: {
+    '-1': any[], // 已关闭
+    0: any[], // 待支付
+    1: any[], // 待发货
+    2: any[], // 待收货
+    3: any[], // 待评价
+    4: any[], // 已完成
+  },
+}
+
+const INITIAL_STATE: OrderState = {
   orders: {},
   orderStatistics: {},
   orderList: {
@@ -18,7 +40,7 @@ const INITIAL_STATE = {
   },
 }
 
-export default function user(state = INITIAL_STATE, action: AnyAction) {
+export default function user(state = INITIAL_STATE, action: AnyAction): OrderState {
   switch (action.type) {
     case GET_ORDER_DETAIL_SUCCESS:
       return {

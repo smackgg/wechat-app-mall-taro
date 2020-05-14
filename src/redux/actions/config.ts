@@ -1,4 +1,4 @@
-import { vipLevel, systemConfig, SystemConfigParams, banners, province, nextRegion } from '@/services/config'
+import { vipLevel, systemConfig, banners, province, nextRegion } from '@/services/config'
 import { Dispatch } from 'redux'
 
 export const GET_VIP_LEVEL_SUCCESS = 'config/GET_VIP_LEVEL_SUCCESS'
@@ -16,7 +16,7 @@ export const getVipLevel = () => async (dispatch: Dispatch) => {
 }
 
 // 系统参数
-export const getSystemConfig = (data: SystemConfigParams) => async (dispatch: Dispatch) => {
+export const getSystemConfig = (data: Parameters<typeof systemConfig>[0]) => async (dispatch: Dispatch) => {
   const res = await systemConfig(data)
   dispatch({
     type: GET_SYSTEM_CONFIG_SUCCESS,
@@ -25,7 +25,7 @@ export const getSystemConfig = (data: SystemConfigParams) => async (dispatch: Di
 }
 
 // banner
-export const getBanners = (data: { type: string }) => async (dispatch: Dispatch) => {
+export const getBanners = (data: Parameters<typeof banners>[0]) => async (dispatch: Dispatch) => {
   const res = await banners(data)
 
   dispatch({
@@ -47,12 +47,12 @@ export const getProvince = () => async (dispatch: Dispatch) => {
 }
 
 // nextRegion
-export const getNextRegion = ({ key, pid }: { key: string, pid: string }) => async (dispatch: Dispatch) => {
-  const res = await nextRegion({ pid })
+export const getNextRegion = (data: ({ key: string } & Parameters<typeof nextRegion>[0])) => async (dispatch: Dispatch) => {
+  const res = await nextRegion({ pid: data.pid })
 
   dispatch({
     type: GET_PROVINCE_SUCCESS,
     data: res.data,
-    key,
+    key: data.key,
   })
 }

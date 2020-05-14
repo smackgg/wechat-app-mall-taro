@@ -1,0 +1,70 @@
+.order-list__orderlist {
+  padding: 20rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .arrow-right {
+    width: 14rpx;
+    height: 25rpx;
+    display: block;
+    margin-left: 20rpx;
+  }
+
+  .no-data {
+    margin-top: 150rpx;
+    color: $text-color-gray;
+    font-size: 32rpx;
+  }
+
+  .order {
+    background: $color-white;
+    width: 100%;
+    margin-bottom: 26rpx;
+  }
+
+  .title-wrapper {
+    font-size: 26rpx;
+    display: flex;
+    justify-content: space-between;
+    padding: 20rpx 0;
+    margin: 0 30rpx;
+    border-bottom: 1rpx solid $border-color;
+
+    .order-status {
+      display: flex;
+      align-items: center;
+    }
+
+    .refund {
+      font-size: 20rpx;
+      color: $color-brand;
+      margin-right: 10rpx;
+    }
+  }
+
+  .total-wrapper {
+    margin: 0 30rpx;
+    border-top: 1rpx solid $border-color;
+
+    .amount-real {
+      padding: 20rpx 0;
+      display: flex;
+      justify-content: flex-end;
+      font-size: 24rpx;
+      .product-count {
+        margin-right: 20rpx;
+      }
+    }
+
+    .button-wrapper {
+      display: flex;
+      justify-content: flex-end;
+
+      .button {
+        background: $color-brand;
+        color: $color-white;
+        margin-bottom: 10rpx;
+      }
+    }
+  }
+}

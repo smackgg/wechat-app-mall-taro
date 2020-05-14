@@ -1,0 +1,46 @@
+.container {
+  min-height: 100vh;
+  background: $color-gray;
+  padding: 40rpx 0 92rpx;
+  .check-icon {
+    width: 36rpx;
+  }
+  .address-list {
+    background: $color-white;
+  }
+  .address-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30rpx 20rpx;
+    font-size: 28rpx;
+    border-bottom: 2rpx solid $border-color;
+    margin-left: 30rpx;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+    .info {
+      margin-left: 20rpx;
+    }
+    .name {
+      margin-right: 15rpx;
+    }
+    .detail {
+      font-size: 24rpx;
+      color: $text-color-gray;
+      margin-top: 10rpx;
+      width: 500rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .edit-button {
+      width: 100rpx;
+      height: 73rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

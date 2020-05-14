@@ -25,8 +25,8 @@ export default function pay({
 }: {
   score?: number,
   money: number,
-  orderId: string,
-  type?: string,
+  orderId?: string,
+  type?: 'order' | 'recharge' | 'paybill',
   data?: any,
 }): Promise<void> {
   return new Promise(async (resolve, reject) => {
@@ -189,7 +189,7 @@ export function wxPay({
   money,
   orderId,
 }: {
-  type: string,
+  type?: 'order' | 'recharge' | 'paybill',
   money: number,
   orderId?: string,
 }): Promise<void> {
@@ -208,7 +208,7 @@ export function wxPay({
 
     // 优惠买单
     if (type === 'paybill') {
-      remark = '优惠买单 ：' + money,
+      remark = '优惠买单 ：' + money
       nextAction = {
         type: 4,
         uid: Taro.getStorageSync('uid'),

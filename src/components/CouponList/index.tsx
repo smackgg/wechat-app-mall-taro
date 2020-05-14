@@ -1,12 +1,13 @@
-import { ComponentClass } from 'react'
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Form, Text, Button } from '@tarojs/components'
 import PropTypes from 'prop-types'
 import { Price } from '@/components'
 import { dateFormat, cError } from '@/utils'
 import { getCoupon } from '@/services/user'
-import { addWxFormId } from '@/services/wechat'
+// import { addWxFormId } from '@/services/wechat'
 import classNames from 'classnames'
+import { AtMessage } from 'taro-ui'
 import './index.scss'
 
 
@@ -25,27 +26,18 @@ type Coupon = {
   statusStr: string,
 }
 
-type PageOwnProps = {
+type Props = {
   list: Coupon[],
   isGetCoupon?: boolean, // 是否是领取优惠券
-  atMessage: Function,
   isUseCoupon?: boolean, // 是否是使用优惠券
   selectedCoupon?: Coupon, // 已经选中的优惠券
   onSelectCoupon?: (coupon: Coupon) => void,
 }
 
-type PageState = {
-}
-
-interface CouponList {
-  props: PageOwnProps
-}
-
-class CouponList extends Component {
+export default class CouponList extends Component<Props> {
   static propTypes = {
     list: PropTypes.array,
     isGetCoupon: PropTypes.bool, // 是否是领取优惠券
-    atMessage: PropTypes.func,
     isUseCoupon: PropTypes.bool, // 是否是使用优惠券
     selectedCoupon: PropTypes.object, // 已经选中的优惠券
     onSelectCoupon: PropTypes.func,
@@ -60,11 +52,6 @@ class CouponList extends Component {
   // 领取优惠券
   onGetCoupon = async (coupon: Coupon, e: TaroBaseEventOrig, confirm: boolean) => {
     const { needScore, id } = coupon
-
-    addWxFormId({
-      type: 'form',
-      formId: e.detail.formId,
-    })
 
     // 消耗积分需要二次确认
     if (needScore && !confirm) {
@@ -81,10 +68,10 @@ class CouponList extends Component {
     }
 
     const [error] =  await cError(getCoupon({ id }))
-    const { atMessage } = this.props
+    // const { atMessage } = this.props
 
     if (!error) {
-      atMessage({
+      Taro.atMessage({
         message: '领取成功~',
         type: 'success',
       })
@@ -92,34 +79,34 @@ class CouponList extends Component {
     }
 
     if (error.code === 20001 || error.code === 20002) {
-      atMessage({
+      Taro.atMessage({
         message: '领取失败, 来晚了呀~',
         type: 'error',
       })
       return
     }
     if (error.code === 20003) {
-      atMessage({
+      Taro.atMessage({
         message: '您已经领过了，别贪心哦~',
         type: 'error',
       })
       return
     }
     if (error.code === 30001) {
-      atMessage({
+      Taro.atMessage({
         message: '您的积分不足',
         type: 'error',
       })
       return
     }
     if (error.code === 20004) {
-      atMessage({
+      Taro.atMessage({
         message: '领取失败, 优惠券已过期~',
         type: 'error',
       })
       return
     }
-    atMessage({
+    Taro.atMessage({
       message: '领取失败, ' + error.msg,
       type: 'error',
     })
@@ -128,7 +115,8 @@ class CouponList extends Component {
   render () {
     const { list, isGetCoupon = false, isUseCoupon, selectedCoupon, onSelectCoupon } = this.props
 
-    return <View className="container">
+    return <View className="component__couponList">
+      <AtMessage />
       {
         list.length === 0 && <View className="no-data">没有优惠券</View>
       }
@@ -161,13 +149,13 @@ class CouponList extends Component {
                 </Form>
               </View>}
               {isUseCoupon && selectedCoupon && selectedCoupon.id !== id && <View className="button-wrapper">
-                  <Button
-                    form-type="submit"
-                    className="button"
-                    // type="secondary"
-                    hoverClass="none"
-                    onClick={onSelectCoupon ? onSelectCoupon.bind(this, item) : (() => {})}
-                  >立即使用</Button>
+                <Button
+                  form-type="submit"
+                  className="button"
+                  // type="secondary"
+                  hoverClass="none"
+                  onClick={onSelectCoupon ? onSelectCoupon.bind(this, item) : (() => {})}
+                >立即使用</Button>
               </View>}
             </View>
             <View className="content">
@@ -198,5 +186,3 @@ class CouponList extends Component {
     </View>
   }
 }
-
-export default CouponList as ComponentClass<PageOwnProps, PageState>

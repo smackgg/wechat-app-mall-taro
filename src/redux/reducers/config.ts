@@ -12,7 +12,7 @@ import {
 const rechargeAmountMin = Taro.getStorageSync('recharge_amount_min') || 0
 const allowSelfCollection = !!Taro.getStorageSync('ALLOW_SELF_COLLECTION')
 
-interface InitialState {
+export interface ConfigState {
   vipLevel: number,
   systemConfig: { [key: string]: string },
   index_video_1: string, // 首页封面视频（短）
@@ -28,7 +28,7 @@ interface InitialState {
   districts: any[],
 }
 
-const INITIAL_STATE: InitialState = {
+const INITIAL_STATE: ConfigState = {
   vipLevel: 0,
   systemConfig: {},
   index_video_1: '', // 首页封面视频（短）
@@ -46,7 +46,7 @@ const INITIAL_STATE: InitialState = {
 
 const REMOVE_PROVINCE = ['澳门特别行政区', '台湾省', '香港特别行政区']
 
-export default function config(state = INITIAL_STATE, action: AnyAction): InitialState {
+export default function config(state = INITIAL_STATE, action: AnyAction): ConfigState {
   switch (action.type) {
     case GET_VIP_LEVEL_SUCCESS:
       return {

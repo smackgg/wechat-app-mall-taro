@@ -1,0 +1,43 @@
+.container {
+  background: $color-gray;
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+
+  .list {
+    .item {
+      margin-bottom: 40rpx;
+
+      .rate {
+        background: $color-white;
+        display: flex;
+        align-items: center;
+        padding: 30rpx;
+
+        .rate__label {
+          margin-left: 20rpx;
+        }
+
+        .rate__text {
+          font-size: 38rpx;
+          color: #ffca3e;
+          margin-left: 20rpx;
+        }
+      }
+    }
+  }
+
+  .submit-button {
+      position: absolute;
+      z-index: 10;
+      height: 100%;
+      width: 100%;
+      background: $color-brand;
+      border-radius: 0;
+      font-size: 34rpx;
+      line-height: 100rpx;
+    }
+    .submit-button[disabled] {
+      opacity: .6;
+      background: $color-brand;
+    }
+}
