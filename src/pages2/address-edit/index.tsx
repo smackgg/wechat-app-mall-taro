@@ -115,7 +115,7 @@ export default class EditAddress extends Component<PageProps, PageState> {
       pageTitle = '编辑收货地址'
       const { addressList } = this.props
 
-      const addressDetail = addressList.filter(item => item.id === +this.addressId)[0]
+      const addressDetail = addressList.filter(item => item.id === this.addressId)[0]
       if (!addressDetail) {
         Taro.navigateBack()
         return
