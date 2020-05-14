@@ -458,7 +458,6 @@ export default class Checkout extends Component<PageProps, PageState> {
       selectedCoupon,
     } = this.state
 
-
     const realAmount = selectedCoupon ? totalAmount - couponAmount : totalAmount
 
     // 过滤价格不符合的优惠券
@@ -468,7 +467,7 @@ export default class Checkout extends Component<PageProps, PageState> {
     return (
       <View className="container">
         {/* 地址 */}
-        {defaultAddress && <Address needLogistics={needLogistics} address={defaultAddress} />}
+        <Address needLogistics={needLogistics} address={defaultAddress} />
 
         {/*  商品卡 */}
         <View className="product-list">

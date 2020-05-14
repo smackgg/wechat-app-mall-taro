@@ -104,7 +104,7 @@ export default class SelectAddress extends Component<PageProps, PageState> {
           }
         </View>
         <BottomBar>
-          <AtButton onClick={this.addAddress} type="primary" formType="submit">新建地址</AtButton>
+          <AtButton onClick={this.addAddress} type="primary">新建地址</AtButton>
         </BottomBar>
       </View>
     )

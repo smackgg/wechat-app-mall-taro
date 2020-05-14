@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 
 import Taro from '@tarojs/taro'
-import { View, Form, Button, Text } from '@tarojs/components'
+import { View, Button, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 
 import { ProductList, MyCheckbox, Price } from '@/components'
 import { updateCart } from '@/redux/actions/user'
-import { addWxFormId } from '@/services/wechat'
 import { setCartBadge } from '@/utils'
 import { Product } from '@/redux/reducers/goods'
 import { UserState } from '@/redux/reducers/user'
@@ -105,14 +104,6 @@ export default class ShopCart extends Component<PageProps, PageState> {
     })
   }
 
-  // 表单提交
-  onFromSubmit = (e: TaroBaseEventOrig) => {
-    addWxFormId({
-      type: 'form',
-      formId: e.detail.formId,
-    })
-  }
-
   // 全选
   toggleSelectAll = () => {
     const { productList, editing, selectAll } = this.state
@@ -158,24 +149,22 @@ export default class ShopCart extends Component<PageProps, PageState> {
         {productList.length > 0 && <ProductList list={productList} edit onChange={this.onListChange}></ProductList>}
         {/* 底部Bar */}
         <View className="bottom-bar-wrapper">
-          <Form reportSubmit onSubmit={this.onFromSubmit}>
-            <View className="bottom-bar">
-              <View className="checkbox-wrapper" onClick={this.toggleSelectAll}>
-                <MyCheckbox checked={selectAll}></MyCheckbox>
-                <View className="check-all-text">全选</View>
-              </View>
-              {productList.length !== 0 && <Text className="price">合计：</Text>}
-              <Price price={totalAmount} score={totalScore}></Price>
-              <Button
-                form-type="submit"
-                className="button"
-                hoverClass="none"
-                size="mini"
-                // type="secondary"
-                onClick={this.onSubmit}
-              >去结算</Button>
+          <View className="bottom-bar">
+            <View className="checkbox-wrapper" onClick={this.toggleSelectAll}>
+              <MyCheckbox checked={selectAll}></MyCheckbox>
+              <View className="check-all-text">全选</View>
             </View>
-          </Form>
+            {productList.length !== 0 && <Text className="price">合计：</Text>}
+            <Price price={totalAmount} score={totalScore}></Price>
+            <Button
+              form-type="submit"
+              className="button"
+              hoverClass="none"
+              size="mini"
+              // type="secondary"
+              onClick={this.onSubmit}
+            >去结算</Button>
+          </View>
         </View>
       </View>
     )

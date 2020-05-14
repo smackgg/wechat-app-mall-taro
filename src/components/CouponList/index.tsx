@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Form, Text, Button } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import PropTypes from 'prop-types'
 import { Price } from '@/components'
 import { dateFormat, cError } from '@/utils'
@@ -139,14 +139,13 @@ export default class CouponList extends Component<Props> {
               </View>
               {isGetCoupon && <View className="button-wrapper">
                 {needScore > 0 && <Text className="score-info">{needScore}积分兑换</Text>}
-                <Form reportSubmit onSubmit={this.onGetCoupon.bind(this, item)}>
-                  <Button
-                    form-type="submit"
-                    className="button"
-                    // type="secondary"
-                    hoverClass="none"
-                  >{needScore > 0 ? '立即兑换' : '立即领取'}</Button>
-                </Form>
+                <Button
+                  form-type="submit"
+                  className="button"
+                  // type="secondary"
+                  hoverClass="none"
+                  onClick={this.onGetCoupon.bind(this, item)}
+                >{needScore > 0 ? '立即兑换' : '立即领取'}</Button>
               </View>}
               {isUseCoupon && selectedCoupon && selectedCoupon.id !== id && <View className="button-wrapper">
                 <Button

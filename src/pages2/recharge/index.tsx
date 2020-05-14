@@ -6,8 +6,7 @@ import { connect } from 'react-redux'
 import { getRechargeSendRules, getPayBillDiscounts } from '@/redux/actions/user'
 import { UserState } from '@/redux/reducers/user'
 import { ConfigState } from '@/redux/reducers/config'
-import { AtInput, AtForm, AtButton } from 'taro-ui'
-// import { addWxFormId } from '@/services/wechat'
+import { AtInput, AtButton } from 'taro-ui'
 import pay from '@/utils/pay'
 
 import './index.scss'
@@ -74,14 +73,6 @@ export default class Recharge extends Component<PageProps, PageState> {
     this.setState({
       number: +value,
     })
-  }
-
-  // 表单提交
-  onFormSubmit = e => {
-    // addWxFormId({
-    //   type: 'form',
-    //   formId: e.detail.formId,
-    // })
   }
 
   // 快速充值按钮
@@ -179,7 +170,7 @@ export default class Recharge extends Component<PageProps, PageState> {
 
     return (
       <View className="container">
-        <AtForm reportSubmit onSubmit={this.onFormSubmit} className="container">
+        <View className="container">
           <View className="input-wrapper">
             <AtInput
               name="value"
@@ -199,7 +190,6 @@ export default class Recharge extends Component<PageProps, PageState> {
                 rechargeSendRules.map((rule, index) => <AtButton
                   key={index}
                   className="secondary button"
-                  formType="submit"
                   onClick={this.onButtonClick.bind(this, rule)}
                 >
                   <View className="button-line">充 {rule.confine} 元</View>
@@ -216,7 +206,6 @@ export default class Recharge extends Component<PageProps, PageState> {
                 billDiscountsRules.map((rule, index) => <AtButton
                   key={index}
                   className="secondary button"
-                  formType="submit"
                   onClick={this.onButtonClick.bind(this, rule)}
                 >
                   <View className="button-line">消费满 {rule.consume} 元</View>
@@ -228,7 +217,6 @@ export default class Recharge extends Component<PageProps, PageState> {
 
           <AtButton
             className="recharge-button"
-            formType="submit"
             type="primary"
             onClick={this.onSubmit}
           >
@@ -251,7 +239,7 @@ export default class Recharge extends Component<PageProps, PageState> {
               }
             </View>
           }
-        </AtForm>
+        </View>
       </View>
     )
   }

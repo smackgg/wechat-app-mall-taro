@@ -10,7 +10,7 @@ import './index.scss'
 
 type Props = {
   needLogistics?: boolean,
-  address: {
+  address?: {
     id: string,
     linkMan: string,
     mobile: string,
