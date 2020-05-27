@@ -9,6 +9,7 @@ import { Product, CategoryItem, ProductsState } from '@/redux/reducers/goods'
 
 import { priceToFloat } from '@/utils'
 import classNames from 'classnames'
+import { routes } from '@/utils/router'
 
 import './index.scss'
 
@@ -53,7 +54,7 @@ export default class Category extends Component<PageProps, PageState> {
   // 跳转商品详情页
   goToProductDetail = (id: number) => {
     Taro.navigateTo({
-      url: `/pages2/product-detail/index?id=${id}`,
+      url: `${routes.productDetail}?id=${id}`,
     })
   }
 

@@ -8,6 +8,7 @@ import { getProducts } from '@/redux/actions/goods'
 import classNames from 'classnames'
 import { Price } from '@/components'
 import { setCartBadge } from '@/utils'
+import { routes } from '@/utils/router'
 import './index.scss'
 
 // import { add, minus, asyncAdd } from '../../redux/actions/counter'
@@ -84,7 +85,7 @@ export default class Index extends Component<PageProps, PageState> {
   // 跳转商品详情页
   goToProductDetail = (id: string) => {
     Taro.navigateTo({
-      url: `/pages2/product-detail/index?id=${id}`,
+      url: `${routes.productDetail}?id=${id}`,
     })
   }
 
@@ -124,18 +125,18 @@ export default class Index extends Component<PageProps, PageState> {
         url: linkUrl,
       })
     }
-    // 公众号跳转
-    if (/^http/.test(linkUrl)) {
-      Taro.navigateTo({
-        url: `/pages/webview/index?url=${encodeURIComponent(linkUrl)}`,
-      })
-    }
+    // // 公众号跳转
+    // if (/^http/.test(linkUrl)) {
+    //   Taro.navigateTo({
+    //     url: `/pages/webview/index?url=${encodeURIComponent(linkUrl)}`,
+    //   })
+    // }
   }
 
   // 返回首页
   goHome = () => {
     Taro.redirectTo({
-      url: '/pages/index/index',
+      url: routes.index,
     })
   }
 

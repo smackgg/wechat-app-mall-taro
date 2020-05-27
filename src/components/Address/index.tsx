@@ -5,6 +5,8 @@ import { View, Text, Image } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 
 import addressIcon from '@/assets/icon/address.png'
+import { routes } from '@/utils/router'
+
 import './index.scss'
 
 
@@ -40,7 +42,7 @@ export default class Address extends Component<Props, State> {
   // 添加地址
   addAddress = () => {
     Taro.navigateTo({
-      url: '/pages2/address-edit/index',
+      url: routes.addressEdit,
     })
   }
 
@@ -51,7 +53,7 @@ export default class Address extends Component<Props, State> {
       return
     }
     Taro.navigateTo({
-      url: '/pages2/address-select/index',
+      url: routes.addressSelect,
     })
   }
 

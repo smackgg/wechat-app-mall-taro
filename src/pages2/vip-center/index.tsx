@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro'
 import { View, Image, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtActionSheet, AtActionSheetItem } from 'taro-ui'
+import { routes } from '@/utils/router'
 
 import { getBanners } from '@/redux/actions/config'
 // icons
@@ -71,11 +72,11 @@ export default class VipCenter extends Component<PageProps, PageState> {
   bannerInfo = [
     {
       title: '官方小程序商城',
-      onClick: () => this.goPage('/pages/index/index', true),
+      onClick: () => this.goPage(routes.index, true),
     },
     {
       title: '会员中心',
-      onClick: () => this.goPage('/pages/index/index'),
+      onClick: () => this.goPage(routes.index),
     },
     {
       title: '专属顾问',
@@ -94,17 +95,17 @@ export default class VipCenter extends Component<PageProps, PageState> {
     {
       title: '我的会员',
       image: myIcon,
-      onClick: () => this.goPage('/pages2/vip-center/my'),
+      onClick: () => this.goPage(routes.vipCenterMy),
     },
     {
       title: '我的礼券',
       image: couponsIcon,
-      onClick: () => this.goPage('/pages2/coupons/index'),
+      onClick: () => this.goPage(routes.coupons),
     },
     {
       title: '会员权益',
       image: potenceIcon,
-      onClick: () => this.goPage('/pages2/vip-center/potences'),
+      onClick: () => this.goPage(routes.vipCenterPotences),
     },
     // {
     //   title: '最近活动',

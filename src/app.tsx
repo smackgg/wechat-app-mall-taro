@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro'
 import { getVipLevel, getSystemConfig } from '@/redux/actions/config'
 import { checkToken, modifyUserInfo } from '@/services/user'
 import { getUserDetail } from '@/redux/actions/user'
+import { routes } from '@/utils/router'
 // import 'taro-ui/dist/style/index.scss'
 
 import { showToast, config } from './utils'
@@ -173,7 +174,7 @@ class App extends Component {
     // Taro.removeStorageSync('token')
     setTimeout(() => {
       Taro.navigateTo({
-        url: '/pages/authorize/index',
+        url: routes.auth,
       })
     }, 300)
   }

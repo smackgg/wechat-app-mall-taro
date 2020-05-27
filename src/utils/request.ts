@@ -1,5 +1,6 @@
 import Taro, { RequestParams } from '@tarojs/taro'
 import { config, getCurrentPageUrl } from '@/utils'
+import { routes } from './router'
 
 const { subDomain } = config
 
@@ -34,7 +35,7 @@ export default (option: RequestParams): Promise<Request.requestResult> => new Pr
       // token 失效
       if (res && res.statusCode === 200 && res.data.code === 2000 && interceptTokenError) {
         Taro.redirectTo({
-          url: `/pages/authorize/index?from=${encodeURIComponent(getCurrentPageUrl())}`,
+          url: `${routes.auth}?from=${encodeURIComponent(getCurrentPageUrl())}`,
         })
         return
       }

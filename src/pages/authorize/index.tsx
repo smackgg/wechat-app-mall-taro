@@ -12,6 +12,8 @@ import wechatSafeIcon from '@/assets/icon/wechat-safe.png'
 import successIcon from '@/assets/icon/success.png'
 
 import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
+import { routes } from '@/utils/router'
+
 import './index.scss'
 
 const { requireBindMobile } = config
@@ -39,7 +41,7 @@ export default class Auth extends Component<PageProps, PageState> {
   }
 
   componentWillMount() {
-    this.fromPage = decodeURIComponent(Current.router?.params.from || '/pages/index/index')
+    this.fromPage = decodeURIComponent(Current.router?.params.from || routes.index)
 
     Taro.removeStorageSync('token')
     Taro.setNavigationBarColor({
@@ -49,7 +51,7 @@ export default class Auth extends Component<PageProps, PageState> {
   }
 
   userInfo?: Taro.getUserInfo.SuccessCallbackResult = undefined
-  fromPage = '/pages/index/index'
+  fromPage: string
 
   // 用户点击授权
   getUserInfo = (e: TaroBaseEventOrig) => {
@@ -213,7 +215,7 @@ export default class Auth extends Component<PageProps, PageState> {
       // 跳转回原来的页面
       Taro.navigateBack({
         fail: () => Taro.switchTab({
-          url: '/pages/index/index',
+          url: routes.index,
         }),
       })
       // Taro.navigateTo()
@@ -235,7 +237,7 @@ export default class Auth extends Component<PageProps, PageState> {
 
   // 跳转回首页
   goHome = () => Taro.navigateTo({
-    url: '/pages/index/index',
+    url: routes.index,
   })
 
   render () {

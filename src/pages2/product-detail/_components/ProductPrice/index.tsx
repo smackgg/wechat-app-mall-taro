@@ -6,6 +6,7 @@ import { View, Text, Button } from '@tarojs/components'
 import { Price } from '@/components'
 import { AtIcon, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import { Product } from '@/redux/reducers/goods'
+import { routes } from '@/utils/router'
 
 import './index.scss'
 
@@ -99,7 +100,7 @@ export default class ProductPrice extends Component<Props, State> {
         <AtActionSheetItem>
           <Button openType="share" className="share-button">直接分享</Button>
         </AtActionSheetItem>
-        <AtActionSheetItem onClick={this.goPage.bind(this, `/pages2/product-detail/share?id=${productId}`, false)}>
+        <AtActionSheetItem onClick={this.goPage.bind(this, `${routes.productShare}?id=${productId}`, false)}>
           生成海报
         </AtActionSheetItem>
       </AtActionSheet>

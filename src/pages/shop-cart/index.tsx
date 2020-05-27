@@ -9,6 +9,7 @@ import { updateCart } from '@/redux/actions/user'
 import { setCartBadge } from '@/utils'
 import { Product } from '@/redux/reducers/goods'
 import { UserState } from '@/redux/reducers/user'
+import { routes } from '@/utils/router'
 
 import './index.scss'
 
@@ -136,7 +137,7 @@ export default class ShopCart extends Component<PageProps, PageState> {
     if (!editing) {
       // 跳转到结算页
       Taro.navigateTo({
-        url: '/pages2/checkout/index?orderType=cart',
+        url: routes.chekcout + '?orderType=cart',
       })
     }
   }

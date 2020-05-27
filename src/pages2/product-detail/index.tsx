@@ -14,6 +14,7 @@ import { UserState } from '@/redux/reducers/user'
 import shopIcon from '@/assets/icon/shop.jpg'
 import shopcartIcon from '@/assets/icon/shopcart.jpg'
 import contactIcon from '@/assets/icon/contact.jpg'
+import { routes } from '@/utils/router'
 
 import { ProductPrice, SkuSelect, ReputationCard } from './_components'
 
@@ -193,14 +194,14 @@ export default class ProductDetail extends Component<PageProps, PageState> {
 
   // 回首页
   goHome = () => {
-    Taro.switchTab({ url: '/pages/index/index' })
+    Taro.switchTab({ url: routes.index })
   }
 
   onShareAppMessage = () => {
     if (!this.state.productInfo) {
       return {
         title: '分享商品',
-        path: `/pages2/product-detail/index?id=${this.productId}&inviter_id=${Taro.getStorageSync('uid')}`,
+        path: `${routes.productDetail}?id=${this.productId}&inviter_id=${Taro.getStorageSync('uid')}`,
       }
     }
     const {
@@ -213,7 +214,7 @@ export default class ProductDetail extends Component<PageProps, PageState> {
 
     const data = {
       title: name,
-      path: `/pages2/product-detail/index?id=${id}&inviter_id=${Taro.getStorageSync('uid')}`,
+      path: `${routes.productDetail}?id=${id}&inviter_id=${Taro.getStorageSync('uid')}`,
       imageUrl: pic,
     }
 
@@ -287,7 +288,7 @@ export default class ProductDetail extends Component<PageProps, PageState> {
             {
               reputationList.map((reputation, index) => <ReputationCard key={index} reputation={reputation} />)
             }
-            {reputationLength > 3 && <View className="more-reputations" onClick={() => this.goPage(`/pages2/product-detail/reputations?id=${this.productId}`)}>查看更多</View>}
+            {reputationLength > 3 && <View className="more-reputations" onClick={() => this.goPage(`${routes.productReputations}?id=${this.productId}`)}>查看更多</View>}
           </View>
         }
 
@@ -310,7 +311,7 @@ export default class ProductDetail extends Component<PageProps, PageState> {
                 />
                 <Text>店铺</Text>
               </View>
-              <View className="icon" onClick={this.goPage.bind(this, '/pages/shop-cart/index', true)}>
+              <View className="icon" onClick={this.goPage.bind(this, routes.shopcart, true)}>
                 <Image
                   className="icon-image"
                   src={shopcartIcon}

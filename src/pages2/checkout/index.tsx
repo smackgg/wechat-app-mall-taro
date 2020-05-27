@@ -13,6 +13,7 @@ import { PriceInfo, ProductList, Address, BottomBar, Price, CouponList } from '@
 import classNames from 'classnames'
 // import dateFormat from '@/utils/dateFormat'
 import { UserState } from '@/redux/reducers/user'
+import { routes } from '@/utils/router'
 
 import './index.scss'
 
@@ -399,7 +400,7 @@ export default class Checkout extends Component<PageProps, PageState> {
     })
 
     Taro.redirectTo({
-      url: `/pages2/order-detail/index?id=${id}`,
+      url: `${routes.orderDetail}?id=${id}`,
     })
   }
 

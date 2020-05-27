@@ -4,6 +4,7 @@ import { View, Text, Button, Image } from '@tarojs/components'
 import PropTypes from 'prop-types'
 import { Price, ProductList } from '@/components'
 import pay from '@/utils/pay'
+import { routes } from '@/utils/router'
 
 import './index.scss'
 
@@ -29,7 +30,7 @@ export default class CouponList extends Component<Props> {
   // 去订单详情
   goToOrderDetail = id => {
     Taro.navigateTo({
-      url: `/pages2/order-detail/index?id=${id}`,
+      url: `${routes.orderDetail}?id=${id}`,
     })
   }
 
@@ -115,7 +116,7 @@ export default class CouponList extends Component<Props> {
                     size="mini"
                     onClick={e => {
                       e.stopPropagation()
-                      this.goPage(`/pages2/reputation/index?id=${id}`)
+                      this.goPage(`${routes.reputation}?id=${id}`)
                     }}
                   >去评价</Button>
                 </View>

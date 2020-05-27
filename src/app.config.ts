@@ -8,8 +8,8 @@ export const router = {
   },
   pages2: {
     productDetail: 'product-detail/index',
-    productDetailShare: 'product-detail/share',
-    productDetailReputations: 'product-detail/reputations',
+    productShare: 'product-detail/share',
+    productReputations: 'product-detail/reputations',
     chekcout: 'checkout/index',
     addressEdit: 'address-select/index',
     addressSelect: 'address-edit/index',
@@ -34,9 +34,9 @@ type Routers = {
   [key in (keyof typeof router['pages2'])]: string
 }
 
-export const routes: Routers = Object.keys(router).reduce((r, packageName) => {
+export const allroutes: Routers = Object.keys(router).reduce((r, packageName) => {
   Object.keys(router[packageName]).forEach(routerName => {
-    r[routerName] = `${packageName}/${router[packageName][routerName]}`
+    r[routerName] = `/${packageName}/${router[packageName][routerName]}`
   })
   return r
 }, {} as Routers)
@@ -54,25 +54,25 @@ export default {
     backgroundColor: '#fff',
     list: [
       {
-        pagePath: routes.index,
+        pagePath: 'pages/index/index',
         iconPath: 'assets/icon/home.jpg',
         selectedIconPath: 'assets/icon/home-selected.jpg',
         text: '商城首页',
       },
       {
-        pagePath: routes.category,
+        pagePath: 'pages/category/index',
         iconPath: 'assets/icon/category.jpg',
         selectedIconPath: 'assets/icon/category-selected.jpg',
         text: '分类',
       },
       {
-        pagePath: routes.shopcart,
+        pagePath: 'pages/shop-cart/index',
         iconPath: 'assets/icon/shopcart.jpg',
         selectedIconPath: 'assets/icon/shopcart-selected.jpg',
         text: '购物车',
       },
       {
-        pagePath: routes.account,
+        pagePath: 'pages/account/index',
         iconPath: 'assets/icon/account.jpg',
         selectedIconPath: 'assets/icon/account-selected.jpg',
         text: '我的',

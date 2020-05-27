@@ -9,6 +9,7 @@ import PropTypes from 'prop-types'
 import { productPrice } from '@/services/goods'
 import { ProductDetail as ProductDetailType } from '@/redux/reducers/goods'
 import { addCart } from '@/redux/actions/user'
+import { routes } from '@/utils/router'
 
 import './index.scss'
 
@@ -132,7 +133,7 @@ export default class SkuSelect extends Component<Props, State> {
     this.props.handleClose()
     // 跳转到结算页
     Taro.navigateTo({
-      url: '/pages2/checkout/index?orderType=buyNow',
+      url: routes.chekcout + '?orderType=buyNow',
     })
   }
 

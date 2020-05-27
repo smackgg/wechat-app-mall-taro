@@ -10,6 +10,7 @@ import { OrderState } from '@/redux/reducers/order'
 
 import { priceToFloat, setCartBadge } from '@/utils'
 import classNames from 'classnames'
+import { routes } from '@/utils/router'
 
 // icons
 import accountBg from '@/assets/img/account_bg.png'
@@ -248,7 +249,7 @@ export default class Account extends Component<PageProps, PageState> {
           </Swiper>
 
           <View className="vip-interests">
-            <View className="interest" onClick={this.goPage.bind(this, '/pages2/score-shop/index')}>
+            <View className="interest" onClick={this.goPage.bind(this, routes.scoreShop)}>
               <Image
                 className="interest-image"
                 src={require(`@/assets/icon/vip${swiperLv.lv || 1}_score.png`)}
@@ -256,7 +257,7 @@ export default class Account extends Component<PageProps, PageState> {
               />
               <Text>积分兑换</Text>
             </View>
-            <View className="interest" onClick={this.goPage.bind(this, '/pages2/coupons/index')}>
+            <View className="interest" onClick={this.goPage.bind(this, routes.coupons)}>
               <Image
                 className="interest-image"
                 src={require(`@/assets/icon/vip${swiperLv.lv || 1}_coupon.png`)}
@@ -264,7 +265,7 @@ export default class Account extends Component<PageProps, PageState> {
               />
               <Text>领券中心</Text>
             </View>
-            <View className="interest" onClick={this.goPage.bind(this, '/pages2/vip-center/index')}>
+            <View className="interest" onClick={this.goPage.bind(this, routes.vipCenter)}>
               <Image
                 className="interest-image"
                 src={require(`@/assets/icon/vip${swiperLv.lv || 1}_more.png`)}
@@ -287,7 +288,7 @@ export default class Account extends Component<PageProps, PageState> {
         </View>
 
         {/* 我的订单 */}
-        <View className="orders-wrapper" onClick={this.goPage.bind(this, '/pages2/order-list/index')}>
+        <View className="orders-wrapper" onClick={this.goPage.bind(this, routes.orderList)}>
           <View className="title title-line">
             <Text>我的订单</Text>
             <Image
@@ -300,7 +301,7 @@ export default class Account extends Component<PageProps, PageState> {
             {
               this.orderStatus.map(item => {
                 const orderStatistic = orderStatistics[item.key]
-                return <View key={item.status} className="item" onClick={this.goPage.bind(this, `/pages2/order-list/index?status=${item.status}`)}>
+                return <View key={item.status} className="item" onClick={this.goPage.bind(this, `${routes.orderList}?status=${item.status}`)}>
                   <Image
                     className={classNames('image', {
                       active: false,
@@ -319,7 +320,7 @@ export default class Account extends Component<PageProps, PageState> {
         </View>
 
         {/* 我的钱包 */}
-        <View className="amount-wrapper" onClick={this.goPage.bind(this, '/pages2/asset/index')}>
+        <View className="amount-wrapper" onClick={this.goPage.bind(this, routes.asset)}>
           <View className="title title-line">
             <Text>我的钱包</Text>
             <Image
@@ -348,10 +349,10 @@ export default class Account extends Component<PageProps, PageState> {
           {
             [{
               title: '在线买单',
-              url: '/pages2/recharge/index?type=1',
+              url: `${routes.recharge}?type=1`,
             }, {
               title: '收货地址',
-              url: '/pages2/address-select/index?type=1',
+              url: `${routes.addressSelect}?type=1`,
             }, {
               title: '联系客服',
               url: '',

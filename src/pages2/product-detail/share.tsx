@@ -9,6 +9,7 @@ import { AtButton } from 'taro-ui'
 import { wxaQrcode } from '@/services/wechat'
 import { cError } from '@/utils'
 import { ProductsState } from '@/redux/reducers/goods'
+import { routes } from '@/utils/router'
 
 import './share.scss'
 
@@ -191,7 +192,7 @@ export default class ShareProduct extends Component<PageProps, PageState> {
   getQrImgInfo = async (): Promise<any> => {
     const [error, res] = await cError(wxaQrcode({
       scene: `${this.productId},${Taro.getStorageSync('uid')}`,
-      page: 'pages/product-detail/index',
+      page: routes.productDetail,
       is_hyaline: true,
       expireHours: 1,
     }))

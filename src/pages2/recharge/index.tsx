@@ -8,6 +8,7 @@ import { UserState } from '@/redux/reducers/user'
 import { ConfigState } from '@/redux/reducers/config'
 import { AtInput, AtButton } from 'taro-ui'
 import pay from '@/utils/pay'
+import { routes } from '@/utils/router'
 
 import './index.scss'
 
@@ -120,7 +121,7 @@ export default class Recharge extends Component<PageProps, PageState> {
     })
 
     Taro.redirectTo({
-      url: '/pages2/asset/index',
+      url: routes.asset,
     })
   }
 
@@ -159,7 +160,7 @@ export default class Recharge extends Component<PageProps, PageState> {
     })
 
     Taro.redirectTo({
-      url: '/pages2/asset/index',
+      url: routes.asset,
     })
   }
 
