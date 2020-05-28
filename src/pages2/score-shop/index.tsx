@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { getProducts } from '@/redux/actions/goods'
 import { ProductsState } from '@/redux/reducers/goods'
 import { Price } from '@/components'
+import { routes } from '@/utils/router'
 
 import './index.scss'
 
@@ -39,7 +40,7 @@ export default class ScoreShop extends Component<PageProps, PageState> {
   // 跳转商品详情页
   goToProductDetail = id => {
     Taro.navigateTo({
-      url: `/pages2/product-detail/index?id=${id}`,
+      url: `${routes.productDetail}?id=${id}`,
     })
   }
 

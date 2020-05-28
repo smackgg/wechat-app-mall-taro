@@ -1,7 +1,8 @@
 /* eslint-disable import/no-commonjs */
+const { version } = require('./package.json')
 
 module.exports = {
-  version: '0.0.1',
+  version: version,
   note: '开票申请页面增加转发、可设置扩展属性',
   subDomain: 'hsjcy', // https://admin.it120.cc 登录后台首页的专属域名
   appid: 'wx9240aa3496e36a49', // 您的小程序的appid，购物单功能需要使用

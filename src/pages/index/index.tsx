@@ -10,6 +10,7 @@ import { Price } from '@/components'
 import { setCartBadge, config as uConfig } from '@/utils'
 
 import { AtIcon } from 'taro-ui'
+import { routes } from '@/utils/router'
 import './index.scss'
 
 const { requireEntryPage } = uConfig
@@ -101,7 +102,7 @@ export default class Index extends Component<PageProps, PageState> {
   // 跳转商品详情页
   goToProductDetail = (id: string) => {
     Taro.navigateTo({
-      url: `/pages2/product-detail/index?id=${id}`,
+      url: `${routes.productDetail}?id=${id}`,
     })
   }
 
@@ -141,18 +142,18 @@ export default class Index extends Component<PageProps, PageState> {
         url: linkUrl,
       })
     }
-    // 公众号跳转
-    if (/^http/.test(linkUrl)) {
-      Taro.navigateTo({
-        url: `/pages/webview/index?url=${encodeURIComponent(linkUrl)}`,
-      })
-    }
+    // // 公众号跳转
+    // if (/^http/.test(linkUrl)) {
+    //   Taro.navigateTo({
+    //     url: `/pages/webview/index?url=${encodeURIComponent(linkUrl)}`,
+    //   })
+    // }
   }
 
   // 返回首页
   goHome = () => {
     Taro.redirectTo({
-      url: '/pages/entry/index',
+      url: routes.entry,
     })
   }
 

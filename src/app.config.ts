@@ -1,36 +1,56 @@
+export const router = {
+  pages: {
+    entry: 'entry/index',
+    index: 'index/index',
+    auth: 'authorize/index',
+    account: 'account/index',
+    extinfo: 'account/extinfo',
+    category: 'category/index',
+    shopcart: 'shop-cart/index',
+  },
+  pages2: {
+    productDetail: 'product-detail/index',
+    productShare: 'product-detail/share',
+    productReputations: 'product-detail/reputations',
+    chekcout: 'checkout/index',
+    addressEdit: 'address-select/index',
+    addressSelect: 'address-edit/index',
+    orderList: 'order-list/index',
+    orderDetail: 'order-detail/index',
+    reputation: 'reputation/index',
+    asset: 'asset/index',
+    recharge: 'recharge/index',
+    coupons: 'coupons/index',
+    scoreShop: 'score-shop/index',
+    vipCenter: 'vip-center/index',
+    vipCenterMy: 'vip-center/my',
+    vipCenterPotences: 'vip-center/potences',
+    location: 'location/index',
+    contact: 'contact/index',
+    wifi: 'wifi/index',
+  }
+}
+
+export const pages = Object.keys(router.pages).map(path => `pages/${router.pages[path]}`)
+
+type Routers = {
+  [key in (keyof typeof router['pages'])]: string
+} & {
+  [key in (keyof typeof router['pages2'])]: string
+}
+
+export const allroutes: Routers = Object.keys(router).reduce((r, packageName) => {
+  Object.keys(router[packageName]).forEach(routerName => {
+    r[routerName] = `/${packageName}/${router[packageName][routerName]}`
+  })
+  return r
+}, {} as Routers)
+
 export default {
-  pages: [
-    'pages/index/index',
-    'pages/authorize/index',
-    'pages/account/index',
-    'pages/account/extinfo',
-    'pages/category/index',
-    'pages/shop-cart/index',
-    'pages/entry/index',
-  ],
+  pages,
   subPackages: [{
     root: 'pages2',
-    pages: [
-      'product-detail/index',
-      'product-detail/share',
-      'product-detail/reputations',
-      'checkout/index',
-      'address-select/index',
-      'address-edit/index',
-      'order-list/index',
-      'order-detail/index',
-      'reputation/index',
-      'asset/index',
-      'recharge/index',
-      'location/index',
-      'contact/index',
-      'wifi/index',
-      'coupons/index',
-      'score-shop/index',
-      'vip-center/index',
-      'vip-center/my',
-      'vip-center/potences',
-    ],
+    pages: Object.values(router.pages2),
   }],
   tabBar: {
     color: '#333333',
@@ -69,5 +89,5 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: '',
     navigationBarTextStyle: 'black'
-  }
+  },
 }

@@ -10,6 +10,8 @@ import { updateAddress } from '@/services/user'
 
 import { BottomBar } from '@/components'
 import { UserState } from '@/redux/reducers/user'
+import { routes } from '@/utils/router'
+
 import './index.scss'
 
 const { theme } = config
@@ -49,14 +51,14 @@ export default class SelectAddress extends Component<PageProps, PageState> {
   editAddress = (id: number, e: TaroBaseEventOrig) => {
     e.stopPropagation()
     Taro.navigateTo({
-      url: `/pages2/address-edit/index?id=${id}`,
+      url: `${routes.addressEdit}?id=${id}`,
     })
   }
 
   // 新建地址
   addAddress = async () => {
     Taro.navigateTo({
-      url: '/pages2/address-edit/index',
+      url: routes.addressEdit,
     })
   }
 

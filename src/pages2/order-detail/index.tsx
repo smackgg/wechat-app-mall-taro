@@ -13,6 +13,7 @@ import { orderClose, orderDelivery } from '@/services/order'
 import { ProductList, Address, PriceInfo, BottomBar } from '@/components'
 import { UserState } from '@/redux/reducers/user'
 import { OrderState } from '@/redux/reducers/order'
+import { routes } from '@/utils/router'
 
 import './index.scss'
 
@@ -301,7 +302,7 @@ export default class OrderDetail extends Component<PageProps, PageState> {
                 className="button"
                 hoverClass="none"
                 size="mini"
-                onClick={() => this.goPage(`/pages2/reputation/index?id=${this.orderId}`)}
+                onClick={() => this.goPage(`${routes.reputation}?id=${this.orderId}`)}
               >去评价</Button>
             }
           </View>

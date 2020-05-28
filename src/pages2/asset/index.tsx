@@ -8,6 +8,7 @@ import { getUserCashLog, getUserAmount, getUserScoreLog } from '@/redux/actions/
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { CashScoreLog, UserAmount } from '@/redux/reducers/user'
 
+import { routes } from '@/utils/router'
 import { priceToFloat } from '@/utils'
 import './index.scss'
 
@@ -120,7 +121,7 @@ export default class Asset extends Component<PageProps, PageState> {
                 <Text>余额(元)</Text>
                 <Text className="price">{priceToFloat(balance)}</Text>
               </View>
-              <View className="button" onClick={this.goPage.bind(this, '/pages2/recharge/index')}>
+              <View className="button" onClick={this.goPage.bind(this, routes.recharge)}>
                 充值
               </View>
               <View className="price-info">
@@ -141,7 +142,7 @@ export default class Asset extends Component<PageProps, PageState> {
                   <Text>积分</Text>
                   <Text className="price2">{score}</Text>
                 </View>
-                <View className="score-shop-button" onClick={this.goPage.bind(this, '/pages2/score-shop/index')}>
+                <View className="score-shop-button" onClick={this.goPage.bind(this, routes.scoreShop)}>
                   马上兑换 &gt;
                 </View>
               </View>

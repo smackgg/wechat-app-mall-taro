@@ -46,6 +46,7 @@
     "@tarojs/react": "3.0.0-beta.5",
     "@tarojs/runtime": "3.0.0-beta.5",
     "@tarojs/taro": "3.0.0-beta.5",
+    "apifm-wxapi": "^3.8.0",
     "classnames": "^2.2.6",
     "get-value": "^3.0.1",
     "react": "^16.10.0",
