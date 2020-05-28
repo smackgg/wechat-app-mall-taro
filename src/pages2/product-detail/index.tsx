@@ -237,9 +237,6 @@ export default class ProductDetail extends Component<PageProps, PageState> {
 
     const {
       pics,
-      basicInfo: {
-        tags,
-      },
       basicInfo,
       logistics,
       extJson,
@@ -248,9 +245,6 @@ export default class ProductDetail extends Component<PageProps, PageState> {
     const services = extJson.service
       ? extJson.service.split(' ')
       : null
-
-    // 是否为预订
-    const isReserve = !!(tags && tags.includes('在线定位'))
 
     // 评价
     const reputations = this.props.reputations[this.productId] || []
@@ -271,7 +265,7 @@ export default class ProductDetail extends Component<PageProps, PageState> {
         </Swiper>
 
         {/* 商品价格块 */}
-        <ProductPrice basicInfo={basicInfo} logistics={logistics} productId={this.productId} isReserve={isReserve}></ProductPrice>
+        <ProductPrice basicInfo={basicInfo} logistics={logistics} productId={this.productId}></ProductPrice>
 
         {/* 额外服务 */}
         {services && <View className="service">
@@ -333,22 +327,20 @@ export default class ProductDetail extends Component<PageProps, PageState> {
             </View>
             <View className="button-wrapper">
               <View className="add-card">
-                {!isReserve && <Button
+                <Button
                   className="button button-cart"
                   // full
                   type="primary"
                   onClick={this.showSelectSku.bind(this, 2)}
-                >加入购物车</Button>}
+                >加入购物车</Button>
               </View>
               <View>
                 <Button
-                  className={classNames('button button-buynow', {
-                    'is-reserve': isReserve,
-                  })}
+                  className={classNames('button button-buynow')}
                   // full
                   type="primary"
                   onClick={this.showSelectSku.bind(this, 1)}
-                >{isReserve ? '立即预订' : '立即购买'}</Button>
+                >立即购买</Button>
               </View>
             </View>
           </View>
@@ -363,7 +355,6 @@ export default class ProductDetail extends Component<PageProps, PageState> {
             handleClose={this.handleClose}
             buttonType={buttonType}
             addCart={this.props.addCart}
-            isReserve={isReserve}
           />
         </AtFloatLayout>
       </View>
