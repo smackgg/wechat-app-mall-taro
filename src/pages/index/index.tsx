@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Taro from '@tarojs/taro'
-import { View, Image, Video, Swiper, SwiperItem } from '@tarojs/components'
+import { View, Image, Video, Swiper, SwiperItem, ScrollView } from '@tarojs/components'
 
 import { getBanners } from '@/redux/actions/config'
 import { getProducts } from '@/redux/actions/goods'
+import { getCoupons, getGetableCoupons } from '@/redux/actions/user'
 import classNames from 'classnames'
-import { Price } from '@/components'
+import { Price, CouponList } from '@/components'
 import { setCartBadge } from '@/utils'
 import { routes } from '@/utils/router'
+import { AtCurtain } from 'taro-ui'
+import { UserState } from '@/redux/reducers/user'
 import './index.scss'
 
 // import { add, minus, asyncAdd } from '../../redux/actions/counter'
@@ -23,37 +26,53 @@ import './index.scss'
 // ref: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20796
 //
 // #endregion
+let hasShowCoupons = false
 
 type PageProps = {
   banners: any[]
   systemConfig: { [key: string]: string }
-  recommendProducts: []
-  allProducts: []
+  recommendProducts: any[]
+  allProducts: any[]
   products: { [key: string]: any }
+  coupons: UserState['coupons']
+  getableCoupons: UserState['coupons']
   getBanners: typeof getBanners
   getProducts: typeof getProducts
+  getCoupons: typeof getCoupons
+  getGetableCoupons: typeof getGetableCoupons
 }
 
 type PageState = {
   swiperIndex: number
   playVideo: boolean
+  showCoupons: UserState['coupons']
+  showCurtain: boolean
 }
 
-@connect(({ config, goods: { products } }) => ({
+@connect(({ config, goods: { products }, user: {
+  coupons,
+  getableCoupons,
+}}) => ({
   products,
   banners: config.banners['index'],
   systemConfig: config.systemConfig,
   recommendProducts: products.homeRecommendProducts,
   allProducts: products.allProducts,
+  coupons: coupons.filter(coupon => coupon.status === 0),
+  getableCoupons: getableCoupons.filter(coupon => coupon.name !== '会员核销券'),
 }), dispatch => ({
   getBanners: data => dispatch(getBanners(data)),
   getProducts: data => dispatch(getProducts(data)),
+  getCoupons: () => dispatch(getCoupons()),
+  getGetableCoupons: () => dispatch(getGetableCoupons()),
 }))
 
 export default class Index extends Component<PageProps, PageState> {
   state = {
     swiperIndex: 0,
     playVideo: false,
+    showCoupons: [],
+    showCurtain: false,
   }
 
   componentWillMount() {
@@ -79,6 +98,37 @@ export default class Index extends Component<PageProps, PageState> {
       key: 'allProducts',
       page: 1,
       pageSize: 10,
+    })
+
+    this.handleCoupon()
+  }
+
+  // 处理优惠券逻辑
+  handleCoupon = async () => {
+    if (hasShowCoupons) {
+      return
+    }
+    await Promise.all([
+      this.props.getCoupons(), // 获取用户优惠券
+      this.props.getGetableCoupons(), // 获取用户可领优惠券
+    ])
+
+    const { coupons, getableCoupons } = this.props
+
+    const showCoupons = getableCoupons.filter(item => !coupons.find(coupon => coupon.pid === item.id))
+    // console.log(getableCoupons)
+    if (showCoupons.length > 0) {
+      this.setState({
+        showCoupons,
+        showCurtain: true,
+      })
+      hasShowCoupons = true
+    }
+  }
+
+  onCloseCurtain = () => {
+    this.setState({
+      showCurtain: false,
     })
   }
 
@@ -150,7 +200,7 @@ export default class Index extends Component<PageProps, PageState> {
         index_video_2: videoUrl2,
       },
     } = this.props
-    const { swiperIndex, playVideo } = this.state
+    const { swiperIndex, playVideo, showCurtain } = this.state
 
     return (
       <View className="index">
@@ -173,6 +223,7 @@ export default class Index extends Component<PageProps, PageState> {
           })} key={item.id}
           ></View>)}
         </View>
+
         <View className="recommend-products">
           {/* 精品推荐商品块 */}
           {
@@ -246,6 +297,19 @@ export default class Index extends Component<PageProps, PageState> {
             }</View>
           </View>
         }
+
+        {/* 优惠券 弹窗 */}
+        <AtCurtain
+          isOpened={showCurtain}
+          onClose={this.onCloseCurtain}
+        >
+          <View className="curtain-wrapper">
+            <View className="curtain-title">您有优惠券可以领取</View>
+            <ScrollView className="coupons-curtain" scrollY>
+              <CouponList list={this.state.showCoupons} isGetCoupon showToast />
+            </ScrollView>
+          </View>
+        </AtCurtain>
       </View>
     )
   }

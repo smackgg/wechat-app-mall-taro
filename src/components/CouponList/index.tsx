@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import PropTypes from 'prop-types'
 import { Price } from '@/components'
-import { dateFormat, cError } from '@/utils'
+import { dateFormat, cError, showToast } from '@/utils'
 import { getCoupon } from '@/services/user'
 // import { addWxFormId } from '@/services/wechat'
 import classNames from 'classnames'
@@ -31,6 +31,7 @@ type Props = {
   isGetCoupon?: boolean, // 是否是领取优惠券
   isUseCoupon?: boolean, // 是否是使用优惠券
   selectedCoupon?: Coupon, // 已经选中的优惠券
+  showToast?: boolean,
   onSelectCoupon?: (coupon: Coupon) => void,
 }
 
@@ -41,11 +42,13 @@ export default class CouponList extends Component<Props> {
     isUseCoupon: PropTypes.bool, // 是否是使用优惠券
     selectedCoupon: PropTypes.object, // 已经选中的优惠券
     onSelectCoupon: PropTypes.func,
+    showToast: PropTypes.bool,
   }
 
   static defaultProps = {
     list: [],
     isGetCoupon: false,
+    showToast: false,
     isUseCoupon: false,
   }
 
@@ -71,7 +74,7 @@ export default class CouponList extends Component<Props> {
     // const { atMessage } = this.props
 
     if (!error) {
-      Taro.atMessage({
+      this.showMessage({
         message: '领取成功~',
         type: 'success',
       })
@@ -79,36 +82,55 @@ export default class CouponList extends Component<Props> {
     }
 
     if (error.code === 20001 || error.code === 20002) {
-      Taro.atMessage({
+      this.showMessage({
         message: '领取失败, 来晚了呀~',
         type: 'error',
       })
       return
     }
     if (error.code === 20003) {
-      Taro.atMessage({
+      this.showMessage({
         message: '您已经领过了，别贪心哦~',
         type: 'error',
       })
       return
     }
     if (error.code === 30001) {
-      Taro.atMessage({
+      this.showMessage({
         message: '您的积分不足',
         type: 'error',
       })
       return
     }
     if (error.code === 20004) {
-      Taro.atMessage({
+      this.showMessage({
         message: '领取失败, 优惠券已过期~',
         type: 'error',
       })
       return
     }
-    Taro.atMessage({
+    this.showMessage({
       message: '领取失败, ' + error.msg,
       type: 'error',
+    })
+  }
+
+  showMessage = ({
+    message,
+    type,
+  }) => {
+
+    if (this.props.showToast) {
+      showToast({
+        title: message,
+        icon: 'none',
+        duration: 1500,
+      })
+      return
+    }
+    Taro.atMessage({
+      message,
+      type,
     })
   }
 

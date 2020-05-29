@@ -209,3 +209,20 @@ page {
     }
   }
 }
+
+.curtain-wrapper {
+  border-radius: 40rpx;
+  background: $color-white;
+  padding: 10rpx 0 20rpx;
+
+  .coupons-curtain {
+    max-height: 800rpx;
+  }
+
+  .curtain-title {
+    width: 100%;
+    padding: 30rpx 0 10rpx;
+    text-align: center;
+    color: gray;
+  }
+}
