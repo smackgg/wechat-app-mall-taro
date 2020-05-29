@@ -18,6 +18,13 @@
     height: 120rpx;
     margin-right: 40rpx;
   }
+
+  .price {
+    color: $text-color-red;
+    font-size: 40rpx;
+    margin-right: 30rpx;
+    font-weight: bolder;
+  }
 }
 
 .properties {
