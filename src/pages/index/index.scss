@@ -53,6 +53,7 @@ page {
   .recommend-products {
     background: $color-white;
     width: 630rpx;
+    min-height: 400rpx;
     margin: 0 auto;
     box-shadow: 0 2rpx 20rpx rgba(0, 0, 0, .1);
     padding: 32rpx 30rpx 10rpx;
