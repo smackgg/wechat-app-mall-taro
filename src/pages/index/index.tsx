@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Image, Video, Swiper, SwiperItem, ScrollView } from '@tarojs/components'
 
-import { getBanners } from '@/redux/actions/config'
+import { getBanners, getNotice } from '@/redux/actions/config'
 import { getProducts } from '@/redux/actions/goods'
 import { getCoupons, getGetableCoupons } from '@/redux/actions/user'
 import classNames from 'classnames'
@@ -12,6 +12,10 @@ import { setCartBadge } from '@/utils'
 import { routes } from '@/utils/router'
 import { AtCurtain } from 'taro-ui'
 import { UserState } from '@/redux/reducers/user'
+import { ConfigState } from '@/redux/reducers/config'
+
+import Notice from './_components/Notice'
+
 import './index.scss'
 
 // import { add, minus, asyncAdd } from '../../redux/actions/counter'
@@ -36,10 +40,12 @@ type PageProps = {
   products: { [key: string]: any }
   coupons: UserState['coupons']
   getableCoupons: UserState['coupons']
+  notice: ConfigState['notice']
   getBanners: typeof getBanners
   getProducts: typeof getProducts
   getCoupons: typeof getCoupons
   getGetableCoupons: typeof getGetableCoupons
+  getNotice: typeof getNotice
 }
 
 type PageState = {
@@ -60,11 +66,13 @@ type PageState = {
   allProducts: products.allProducts,
   coupons: coupons.filter(coupon => coupon.status === 0),
   getableCoupons: getableCoupons.filter(coupon => coupon.name !== '会员核销券'),
+  notice: config.notice,
 }), dispatch => ({
   getBanners: data => dispatch(getBanners(data)),
   getProducts: data => dispatch(getProducts(data)),
   getCoupons: () => dispatch(getCoupons()),
   getGetableCoupons: () => dispatch(getGetableCoupons()),
+  getNotice: () => dispatch(getNotice()),
 }))
 
 export default class Index extends Component<PageProps, PageState> {
@@ -86,6 +94,9 @@ export default class Index extends Component<PageProps, PageState> {
     this.props.getBanners({
       type: 'index',
     })
+
+    // 通知
+    this.props.getNotice()
 
     // 加载首页推荐商品
     this.props.getProducts({
@@ -199,6 +210,7 @@ export default class Index extends Component<PageProps, PageState> {
         index_video_1: videoUrl,
         index_video_2: videoUrl2,
       },
+      notice,
     } = this.props
     const { swiperIndex, playVideo, showCurtain } = this.state
 
@@ -228,6 +240,10 @@ export default class Index extends Component<PageProps, PageState> {
           {/* 精品推荐商品块 */}
           {
             recommendProducts && recommendProducts.length > 0 && <View>
+              {/* 通知条 */}
+              {notice && notice.title && <Notice notice={notice}></Notice>}
+
+              {/* 精品推荐商品块 */}
               <View className="title title-line">精品推荐</View>
               <View className="list">
                 {
