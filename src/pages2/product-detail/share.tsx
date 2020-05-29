@@ -81,7 +81,7 @@ export default class ShareProduct extends Component<PageProps, PageState> {
       basicInfo: {
         pic,
         name,
-        characteristic,
+        characteristic = '',
         // amountReal,
         minPrice,
         minScore,
@@ -192,7 +192,7 @@ export default class ShareProduct extends Component<PageProps, PageState> {
   getQrImgInfo = async (): Promise<any> => {
     const [error, res] = await cError(wxaQrcode({
       scene: `${this.productId},${Taro.getStorageSync('uid')}`,
-      page: routes.productDetail,
+      page: routes.productDetail.replace(/^\//, ''),
       is_hyaline: true,
       expireHours: 1,
     }))
@@ -249,7 +249,9 @@ export default class ShareProduct extends Component<PageProps, PageState> {
     Taro.getImageInfo({
       src: url,
       success: resolve,
-      fail: resolve,
+      fail: (e) => {
+        console.log(url, e)
+      },
     })
   })
 
