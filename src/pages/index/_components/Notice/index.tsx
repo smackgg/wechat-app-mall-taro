@@ -34,14 +34,12 @@ export default class Notice extends PureComponent<Props, State> {
   componentDidMount() {
     const { notice: { type }, timerFlags } = this.props
     if (!timerFlags.homeNoticePopup && type === 'popup') {
-      setTimeout(() => {
-        this.setState({
-          isOpened: true,
-        })
-        this.props.updateTimerFlags({
-          homeNoticePopup: true,
-        })
-      }, 1500)
+      this.setState({
+        isOpened: true,
+      })
+      this.props.updateTimerFlags({
+        homeNoticePopup: true,
+      })
     }
   }
 
