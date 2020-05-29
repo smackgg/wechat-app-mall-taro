@@ -1,3 +1,18 @@
 .notice-bar {
   margin-bottom: 20rpx;
 }
+
+.html-parse-content {
+  width: 80vw;
+  background: $color-white;
+  font-size: 28rpx;
+  color: $text-color-gray-light;
+  line-height: 56rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+
+  image {
+    width: 100% !important;
+    display: block;
+  }
+}

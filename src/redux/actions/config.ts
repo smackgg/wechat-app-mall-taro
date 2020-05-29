@@ -7,6 +7,8 @@ export const GET_BANNERS_SUCCESS = 'config/GET_BANNERS_SUCCESS'
 export const GET_PROVINCE_SUCCESS = 'config/GET_PROVINCE_SUCCESS'
 export const GET_NOTICE_SUCCESS = 'config/GET_NOTICE_SUCCESS'
 
+export const UPDATE_TIMER_FLAGS = 'config/UPDATE_TIMER_FLAGS'
+
 // vip 等级
 export const getVipLevel = () => async (dispatch: Dispatch) => {
   const res = await vipLevel()
@@ -58,11 +60,16 @@ export const getNextRegion = (data: ({ key: string } & Parameters<typeof nextReg
   })
 }
 
-export const getNotice = () => async dispatch => {
-  const res = await notice()
+export const getNotice = (...args: Parameters<typeof notice>) => async dispatch => {
+  const res = await notice(...args)
 
   dispatch({
     type: GET_NOTICE_SUCCESS,
     data: res.data,
   })
 }
+
+export const updateTimerFlags = (data: {[key: string]: any}) => ({
+  type: UPDATE_TIMER_FLAGS,
+  data,
+})
