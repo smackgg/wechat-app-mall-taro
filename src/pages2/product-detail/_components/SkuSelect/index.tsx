@@ -226,6 +226,8 @@ export default class SkuSelect extends Component<Props, State> {
           <Image mode="aspectFill" src={pic} className="product-image" />
           <View>
             <View className="price">￥{selectSku.price}</View>
+            {selectSku.originalPrice !== selectSku.price && <View className="original-price">￥{selectSku.originalPrice}</View>}
+            <View>库存：{stores}</View>
           </View>
         </View>
         {/* 规格参数 */}
