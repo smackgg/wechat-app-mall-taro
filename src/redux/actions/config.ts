@@ -1,10 +1,13 @@
-import { vipLevel, systemConfig, banners, province, nextRegion } from '@/services/config'
+import { vipLevel, systemConfig, banners, province, nextRegion, notice } from '@/services/config'
 import { Dispatch } from 'redux'
 
 export const GET_VIP_LEVEL_SUCCESS = 'config/GET_VIP_LEVEL_SUCCESS'
 export const GET_SYSTEM_CONFIG_SUCCESS = 'config/GET_SYSTEM_CONFIG_SUCCESS'
 export const GET_BANNERS_SUCCESS = 'config/GET_BANNERS_SUCCESS'
 export const GET_PROVINCE_SUCCESS = 'config/GET_PROVINCE_SUCCESS'
+export const GET_NOTICE_SUCCESS = 'config/GET_NOTICE_SUCCESS'
+
+export const UPDATE_TIMER_FLAGS = 'config/UPDATE_TIMER_FLAGS'
 
 // vip 等级
 export const getVipLevel = () => async (dispatch: Dispatch) => {
@@ -56,3 +59,17 @@ export const getNextRegion = (data: ({ key: string } & Parameters<typeof nextReg
     key: data.key,
   })
 }
+
+export const getNotice = (...args: Parameters<typeof notice>) => async dispatch => {
+  const res = await notice(...args)
+
+  dispatch({
+    type: GET_NOTICE_SUCCESS,
+    data: res.data,
+  })
+}
+
+export const updateTimerFlags = (data: {[key: string]: any}) => ({
+  type: UPDATE_TIMER_FLAGS,
+  data,
+})

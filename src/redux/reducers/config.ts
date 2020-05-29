@@ -7,6 +7,8 @@ import {
   GET_SYSTEM_CONFIG_SUCCESS,
   GET_BANNERS_SUCCESS,
   GET_PROVINCE_SUCCESS,
+  GET_NOTICE_SUCCESS,
+  UPDATE_TIMER_FLAGS
 } from '../actions/config'
 
 const rechargeAmountMin = Taro.getStorageSync('recharge_amount_min') || 0
@@ -26,6 +28,8 @@ export interface ConfigState {
   provinces: any[],
   citys: any[],
   districts: any[],
+  notice?: any,
+  timerFlags: {[key: string]: any}
 }
 
 const INITIAL_STATE: ConfigState = {
@@ -42,6 +46,8 @@ const INITIAL_STATE: ConfigState = {
   provinces: [],
   citys: [],
   districts: [],
+  notice: undefined,
+  timerFlags: {}
 }
 
 const REMOVE_PROVINCE = ['澳门特别行政区', '台湾省', '香港特别行政区']
@@ -104,6 +110,21 @@ export default function config(state = INITIAL_STATE, action: AnyAction): Config
           }
           return pre
         }, {})).sort((a: any, b: any) => a.title > b.title ? 1 : -1),
+      }
+    }
+    case GET_NOTICE_SUCCESS: {
+      return {
+        ...state,
+        notice: action.data,
+      }
+    }
+    case UPDATE_TIMER_FLAGS: {
+      return {
+        ...state,
+        timerFlags: {
+          ...state.timerFlags,
+          ...action.data,
+        }
       }
     }
     default:

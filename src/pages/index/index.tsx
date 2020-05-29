@@ -1,16 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Taro from '@tarojs/taro'
-import { View, Image, Video, Swiper, SwiperItem, Text } from '@tarojs/components'
+import { View, Image, Video, Swiper, SwiperItem, Text, ScrollView } from '@tarojs/components'
 
-import { getBanners } from '@/redux/actions/config'
+import { getBanners, getNotice } from '@/redux/actions/config'
 import { getProducts } from '@/redux/actions/goods'
+import { getCoupons, getGetableCoupons } from '@/redux/actions/user'
 import classNames from 'classnames'
-import { Price } from '@/components'
 import { setCartBadge, config as uConfig } from '@/utils'
 
-import { AtIcon } from 'taro-ui'
+import { AtIcon , AtCurtain } from 'taro-ui'
+import { Price, CouponList } from '@/components'
 import { routes } from '@/utils/router'
+
+import { UserState } from '@/redux/reducers/user'
+import { ConfigState } from '@/redux/reducers/config'
+
+import Notice from './_components/Notice'
+
 import './index.scss'
 
 const { requireEntryPage } = uConfig
@@ -27,32 +34,50 @@ const { requireEntryPage } = uConfig
 // ref: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20796
 //
 // #endregion
+let hasShowCoupons = false
 
 type PageProps = {
   banners: any[]
   systemConfig: { [key: string]: string }
-  recommendProducts: []
-  allProducts: []
+  recommendProducts: any[]
+  allProducts: any[]
   products: { [key: string]: any }
+  coupons: UserState['coupons']
+  getableCoupons: UserState['coupons']
+  notice: ConfigState['notice']
   getBanners: typeof getBanners
   getProducts: typeof getProducts
+  getCoupons: typeof getCoupons
+  getGetableCoupons: typeof getGetableCoupons
+  getNotice: typeof getNotice
 }
 
 type PageState = {
   swiperIndex: number
   playVideo: boolean,
   statusBarHeight: number,
+  showCoupons: UserState['coupons']
+  showCurtain: boolean
 }
 
-@connect(({ config, goods: { products } }) => ({
+@connect(({ config, goods: { products }, user: {
+  coupons,
+  getableCoupons,
+}}) => ({
   products,
   banners: config.banners['index'],
   systemConfig: config.systemConfig,
   recommendProducts: products.homeRecommendProducts,
   allProducts: products.allProducts,
+  coupons: coupons.filter(coupon => coupon.status === 0),
+  getableCoupons: getableCoupons.filter(coupon => coupon.name !== '会员核销券'),
+  notice: config.notice,
 }), dispatch => ({
   getBanners: data => dispatch(getBanners(data)),
   getProducts: data => dispatch(getProducts(data)),
+  getCoupons: () => dispatch(getCoupons()),
+  getGetableCoupons: () => dispatch(getGetableCoupons()),
+  getNotice: () => dispatch(getNotice()),
 }))
 
 export default class Index extends Component<PageProps, PageState> {
@@ -60,6 +85,8 @@ export default class Index extends Component<PageProps, PageState> {
     swiperIndex: 0,
     playVideo: false,
     statusBarHeight: 0,
+    showCoupons: [],
+    showCurtain: false,
   }
 
   componentWillMount() {
@@ -77,6 +104,9 @@ export default class Index extends Component<PageProps, PageState> {
     this.props.getBanners({
       type: 'index',
     })
+
+    // 通知
+    this.props.getNotice()
 
     // 加载首页推荐商品
     this.props.getProducts({
@@ -97,6 +127,31 @@ export default class Index extends Component<PageProps, PageState> {
       key: `category_${this.orderCategoryId}`,
       categoryId: this.orderCategoryId,
     })
+
+    this.handleCoupon()
+  }
+
+  // 处理优惠券逻辑
+  handleCoupon = async () => {
+    if (hasShowCoupons) {
+      return
+    }
+    await Promise.all([
+      this.props.getCoupons(), // 获取用户优惠券
+      this.props.getGetableCoupons(), // 获取用户可领优惠券
+    ])
+
+    const { coupons, getableCoupons } = this.props
+
+    const showCoupons = getableCoupons.filter(item => !coupons.find(coupon => coupon.pid === item.id))
+    // console.log(getableCoupons)
+    if (showCoupons.length > 0) {
+      this.setState({
+        showCoupons,
+        showCurtain: true,
+      })
+      hasShowCoupons = true
+    }
   }
 
   // 跳转商品详情页
@@ -157,6 +212,12 @@ export default class Index extends Component<PageProps, PageState> {
     })
   }
 
+  onCloseCurtain = () => {
+    this.setState({
+      showCurtain: false,
+    })
+  }
+
   render() {
     const {
       banners = [],
@@ -168,8 +229,9 @@ export default class Index extends Component<PageProps, PageState> {
         index_video_2: videoUrl2,
         home_order_category_id: orderCategoryId,
       },
+      notice,
     } = this.props
-    const { swiperIndex, playVideo, statusBarHeight } = this.state
+    const { swiperIndex, playVideo, showCurtain, statusBarHeight } = this.state
 
     const orderCategoryProducts = products[`category_${orderCategoryId}`] || []
 
@@ -204,10 +266,15 @@ export default class Index extends Component<PageProps, PageState> {
           })} key={item.id}
           ></View>)}
         </View>
+
         <View className="recommend-products">
           {/* 精品推荐商品块 */}
           {
             recommendProducts && recommendProducts.length > 0 && <View>
+              {/* 通知条 */}
+              {notice && notice.title && <Notice notice={notice}></Notice>}
+
+              {/* 精品推荐商品块 */}
               <View className="title title-line">精品推荐</View>
               <View className="list">
                 {
@@ -296,6 +363,19 @@ export default class Index extends Component<PageProps, PageState> {
             }</View>
           </View>
         }
+
+        {/* 优惠券 弹窗 */}
+        <AtCurtain
+          isOpened={showCurtain}
+          onClose={this.onCloseCurtain}
+        >
+          <View className="curtain-wrapper">
+            <View className="curtain-title">您有优惠券可以领取</View>
+            <ScrollView className="coupons-curtain" scrollY>
+              <CouponList list={this.state.showCoupons} isGetCoupon showToast />
+            </ScrollView>
+          </View>
+        </AtCurtain>
       </View>
     )
   }

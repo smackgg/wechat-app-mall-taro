@@ -35,3 +35,10 @@ export const nextRegion = (data: { pid: string }) => request({
   data,
 })
 
+// 获取系统公告
+export const notice = (data?: {
+  type?: string,
+}) => request({
+  url: '/notice/last-one',
+  data,
+})

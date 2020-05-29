@@ -53,6 +53,7 @@ page {
   .recommend-products {
     background: $color-white;
     width: 630rpx;
+    min-height: 400rpx;
     margin: 0 auto;
     box-shadow: 0 2rpx 20rpx rgba(0, 0, 0, .1);
     padding: 32rpx 30rpx 10rpx;
@@ -206,5 +207,22 @@ page {
         }
       }
     }
+  }
+}
+
+.curtain-wrapper {
+  border-radius: 40rpx;
+  background: $color-white;
+  padding: 10rpx 0 20rpx;
+
+  .coupons-curtain {
+    max-height: 800rpx;
+  }
+
+  .curtain-title {
+    width: 100%;
+    padding: 30rpx 0 10rpx;
+    text-align: center;
+    color: gray;
   }
 }
