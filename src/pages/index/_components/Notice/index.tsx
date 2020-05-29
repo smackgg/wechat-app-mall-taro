@@ -47,7 +47,6 @@ export default class Notice extends PureComponent<Props, State> {
 
   onClick = () => {
     const { notice: { redirectUrl, type } } = this.props
-    console.log(type, '====')
     if (type === 'popup') {
       this.setState({
         isOpened: true,
