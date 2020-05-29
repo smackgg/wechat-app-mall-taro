@@ -34,12 +34,14 @@ export default class Notice extends PureComponent<Props, State> {
   componentDidMount() {
     const { notice: { type }, timerFlags } = this.props
     if (!timerFlags.homeNoticePopup && type === 'popup') {
-      this.setState({
-        isOpened: true,
-      })
-      this.props.updateTimerFlags({
-        homeNoticePopup: true,
-      })
+      setTimeout(() => {
+        this.setState({
+          isOpened: true,
+        })
+        this.props.updateTimerFlags({
+          homeNoticePopup: true,
+        })
+      }, 1500)
     }
   }
 
@@ -71,12 +73,14 @@ export default class Notice extends PureComponent<Props, State> {
     const { isOpened } = this.state
 
     /* 通知条 */
-    return <View className="notice-bar" onClick={this.onClick}>
-      <AtNoticebar speed={30} icon="volume-plus" marquee>
-        {(redirectUrl || type === 'popup') && <Text>[点击查看] </Text>}{title}
-      </AtNoticebar>
+    return <View className="notice-bar">
+      <View onClick={this.onClick}>
+        <AtNoticebar speed={30} icon="volume-plus" marquee>
+          {(redirectUrl || type === 'popup') && <Text>[点击查看] </Text>}{title}
+        </AtNoticebar>
+      </View>
       {
-        type === 'popup' && <AtCurtain
+        type === 'popup' && isOpened && <AtCurtain
           isOpened={isOpened}
           onClose={this.onClose}
         >
